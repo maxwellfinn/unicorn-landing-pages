@@ -472,29 +472,15 @@
       gap: 0.75rem;
     }
 
-    .logo img {
-      height: 40px;
+    .logo-img {
+      height: 45px;
       width: auto;
     }
 
-    .logo-text {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--dark-gray);
-      letter-spacing: -0.02em;
-    }
-
-    .logo-subtitle {
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--primary-blue);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+    @media (min-width: 768px) {
+      .logo-img {
+        height: 55px;
+      }
     }
 
     .header-actions {
@@ -1410,23 +1396,7 @@
       <div class="container">
         <div class="header-content">
           <div class="logo">
-            <!-- Inline SVG Logo -->
-            <svg width="45" height="40" viewBox="0 0 45 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.5 0L24.5 8H20.5L22.5 0Z" fill="url(#horn-gradient)"/>
-              <ellipse cx="22.5" cy="20" rx="18" ry="14" fill="#3D4246"/>
-              <text x="6" y="25" fill="white" font-family="Inter" font-weight="800" font-size="14">UN</text>
-              <path d="M22.5 4C22.5 4 24 6 24 8C24 10 22.5 12 22.5 12C22.5 12 21 10 21 8C21 6 22.5 4 22.5 4Z" fill="#5BB5E8"/>
-              <defs>
-                <linearGradient id="horn-gradient" x1="22.5" y1="0" x2="22.5" y2="12" gradientUnits="userSpaceOnUse">
-                  <stop stop-color="#5BB5E8"/>
-                  <stop offset="1" stop-color="#3B9FD8"/>
-                </linearGradient>
-              </defs>
-            </svg>
-            <div class="logo-text">
-              <span class="logo-title">UNICORN</span>
-              <span class="logo-subtitle">Landing Pages</span>
-            </div>
+            <img src="/logo.png" alt="Unicorn Marketers" class="logo-img">
           </div>
           <div class="header-actions">
             <button class="btn btn-primary" onclick="openCreateModal()">
