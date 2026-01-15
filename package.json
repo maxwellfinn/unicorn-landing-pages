@@ -6,9 +6,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js",
-    "build": "echo 'No build step required'",
-    "vercel-build": "echo 'No build step required'"
+    "dev": "node --watch server.js"
   },
   "dependencies": {
     "@vercel/postgres": "^0.5.1",
