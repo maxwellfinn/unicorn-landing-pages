@@ -1235,6 +1235,175 @@
     }
 
     /* ============================================
+       PIPELINE PROGRESS
+    ============================================ */
+    .pipeline-progress {
+      padding: 1rem;
+    }
+
+    .pipeline-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .pipeline-step {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg-light);
+      border-radius: 12px;
+      border: 2px solid var(--border-light);
+      transition: all 0.3s ease;
+    }
+
+    .pipeline-step.pending {
+      opacity: 0.5;
+    }
+
+    .pipeline-step.running {
+      border-color: var(--primary-blue);
+      background: rgba(59, 159, 216, 0.05);
+      animation: pulseBorder 1.5s ease-in-out infinite;
+    }
+
+    .pipeline-step.completed {
+      border-color: var(--success);
+      background: rgba(0, 184, 148, 0.05);
+    }
+
+    .pipeline-step.failed {
+      border-color: var(--error);
+      background: rgba(225, 112, 85, 0.05);
+    }
+
+    @keyframes pulseBorder {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(59, 159, 216, 0.4); }
+      50% { box-shadow: 0 0 0 8px rgba(59, 159, 216, 0); }
+    }
+
+    .step-indicator {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
+
+    .step-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--bg-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      border: 2px solid var(--border-light);
+    }
+
+    .pipeline-step.running .step-icon {
+      border-color: var(--primary-blue);
+    }
+
+    .pipeline-step.completed .step-icon {
+      border-color: var(--success);
+      background: var(--success);
+    }
+
+    .pipeline-step.completed .step-icon::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .step-status {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg-white);
+      border: 2px solid var(--border-light);
+      display: none;
+    }
+
+    .pipeline-step.running .step-status {
+      display: block;
+      background: var(--primary-blue);
+      border-color: var(--primary-blue);
+      animation: spin 1s linear infinite;
+    }
+
+    .pipeline-step.running .step-status::after {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 2px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .step-info {
+      flex: 1;
+    }
+
+    .step-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--text-medium);
+    }
+
+    .pipeline-step.running .step-desc::after {
+      content: '...';
+      animation: dots 1.5s steps(4, end) infinite;
+    }
+
+    .pipeline-summary {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--bg-light);
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+    }
+
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      gap: 1rem;
+    }
+
+    .summary-stat {
+      text-align: center;
+    }
+
+    .summary-stat .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-medium);
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+
+    .summary-stat .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* ============================================
        VISUAL EDITOR MODAL
     ============================================ */
     .editor-container {
@@ -1830,6 +1999,29 @@
         </div>
 
         <div class="nav-section">
+          <div class="nav-section-title">Clients</div>
+          <a class="nav-item" data-page="clients">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            All Clients
+            <span class="badge" id="navClientCount">0</span>
+          </a>
+          <a class="nav-item" onclick="openAddClientModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/>
+              <line x1="17" y1="11" x2="23" y2="11"/>
+            </svg>
+            Add Client
+          </a>
+        </div>
+
+        <div class="nav-section">
           <div class="nav-section-title">Create</div>
           <a class="nav-item" onclick="openGenerateModal()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2063,59 +2255,165 @@
         <button class="modal-close" onclick="closeGenerateModal()">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="margin-bottom: 1.5rem; color: var(--text-medium);">Choose the type of page you want to create:</p>
+        <!-- Step 1: Page Type Selection (shown by default) -->
+        <div id="generateStep1">
+          <p style="margin-bottom: 1.5rem; color: var(--text-medium);">Choose the type of page you want to create:</p>
 
-        <div class="generate-options" style="grid-template-columns: repeat(5, 1fr);">
-          <div class="generate-option" onclick="selectGenerateType('advertorial')" data-type="advertorial">
-            <div class="generate-option-icon">📰</div>
-            <h4>Advertorial</h4>
-            <p>Editorial-style long-form sales page</p>
+          <div class="generate-options" style="grid-template-columns: repeat(5, 1fr);">
+            <div class="generate-option" onclick="selectGenerateType('advertorial')" data-type="advertorial">
+              <div class="generate-option-icon">📰</div>
+              <h4>Advertorial</h4>
+              <p>Editorial-style long-form sales page</p>
+            </div>
+            <div class="generate-option" onclick="selectGenerateType('listicle')" data-type="listicle">
+              <div class="generate-option-icon">📝</div>
+              <h4>Listicle</h4>
+              <p>Native ad disguised as helpful tips article</p>
+            </div>
+            <div class="generate-option" onclick="selectGenerateType('quiz')" data-type="quiz">
+              <div class="generate-option-icon">❓</div>
+              <h4>Quiz Funnel</h4>
+              <p>Interactive quiz with personalized results</p>
+            </div>
+            <div class="generate-option" onclick="selectGenerateType('vip')" data-type="vip">
+              <div class="generate-option-icon">⭐</div>
+              <h4>VIP Signup</h4>
+              <p>Exclusive waitlist or insider access page</p>
+            </div>
+            <div class="generate-option" onclick="selectGenerateType('calculator')" data-type="calculator">
+              <div class="generate-option-icon">🧮</div>
+              <h4>Calculator</h4>
+              <p>Interactive savings or ROI calculator</p>
+            </div>
           </div>
-          <div class="generate-option" onclick="selectGenerateType('listicle')" data-type="listicle">
-            <div class="generate-option-icon">📝</div>
-            <h4>Listicle</h4>
-            <p>Native ad disguised as helpful tips article</p>
+
+          <div class="form-group">
+            <label for="generateProduct">Product/Offer URL or Description <span>*</span></label>
+            <input type="text" id="generateProduct" placeholder="https://example.com/product or describe your offer...">
           </div>
-          <div class="generate-option" onclick="selectGenerateType('quiz')" data-type="quiz">
-            <div class="generate-option-icon">❓</div>
-            <h4>Quiz Funnel</h4>
-            <p>Interactive quiz with personalized results</p>
+
+          <div class="form-group">
+            <label for="generateAudience">Target Audience</label>
+            <textarea id="generateAudience" style="min-height: 80px;" placeholder="Describe your ideal customer..."></textarea>
           </div>
-          <div class="generate-option" onclick="selectGenerateType('vip')" data-type="vip">
-            <div class="generate-option-icon">⭐</div>
-            <h4>VIP Signup</h4>
-            <p>Exclusive waitlist or insider access page</p>
-          </div>
-          <div class="generate-option" onclick="selectGenerateType('calculator')" data-type="calculator">
-            <div class="generate-option-icon">🧮</div>
-            <h4>Calculator</h4>
-            <p>Interactive savings or ROI calculator</p>
+
+          <div class="form-group">
+            <label for="generateTone">Tone & Style</label>
+            <select id="generateTone">
+              <option value="professional">Professional & Trustworthy</option>
+              <option value="urgent">Urgent & Exciting</option>
+              <option value="friendly">Friendly & Conversational</option>
+              <option value="authoritative">Authoritative & Expert</option>
+            </select>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="generateProduct">Product/Offer URL or Description <span>*</span></label>
-          <input type="text" id="generateProduct" placeholder="https://example.com/product or describe your offer...">
-        </div>
+        <!-- Step 2: Pipeline Progress (shown during generation) -->
+        <div id="generateStep2" style="display: none;">
+          <div class="pipeline-progress">
+            <h3 style="margin-bottom: 1.5rem; text-align: center;">Generating Your Landing Page</h3>
 
-        <div class="form-group">
-          <label for="generateAudience">Target Audience</label>
-          <textarea id="generateAudience" style="min-height: 80px;" placeholder="Describe your ideal customer..."></textarea>
-        </div>
+            <div class="pipeline-steps">
+              <div class="pipeline-step" data-step="research">
+                <div class="step-indicator">
+                  <div class="step-icon">🔍</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Deep Research</div>
+                  <div class="step-desc">Analyzing website and extracting business info</div>
+                </div>
+              </div>
 
-        <div class="form-group">
-          <label for="generateTone">Tone & Style</label>
-          <select id="generateTone">
-            <option value="professional">Professional & Trustworthy</option>
-            <option value="urgent">Urgent & Exciting</option>
-            <option value="friendly">Friendly & Conversational</option>
-            <option value="authoritative">Authoritative & Expert</option>
-          </select>
+              <div class="pipeline-step" data-step="brand">
+                <div class="step-indicator">
+                  <div class="step-icon">🎨</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Brand Extraction</div>
+                  <div class="step-desc">Extracting colors, fonts, and style guide</div>
+                </div>
+              </div>
+
+              <div class="pipeline-step" data-step="strategy">
+                <div class="step-indicator">
+                  <div class="step-icon">📋</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Page Strategy</div>
+                  <div class="step-desc">Creating page outline and messaging</div>
+                </div>
+              </div>
+
+              <div class="pipeline-step" data-step="copy">
+                <div class="step-indicator">
+                  <div class="step-icon">✍️</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Copy Generation</div>
+                  <div class="step-desc">Writing compelling, verified copy</div>
+                </div>
+              </div>
+
+              <div class="pipeline-step" data-step="design">
+                <div class="step-indicator">
+                  <div class="step-icon">🖼️</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Design Generation</div>
+                  <div class="step-desc">Building beautiful, on-brand HTML</div>
+                </div>
+              </div>
+
+              <div class="pipeline-step" data-step="factcheck">
+                <div class="step-indicator">
+                  <div class="step-icon">✅</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Fact Checking</div>
+                  <div class="step-desc">Verifying all claims and statistics</div>
+                </div>
+              </div>
+
+              <div class="pipeline-step" data-step="assembly">
+                <div class="step-indicator">
+                  <div class="step-icon">🏗️</div>
+                  <div class="step-status"></div>
+                </div>
+                <div class="step-info">
+                  <div class="step-name">Final Assembly</div>
+                  <div class="step-desc">QA checks and page finalization</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pipeline-summary" id="pipelineSummary" style="display: none;">
+              <div class="summary-stats">
+                <div class="summary-stat">
+                  <span class="stat-label">Tokens Used:</span>
+                  <span class="stat-value" id="summaryTokens">0</span>
+                </div>
+                <div class="summary-stat">
+                  <span class="stat-label">Est. Cost:</span>
+                  <span class="stat-value" id="summaryCost">$0.00</span>
+                </div>
+                <div class="summary-stat">
+                  <span class="stat-label">Facts Verified:</span>
+                  <span class="stat-value" id="summaryFacts">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeGenerateModal()">Cancel</button>
-        <button type="button" class="btn btn-primary" onclick="generatePage()" id="generateBtn">
+        <button type="button" class="btn btn-secondary" onclick="closeGenerateModal()" id="generateCancelBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="generatePageV2()" id="generateBtn">
           ✨ Generate Page
         </button>
       </div>
@@ -2368,6 +2666,7 @@
     // ============================================
     let currentPageId = null;
     let pages = [];
+    let clients = [];
     let selectedGenerateType = null;
     let currentEditingPage = null;
 
@@ -2379,7 +2678,51 @@
         document.getElementById('loadingScreen').classList.add('hidden');
       }, 1200);
       loadPages();
+      loadClients();
     });
+
+    // ============================================
+    // CLIENT MANAGEMENT
+    // ============================================
+    async function loadClients() {
+      try {
+        const res = await fetch('/api/clients');
+        const result = await res.json();
+        if (result.success) {
+          clients = result.clients || [];
+          document.getElementById('navClientCount').textContent = clients.length;
+        }
+      } catch (error) {
+        console.error('Failed to load clients:', error);
+      }
+    }
+
+    function openAddClientModal() {
+      const name = prompt('Enter client name:');
+      if (!name) return;
+
+      const url = prompt('Enter client website URL (optional):');
+      createClient(name, url);
+    }
+
+    async function createClient(name, websiteUrl) {
+      try {
+        const res = await fetch('/api/clients', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, website_url: websiteUrl || null })
+        });
+        const result = await res.json();
+        if (result.success) {
+          alert('Client created! You can now generate pages for this client.');
+          loadClients();
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        alert('Error creating client: ' + error.message);
+      }
+    }
 
     // ============================================
     // CURSOR EFFECT
@@ -2635,6 +2978,154 @@
       }
     }
 
+    // ============================================
+    // PIPELINE GENERATION (V2)
+    // ============================================
+    let currentJobId = null;
+
+    async function generatePageV2() {
+      if (!selectedGenerateType) {
+        alert('Please select a page type');
+        return;
+      }
+
+      const product = document.getElementById('generateProduct').value.trim();
+      if (!product) {
+        alert('Please enter a product URL or description');
+        return;
+      }
+
+      // Show pipeline progress
+      document.getElementById('generateStep1').style.display = 'none';
+      document.getElementById('generateStep2').style.display = 'block';
+      document.getElementById('generateBtn').style.display = 'none';
+      document.getElementById('generateCancelBtn').textContent = 'Running...';
+      document.getElementById('generateCancelBtn').disabled = true;
+
+      // Reset all steps to pending
+      document.querySelectorAll('.pipeline-step').forEach(step => {
+        step.classList.remove('running', 'completed', 'failed');
+        step.classList.add('pending');
+      });
+
+      const pipelineSteps = ['research', 'brand', 'strategy', 'copy', 'design', 'factcheck', 'assembly'];
+
+      try {
+        // Step 1: Start the job
+        const startRes = await fetch('/api/generate/start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            page_type: selectedGenerateType,
+            target_audience: document.getElementById('generateAudience').value.trim() || null,
+            offer_details: `URL: ${product}. Tone: ${document.getElementById('generateTone').value}`
+          })
+        });
+
+        const startResult = await startRes.json();
+        if (!startRes.ok) throw new Error(startResult.error);
+
+        currentJobId = startResult.job.id;
+        let totalTokens = 0;
+        let verifiedFacts = 0;
+
+        // Step 2: Run each step in sequence
+        for (const stepName of pipelineSteps) {
+          // Update UI to show this step is running
+          const stepEl = document.querySelector(`.pipeline-step[data-step="${stepName}"]`);
+          stepEl.classList.remove('pending');
+          stepEl.classList.add('running');
+
+          // Run the step
+          const stepRes = await fetch(`/api/generate/${currentJobId}/step/${stepName}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              url: product.startsWith('http') ? product : null,
+              productName: !product.startsWith('http') ? product : null
+            })
+          });
+
+          const stepResult = await stepRes.json();
+
+          if (!stepRes.ok) {
+            stepEl.classList.remove('running');
+            stepEl.classList.add('failed');
+            throw new Error(`${stepName} failed: ${stepResult.error}`);
+          }
+
+          // Mark step as completed
+          stepEl.classList.remove('running');
+          stepEl.classList.add('completed');
+
+          // Update stats
+          totalTokens += stepResult.tokens_used || 0;
+          if (stepName === 'factcheck' && stepResult.result?.verified_count) {
+            verifiedFacts = stepResult.result.verified_count;
+          }
+
+          // Update summary
+          document.getElementById('summaryTokens').textContent = totalTokens.toLocaleString();
+          document.getElementById('summaryCost').textContent = '$' + ((totalTokens / 1000000) * 9).toFixed(3);
+          document.getElementById('summaryFacts').textContent = verifiedFacts;
+          document.getElementById('pipelineSummary').style.display = 'block';
+        }
+
+        // Generation complete - get the final page
+        const statusRes = await fetch(`/api/generate/${currentJobId}/status`);
+        const statusResult = await statusRes.json();
+
+        if (statusResult.job.page_id) {
+          // Fetch the generated page
+          const pageRes = await fetch(`/api/pages/${statusResult.job.page_id}`);
+          const pageResult = await pageRes.json();
+
+          if (pageResult.success) {
+            // Close generate modal and open create modal with generated content
+            closeGenerateModal();
+
+            document.getElementById('modalTitle').textContent = '✨ New Landing Page (AI Generated)';
+            document.getElementById('pageForm').reset();
+            document.getElementById('pageId').value = pageResult.page.id;
+            document.getElementById('pageName').value = pageResult.page.name;
+            document.getElementById('pageSlug').value = pageResult.page.slug;
+            document.getElementById('htmlContent').value = pageResult.page.html_content;
+            document.getElementById('deployResult').innerHTML = `
+              <div style="padding: 1rem; background: rgba(0, 184, 148, 0.1); border-radius: 8px; margin-bottom: 1rem; border: 1px solid var(--success);">
+                <strong style="color: var(--success);">✓ Page Generated Successfully!</strong><br>
+                <small style="color: var(--text-medium);">Tokens used: ${totalTokens.toLocaleString()} | Estimated cost: $${((totalTokens / 1000000) * 9).toFixed(3)} | Facts verified: ${verifiedFacts}</small>
+              </div>
+            `;
+            document.getElementById('saveDraftBtn').style.display = 'inline-flex';
+            document.getElementById('createModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            await loadPages();
+          }
+        }
+
+      } catch (error) {
+        alert('Generation failed: ' + error.message);
+        resetGenerateModal();
+      }
+    }
+
+    function resetGenerateModal() {
+      document.getElementById('generateStep1').style.display = 'block';
+      document.getElementById('generateStep2').style.display = 'none';
+      document.getElementById('generateBtn').style.display = 'inline-flex';
+      document.getElementById('generateBtn').innerHTML = '✨ Generate Page';
+      document.getElementById('generateCancelBtn').textContent = 'Cancel';
+      document.getElementById('generateCancelBtn').disabled = false;
+      document.getElementById('pipelineSummary').style.display = 'none';
+      currentJobId = null;
+    }
+
+    // Keep the old function for backwards compatibility
+    async function generatePage() {
+      return generatePageV2();
+    }
+
     async function quickDeploy(id) {
       if (!confirm('Deploy this page live?')) return;
 
@@ -2771,6 +3262,7 @@
     function closeGenerateModal() {
       document.getElementById('generateModal').classList.remove('active');
       document.body.style.overflow = '';
+      resetGenerateModal();
     }
 
     function selectGenerateType(type) {
@@ -2778,60 +3270,6 @@
       document.querySelectorAll('.generate-option').forEach(el => {
         el.classList.toggle('selected', el.dataset.type === type);
       });
-    }
-
-    async function generatePage() {
-      if (!selectedGenerateType) {
-        alert('Please select a page type');
-        return;
-      }
-
-      const product = document.getElementById('generateProduct').value.trim();
-      if (!product) {
-        alert('Please enter a product URL or description');
-        return;
-      }
-
-      const btn = document.getElementById('generateBtn');
-      btn.innerHTML = '<span class="loading-spinner"></span> Generating (this may take 30-60 seconds)...';
-      btn.disabled = true;
-
-      try {
-        const res = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type: selectedGenerateType,
-            productName: product,
-            productUrl: product.startsWith('http') ? product : null,
-            targetAudience: document.getElementById('generateAudience').value.trim() || null,
-            additionalContext: `Tone: ${document.getElementById('generateTone').value}`
-          })
-        });
-
-        const result = await res.json();
-        if (!res.ok) throw new Error(result.error);
-
-        // Close generate modal and open create modal with generated content
-        closeGenerateModal();
-
-        // Pre-fill the create modal with generated content
-        document.getElementById('modalTitle').textContent = '✨ New Landing Page (AI Generated)';
-        document.getElementById('pageForm').reset();
-        document.getElementById('pageId').value = '';
-        document.getElementById('pageName').value = result.productName + ' - ' + selectedGenerateType.charAt(0).toUpperCase() + selectedGenerateType.slice(1);
-        document.getElementById('htmlContent').value = result.html;
-        document.getElementById('deployResult').innerHTML = '';
-        document.getElementById('saveDraftBtn').style.display = 'inline-flex';
-        document.getElementById('createModal').classList.add('active');
-        document.body.style.overflow = 'hidden';
-
-      } catch (error) {
-        alert('Generation failed: ' + error.message);
-      } finally {
-        btn.innerHTML = '✨ Generate Page';
-        btn.disabled = false;
-      }
     }
 
     // ============================================

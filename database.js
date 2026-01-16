@@ -9,12 +9,122 @@ const db = new Database(join(__dirname, 'landing-pages.db'));
 
 // Initialize database schema
 db.exec(`
+  -- ============================================
+  -- NEW TABLES FOR V2 PIPELINE
+  -- ============================================
+
+  -- Clients table - stores business research for reuse
+  CREATE TABLE IF NOT EXISTS clients (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    website_url TEXT,
+    industry TEXT,
+    business_research TEXT,
+    source_content TEXT,
+    verified_facts TEXT,
+    testimonials TEXT,
+    research_status TEXT DEFAULT 'pending',
+    last_researched_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+  -- Brand style guides - extracted brand styles per client
+  CREATE TABLE IF NOT EXISTS brand_style_guides (
+    id TEXT PRIMARY KEY,
+    client_id TEXT NOT NULL,
+    primary_color TEXT,
+    secondary_color TEXT,
+    accent_color TEXT,
+    background_color TEXT,
+    text_color TEXT,
+    heading_font TEXT,
+    body_font TEXT,
+    font_weights TEXT,
+    font_sizes TEXT,
+    border_radius TEXT,
+    spacing_unit TEXT,
+    max_width TEXT,
+    button_style TEXT,
+    card_style TEXT,
+    brand_voice TEXT,
+    tone_keywords TEXT,
+    raw_css TEXT,
+    screenshot_url TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+  );
+
+  -- Page templates - template library
+  CREATE TABLE IF NOT EXISTS page_templates (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL,
+    description TEXT,
+    section_structure TEXT,
+    html_skeleton TEXT,
+    css_base TEXT,
+    industries TEXT,
+    conversion_goals TEXT,
+    avg_conversion_rate REAL,
+    times_used INTEGER DEFAULT 0,
+    is_active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+  -- Page generation jobs - track pipeline progress
+  CREATE TABLE IF NOT EXISTS page_generation_jobs (
+    id TEXT PRIMARY KEY,
+    client_id TEXT,
+    page_id TEXT,
+    page_type TEXT NOT NULL,
+    template_id TEXT,
+    target_audience TEXT,
+    offer_details TEXT,
+    status TEXT DEFAULT 'pending',
+    current_step TEXT,
+    step_outputs TEXT,
+    error_message TEXT,
+    tokens_used INTEGER DEFAULT 0,
+    estimated_cost REAL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    completed_at TEXT,
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (template_id) REFERENCES page_templates(id)
+  );
+
+  -- Verified claims - fact-checking database
+  CREATE TABLE IF NOT EXISTS verified_claims (
+    id TEXT PRIMARY KEY,
+    client_id TEXT NOT NULL,
+    claim_text TEXT NOT NULL,
+    claim_type TEXT,
+    source_url TEXT,
+    source_text TEXT,
+    verification_status TEXT DEFAULT 'unverified',
+    confidence_score REAL,
+    verified_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+  );
+
+  -- ============================================
+  -- EXISTING TABLES (with new columns for v2)
+  -- ============================================
+
   -- Landing Pages table
   CREATE TABLE IF NOT EXISTS landing_pages (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     slug TEXT UNIQUE NOT NULL,
     client_name TEXT,
+    client_id TEXT,
+    template_id TEXT,
+    job_id TEXT,
+    generation_metadata TEXT,
     html_content TEXT NOT NULL,
     status TEXT DEFAULT 'draft',
     deployed_at TEXT,
@@ -23,7 +133,10 @@ db.exec(`
     meta_description TEXT,
     tracking_pixel TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id),
+    FOREIGN KEY (template_id) REFERENCES page_templates(id),
+    FOREIGN KEY (job_id) REFERENCES page_generation_jobs(id)
   );
 
   -- A/B Test Variants table
@@ -114,6 +227,15 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_conversions_page_id ON conversions(page_id);
   CREATE INDEX IF NOT EXISTS idx_landing_pages_slug ON landing_pages(slug);
   CREATE INDEX IF NOT EXISTS idx_custom_domains_domain ON custom_domains(domain);
+
+  -- New indexes for v2 tables
+  CREATE INDEX IF NOT EXISTS idx_clients_website_url ON clients(website_url);
+  CREATE INDEX IF NOT EXISTS idx_brand_style_guides_client_id ON brand_style_guides(client_id);
+  CREATE INDEX IF NOT EXISTS idx_page_templates_type ON page_templates(type);
+  CREATE INDEX IF NOT EXISTS idx_page_generation_jobs_client_id ON page_generation_jobs(client_id);
+  CREATE INDEX IF NOT EXISTS idx_page_generation_jobs_status ON page_generation_jobs(status);
+  CREATE INDEX IF NOT EXISTS idx_verified_claims_client_id ON verified_claims(client_id);
+  CREATE INDEX IF NOT EXISTS idx_landing_pages_client_id ON landing_pages(client_id);
 `);
 
 export default db;

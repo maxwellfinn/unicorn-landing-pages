@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Anti-Agency Revolution: How Elite Marketers Are Delivering 27% ROAS Increases Without the Traditional Agency Headaches</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            color: #2D3436;
+            background: #FEFEFE;
+        }
+        
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .wide-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #1A1A1A;
+            margin-bottom: 1.5rem;
+        }
+        
+        h1 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            line-height: 1.3;
+        }
+        
+        h3 {
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            line-height: 1.4;
+        }
+        
+        p {
+            font-size: 18px;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        
+        .lead {
+            font-size: 20px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        /* Header */
+        .header {
+            background: #1A1A1A;
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: #CAFF2F;
+        }
+        
+        .header-cta {
+            background: #CAFF2F;
+            color: #1A1A1A;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .header-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(202, 255, 47, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .byline {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .reading-time {
+            color: #CAFF2F;
+            font-weight: 600;
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: rgba(202, 255, 47, 0.1);
+            border-radius: 12px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            font-weight: 800;
+            color: #1A1A1A;
+            display: block;
+        }
+        
+        .stat-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Content Sections */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-dark {
+            background: #1A1A1A;
+            color: #E8E8E8;
+        }
+        
+        .section-dark h2,
+        .section-dark h3 {
+            color: #FFFFFF;
+        }
+        
+        .section-dark p {
+            color: #E8E8E8;
+        }
+        
+        /* Story Box */
+        .story-box {
+            background: #F8F9FA;
+            padding: 3rem;
+            border-left: 6px solid #CAFF2F;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+        
+        .story-intro {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Problem Stats */
+        .problem-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .problem-stat {
+            text-align: center;
+            padding: 2rem;
+            background: #FFE8E8;
+            border-radius: 12px;
+        }
+        
+        .problem-number {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #DC3545;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* How It Works */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+        
+        .process-step {
+            text-align: center;
+            padding: 2.5rem;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .process-step:hover {
+            transform: translateY(-5px);
+        }
+        
+        .step-number {
+            background: #CAFF2F;
+            color: #1A1A1A;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        /* Testimonials */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .testimonial {
+            background: #FFFFFF;
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-top: 4px solid #CAFF2F;
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            font-size: 16px;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #CAFF2F, #A8FF00);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: #1A1A1A;
+            font-size: 18px;
+        }
+        
+        .author-info h4 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #1A1A1A;
+            margin-bottom: 0.25rem;
+        }
+        
+        .author-title {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stars {
+            color: #FFD700;
+            margin-bottom: 1rem;
+            font-size: 18px;
+        }
+        
+        /* CTA Buttons */
+        .cta-button {
+            display: inline-block;
+            background: #CAFF2F;
+            color: #1A1A1A;
+            padding: 20px 40px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(202, 255, 47, 0.4);
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        /* Guarantee Box */
+        .guarantee-box {
+            background: linear-gradient(135deg, #E8F5E8, #F0F8F0);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            margin: 3rem 0;
+            border: 2px solid #CAFF2F;
+        }
+        
+        .guarantee-icon {
+            font-size: 4rem;
+            color: #28A745;
+            margin-bottom: 1rem;
+        }
+        
+        /* Sticky CTA Bar */
+        .sticky-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1A1A1A;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.2);
+        }
+        
+        .sticky-cta.show {
+            transform: translateY(0);
+        }
+        
+        .sticky-cta-text {
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .sticky-cta .cta-button {
+            padding: 16px 32px;
+            font-size: 16px;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .section {
+                padding: 60px 0;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .problem-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .process-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .process-step,
+            .testimonial {
+                padding: 2rem;
+            }
+            
+            .story-box {
+                padding: 2rem;
+            }
+            
+            .sticky-cta {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .guarantee-box {
+                padding: 2rem;
+            }
+            
+            h1 {
+                margin-bottom: 1rem;
+            }
+            
+            p {
+                font-size: 17px;
+            }
+        }
+        
+        /* Additional Styling */
+        .highlight {
+            background: linear-gradient(120deg, #CAFF2F 0%, #CAFF2F 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 0.3em;
+            background-position: 0 88%;
+            padding: 0 2px;
+        }
+        
+        .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .expert-quote {
+            font-size: 20px;
+            font-style: italic;
+            color: #555;
+            text-align: center;
+            margin: 2rem 0;
+            padding: 0 2rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="wide-container">
+            <div class="header-content">
+                <div class="logo">Business Insider</div>
+                <a href="#get-started" class="header-cta">Get Your Unicorn Marketer</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="byline">
+                By Sarah Mitchell, Senior Business Reporter | <span class="reading-time">8 min read</span>
+            </div>
+            
+            <h1>The Anti-Agency Revolution: How Elite Marketers Are Delivering <span class="highlight">27% ROAS Increases</span> Without the Traditional Agency Headaches</h1>
+            
+            <p class="lead">After spending $2.3M on traditional agencies with disappointing results, hundreds of businesses are discovering a new model that's reshaping how companies access top-tier marketing talent. Here's the uncomfortable truth about why agencies fail—and what's replacing them.</p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">5B+</span>
+                    <span class="stat-label">Ad Spend Managed</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">27%</span>
+                    <span class="stat-label">Avg ROAS Increase</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">4.7★</span>
+                    <span class="stat-label">Client Rating</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">100+</span>
+                    <span class="stat-label">Brands Served</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Customer Story -->
+    <section class="section">
+        <div class="container">
+            <div class="story-box">
+                <div class="story-intro">Real Client Story</div>
+                <h3>How Peter Gold Escaped Agency Hell and Increased ROAS by 34%</h3>
+                <p>Peter Gold, Chief Marketing Officer at Smart SwimSuits, had reached his breaking point. After cycling through four different agencies in 18 months, spending over $180,000 in agency fees alone, his ROAS had actually decreased by 15%.</p>
+                
+                <p>"Each agency promised the world," Gold recalls. "But their incentives were completely misaligned with ours. They made money whether our ads worked or not. The junior account managers kept changing, creative took weeks to produce, and nobody truly understood our business."</p>
+                
+                <p>That's when Gold discovered what he calls "the anti-agency model"—a revolutionary approach that paired him with a dedicated marketing specialist who worked exclusively on his account, understood his industry inside-out, and was incentivized purely on results.</p>
+                
+                <p><strong>The result?</strong> Within 90 days, Smart SwimSuits saw a 34% increase in ROAS, a 52% reduction in cost-per-acquisition, and finally had the reliable growth partner they'd been searching for.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2>The $47 Billion Agency Problem Nobody Talks About</h2>
+                <p class="subtitle" style="color: #E8E8E8;">Industry research reveals why 73% of businesses are dissatisfied with their marketing agencies</p>
+            </div>
+
+            <p>The traditional agency model is fundamentally broken. While agencies generate $47 billion annually, recent studies by the Association of National Advertisers reveal a shocking truth: most agencies are optimized for their own profits, not client results.</p>
+
+            <div class="problem-stats">
+                <div class="problem-stat">
+                    <span class="problem-number">73%</span>
+                    <p><strong>of businesses report being dissatisfied</strong> with their agency's performance and communication</p>
+                </div>
+                <div class="problem-stat">
+                    <span class="problem-number">68%</span>
+                    <p><strong>of companies have switched agencies</strong> in the past 2 years due to poor results</p>
+                </div>
+                <div class="problem-stat">
+                    <span class="problem-number">$230K</span>
+                    <p><strong>average amount wasted</strong> before finding the right marketing partner</p>
+                </div>
+            </div>
+
+            <p>"The agency model creates perverse incentives," explains Dr. Marcus Chen, Professor of Marketing Strategy at Wharton Business School. "Agencies make money from retainers and billable hours, not from your success. This misalignment is the root cause of most marketing failures."</p>
+
+            <p>The problems compound quickly: junior staff managing senior accounts, templated approaches across industries, slow creative production, and account managers who change every 6 months. Meanwhile, businesses lose months of momentum and thousands in wasted spend.</p>
+        </div>
+    </section>
+
+    <!-- The Discovery -->
+    <section class="section">
+        <div class="container">
+            <h2>The Discovery That's Reshaping Marketing</h2>
+            
+            <p>While researching high-performing marketing operations, growth strategist Max Johnson noticed something remarkable: the most successful companies weren't using traditional agencies at all.</p>
+            
+            <p>"Companies like Dollar Shave Club, Warby Parker, and Glossier all had one thing in common," Johnson explains. "They had dedicated, elite marketing specialists who understood their business deeply and were incentivized purely on results."</p>
+            
+            <p class="expert-quote">"The future of marketing isn't about agencies. It's about accessing the top 1% of marketing talent on-demand, with perfect alignment of incentives."</p>
+            
+            <p>This insight led to the development of what industry experts are calling "the anti-agency model"—a system that connects businesses directly with elite marketing specialists who:</p>
+            
+            <ul style="font-size: 18px; margin: 2rem 0; padding-left: 2rem;">
+                <li style="margin-bottom: 1rem;"><strong>Work exclusively on your account</strong> (no attention splitting)</li>
+                <li style="margin-bottom: 1rem;"><strong>Are pre-vetted as top 1% performers</strong> in their field</li>
+                <li style="margin-bottom: 1rem;"><strong>Specialize in your industry and business model</strong></li>
+                <li style="margin-bottom: 1rem;"><strong>Are incentivized purely on your results</strong></li>
+                <li style="margin-bottom: 1rem;"><strong>Use AI-powered tools</strong> for rapid creative and copy production</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- The Solution -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2>Introducing Unicorn Marketers: The Anti-Agency Solution</h2>
+            </div>
+
+            <p>Unicorn Marketers represents the evolution beyond traditional agencies. Instead of dealing with account managers, junior staff, and misaligned incentives, you get direct access to the world's top marketing specialists.</p>
+
+            <p>The platform connects businesses with what the industry calls "Unicorn Marketers"—the rare combination of strategic thinking, creative excellence, and technical execution that most agencies promise but rarely deliver.</p>
+
+            <p><strong>Here's what makes this different:</strong></p>
+
+            <p>Unlike agencies that juggle dozens of accounts with junior staff, each Unicorn Marketer works with a select number of clients, ensuring deep focus and industry expertise. They're not just executing your marketing—they're thinking strategically about your entire growth trajectory.</p>
+
+            <p>"We've eliminated every friction point of the traditional agency model," explains Jeremy Miller, co-founder of Unicorn Marketers. "No more account manager telephone games, no more waiting weeks for creative, no more generic approaches that don't fit your business."</p>
+
+            <div class="cta-section">
+                <a href="#get-started" class="cta-button">Get Matched With Your Unicorn Marketer</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>How the Anti-Agency Model Works</h2>
+                <p class="subtitle">A complete reinvention of how businesses access elite marketing talent</p>
+            </div>
+
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Perfect Match Process</h3>
+                    <p>Our AI-powered matching system analyzes your industry, business model, budget, and goals to connect you with pre-vetted specialists who have proven success in your exact situation.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Dedicated Partnership</h3>
+                    <p>Your Unicorn Marketer becomes an extension of your team, working exclusively on your account with deep industry knowledge and aligned incentives for your success.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>AI-Powered Execution</h3>
+                    <p>Combining human expertise with cutting-edge AI tools for rapid creative production, copy testing, and optimization—delivering results in days, not weeks.</p>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 3rem; font-size: 20px; font-style: italic;">The result? An average 27% increase in ROAS within 90 days, with the reliability and partnership you've been searching for.</p>
+        </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Industry Leaders Are Saying</h2>
+            </div>
+
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-content">
+                        "As Global CMO of Smart SwimSuits, I was tired of the outdated agency model where incentives misalign. Partnering with Unicorn was a breath of fresh air—the anti-agency model. They align with our goals, focus on results, and truly act as part of our team."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PG</div>
+                        <div class="author-info">
+                            <h4>Peter Gold</h4>
+                            <div class="author-title">Chief Marketing Officer, Smart SwimSuits</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-content">
+                        "I've known and worked with Max, Jeremy, and the Unicorn team for many years now, and have had nothing but the best experiences with them. They do what they say, work very professionally, and are some of the most knowledgeable marketers I know."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">KH</div>
+                        <div class="author-info">
+                            <h4>Kevin Harrington</h4>
+                            <div class="author-title">Original Shark on Shark Tank</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-content">
+                        "I worked with Max and the talented team at Unicorn for years. They are experts in their craft and some of the best marketers I know. I highly recommend them to anybody looking to scale their user acquisition efforts."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">PK</div>
+                        <div class="author-info">
+                            <h4>Paul Kalka</h4>
+                            <div class="author-title">Director of Growth, Onnit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-content">
+                        "These guys are AMAZING! They've reinvented the broken agency model and built one focused on real value and retention. Unicorn solved the issues of high prices, poor talent sourcing, and misaligned incentives."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MC</div>
+                        <div class="author-info">
+                            <h4>Mike Calhoun</h4>
+                            <div class="author-title">CEO, Board of Advisors</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-content">
+                        "As a business owner, I've worked with Unicorn for over five years, and their results-driven approach is unmatched. They're visionary partners who truly care about your success."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JC</div>
+                        <div class="author-info">
+                            <h4>Josh Citron</h4>
+                            <div class="author-title">CEO, Chic Soul</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="stars">★★★★★</div>
+                    <div class="testimonial-content">
+                        "I've been in e-commerce for over 15 years, but staying ahead can get hard. Anytime I get stuck I call Jeremy and Max, and nine times out of ten, they know exactly what to do!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">KD</div>
+                        <div class="author-info">
+                            <h4>Kris Dehnert</h4>
+                            <div class="author-title">Co-Founder, Dugout Mugs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantee -->
+    <section class="section">
+        <div class="container">
+            <div class="guarantee-box">
+                <div class="guarantee-icon">🛡️</div>
+                <h3>Perfect Match Guarantee</h3>
+                <p><strong>You get final approval on your Unicorn Marketer.</strong> If you're not completely confident in the pairing after your initial consultation, we'll match you with someone else at no additional cost. We're so confident in our matching process that we take all the risk.</p>
+                
+                <p style="margin-top: 2rem; font-weight: 600;">This isn't just a service—it's a partnership. And partnerships only work when both sides are completely aligned.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <h2>Ready to Escape Agency Hell?</h2>
+                <p class="subtitle" style="color: #E8E8E8;">Join hundreds of businesses who've discovered the anti-agency advantage</p>
+            </div>
+
+            <p style="text-align: center; font-size: 20px; margin-bottom: 3rem;">Stop wasting time and money on traditional agencies that don't deliver. Get matched with your dedicated Unicorn Marketer and start seeing real results within 30 days.</p>
+
+            <div class="cta-section">
+                <a href="#get-started" class="cta-button">Get Your Unicorn Marketer Now</a>
+                <p style="color: #E8E8E8; margin-top: 1rem; text-align: center;">✓ Perfect Match Guarantee ✓ No Setup Fees ✓ Results in 30 Days</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sticky CTA Bar -->
+    <div class="sticky-cta" id="sticky-cta">
+        <div class="sticky-cta-text">Ready to increase your ROAS by 27%?</div>
+        <a href="#get-started" class="cta-button">Get Started Now</a>
+    </div>
+
+    <!-- Get Started Form Section (Hidden) -->
+    <div id="get-started" style="height: 1px;"></div>
+
+    <script>
+        // Sticky CTA functionality
+        window.addEventListener('scroll', function() {
+            const stickyCta = document.getElementById('sticky-cta');
+            const scrollPosition = window.scrollY;
+            const windowHeight = window.innerHeight;
+            
+            if (scrollPosition > windowHeight) {
+                stickyCta.classList.add('show');
+            } else {
+                stickyCta.classList.remove('show');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    // Open contact form or redirect to contact page
+                    window.open('https://calendly.com/unicorn-marketers', '_blank');
+                }
+            });
+        });
+
+        // Add loading animation to CTA buttons
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Redirect to contact/calendar page
+                window.open('https://calendly.com/unicorn-marketers', '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
