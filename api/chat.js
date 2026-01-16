@@ -90,7 +90,7 @@ Respond with a JSON object in this exact format:
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-sonnet-latest',
+        model: 'claude-3-haiku-20240307',
         max_tokens: 8192,
         system: systemPrompt,
         messages: [
