@@ -13,7 +13,21 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { type, productUrl, productName, targetAudience, keyBenefits, additionalContext } = req.body;
+    // Parse body if it's a string (Vercel sometimes doesn't auto-parse)
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch (e) {
+        return res.status(400).json({ error: 'Invalid JSON in request body' });
+      }
+    }
+
+    if (!body || typeof body !== 'object') {
+      return res.status(400).json({ error: 'Request body is required' });
+    }
+
+    const { type, productUrl, productName, targetAudience, keyBenefits, additionalContext } = body;
 
     if (!type || !productName) {
       return res.status(400).json({ error: 'Type and product name are required' });
@@ -48,8 +62,8 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 16384,
+        model: 'claude-3-5-sonnet-20241022',
+        max_tokens: 8192,
         system: systemPrompt,
         messages: [
           {
