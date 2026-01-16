@@ -29,6 +29,34 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: 'Invalid Claude API key format. Key should start with sk-ant-' });
     }
 
+    // Truncate HTML if it's too long (roughly 150k chars to stay under token limit)
+    const MAX_HTML_LENGTH = 150000;
+    let htmlToSend = currentHtml || '';
+    let htmlTruncated = false;
+
+    if (htmlToSend.length > MAX_HTML_LENGTH) {
+      // Try to intelligently truncate - keep head and beginning of body
+      const headMatch = htmlToSend.match(/<head[\s\S]*?<\/head>/i);
+      const bodyStart = htmlToSend.indexOf('<body');
+
+      if (headMatch && bodyStart > -1) {
+        const head = headMatch[0];
+        const bodyContent = htmlToSend.substring(bodyStart);
+        const availableForBody = MAX_HTML_LENGTH - head.length - 500; // Leave room for wrapper
+
+        htmlToSend = `<!DOCTYPE html>
+<html>
+${head}
+${bodyContent.substring(0, availableForBody)}
+<!-- [CONTENT TRUNCATED - page too large] -->
+</body>
+</html>`;
+      } else {
+        htmlToSend = htmlToSend.substring(0, MAX_HTML_LENGTH) + '\n<!-- [CONTENT TRUNCATED] -->';
+      }
+      htmlTruncated = true;
+    }
+
     const systemPrompt = `You are an expert landing page editor and copywriter. The user will ask you to make changes to their landing page HTML.
 
 Your job is to:
@@ -42,6 +70,7 @@ IMPORTANT RULES:
 - Make the requested changes while maintaining the page's overall design and functionality
 - If the user's request is unclear, make your best judgment about what they want
 - Focus on making changes that improve conversions, readability, and user experience
+${htmlTruncated ? '- NOTE: The HTML was truncated due to size. Focus on the visible content and make targeted changes.' : ''}
 
 Current page context:
 - Page Name: ${pageContext?.name || 'Landing Page'}
@@ -62,12 +91,12 @@ Respond with a JSON object in this exact format:
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 8192,
+        max_tokens: 16384,
         system: systemPrompt,
         messages: [
           {
             role: 'user',
-            content: `Here is the current HTML of the landing page:\n\n${currentHtml}\n\n---\n\nUser request: ${message}`
+            content: `Here is the current HTML of the landing page:\n\n${htmlToSend}\n\n---\n\nUser request: ${message}`
           }
         ]
       })
