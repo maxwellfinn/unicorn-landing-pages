@@ -22,17 +22,16 @@
       --text-light: #B2BEC3;
       --bg-white: #FFFFFF;
       --bg-light: #F8FAFB;
-      --bg-card: #FFFFFF;
+      --bg-sidebar: #1a1d21;
+      --bg-sidebar-hover: #2a2d32;
       --border-light: #E8EDEF;
       --success: #00B894;
       --warning: #FDCB6E;
       --error: #E17055;
-      --gradient-start: #3B9FD8;
-      --gradient-end: #00B894;
       --shadow-sm: 0 2px 8px rgba(59, 159, 216, 0.08);
       --shadow-md: 0 8px 30px rgba(59, 159, 216, 0.12);
       --shadow-lg: 0 20px 60px rgba(59, 159, 216, 0.15);
-      --shadow-glow: 0 0 40px rgba(59, 159, 216, 0.3);
+      --sidebar-width: 260px;
     }
 
     body {
@@ -44,7 +43,7 @@
     }
 
     /* ============================================
-       LOADING SCREEN - Unicorn on Laptop
+       LOADING SCREEN
     ============================================ */
     .loading-screen {
       position: fixed;
@@ -61,6 +60,7 @@
     .loading-screen.hidden {
       opacity: 0;
       visibility: hidden;
+      pointer-events: none;
     }
 
     .unicorn-loader {
@@ -78,7 +78,6 @@
       top: 20px;
     }
 
-    /* Unicorn Body */
     .unicorn-body {
       position: absolute;
       width: 60px;
@@ -90,7 +89,6 @@
       box-shadow: inset -5px -5px 10px rgba(0,0,0,0.05);
     }
 
-    /* Unicorn Head */
     .unicorn-head {
       position: absolute;
       width: 35px;
@@ -99,18 +97,15 @@
       border-radius: 50% 50% 45% 45%;
       top: 20px;
       left: 65px;
-      box-shadow: inset -3px -3px 8px rgba(0,0,0,0.05);
     }
 
-    /* Horn */
     .unicorn-horn {
       position: absolute;
       width: 0;
       height: 0;
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
-      border-bottom: 25px solid;
-      border-bottom-color: var(--primary-blue);
+      border-bottom: 25px solid var(--primary-blue);
       top: -2px;
       left: 75px;
       transform: rotate(15deg);
@@ -122,7 +117,6 @@
       50% { filter: drop-shadow(0 0 8px var(--primary-blue-light)); }
     }
 
-    /* Ear */
     .unicorn-ear {
       position: absolute;
       width: 12px;
@@ -134,7 +128,6 @@
       transform: rotate(-15deg);
     }
 
-    /* Mane */
     .unicorn-mane {
       position: absolute;
       top: 25px;
@@ -149,7 +142,7 @@
       animation: maneWave 1s ease-in-out infinite;
     }
 
-    .mane-strand:nth-child(1) { background: var(--primary-blue); left: 0; animation-delay: 0s; }
+    .mane-strand:nth-child(1) { background: var(--primary-blue); left: 0; }
     .mane-strand:nth-child(2) { background: #5bb5e8; left: 6px; animation-delay: 0.1s; height: 25px; top: -3px; }
     .mane-strand:nth-child(3) { background: #00B894; left: 12px; animation-delay: 0.2s; height: 22px; top: -1px; }
 
@@ -158,7 +151,6 @@
       50% { transform: rotate(5deg); }
     }
 
-    /* Eye */
     .unicorn-eye {
       position: absolute;
       width: 6px;
@@ -175,7 +167,6 @@
       95% { transform: scaleY(0.1); }
     }
 
-    /* Snout/Nose */
     .unicorn-snout {
       position: absolute;
       width: 4px;
@@ -186,7 +177,6 @@
       left: 92px;
     }
 
-    /* Front Legs - Typing! */
     .unicorn-leg-front {
       position: absolute;
       width: 10px;
@@ -216,7 +206,6 @@
       50% { transform: translateY(-8px) rotate(15deg); }
     }
 
-    /* Back Legs */
     .unicorn-leg-back {
       position: absolute;
       width: 10px;
@@ -229,7 +218,6 @@
     .unicorn-leg-back.left { left: 32px; }
     .unicorn-leg-back.right { left: 75px; }
 
-    /* Tail */
     .unicorn-tail {
       position: absolute;
       top: 50px;
@@ -242,18 +230,18 @@
       height: 25px;
       border-radius: 3px;
       animation: tailWag 1.2s ease-in-out infinite;
+      transform-origin: top;
     }
 
-    .tail-strand:nth-child(1) { background: var(--primary-blue); left: 0; transform-origin: top; }
-    .tail-strand:nth-child(2) { background: #5bb5e8; left: 5px; animation-delay: 0.1s; transform-origin: top; }
-    .tail-strand:nth-child(3) { background: #00B894; left: 10px; animation-delay: 0.2s; transform-origin: top; }
+    .tail-strand:nth-child(1) { background: var(--primary-blue); left: 0; }
+    .tail-strand:nth-child(2) { background: #5bb5e8; left: 5px; animation-delay: 0.1s; }
+    .tail-strand:nth-child(3) { background: #00B894; left: 10px; animation-delay: 0.2s; }
 
     @keyframes tailWag {
       0%, 100% { transform: rotate(-15deg); }
       50% { transform: rotate(15deg); }
     }
 
-    /* Laptop */
     .laptop {
       position: absolute;
       bottom: 20px;
@@ -279,7 +267,6 @@
       border-radius: 2px;
     }
 
-    /* Code lines on screen */
     .code-line {
       position: absolute;
       height: 3px;
@@ -305,27 +292,11 @@
       margin-left: -5px;
     }
 
-    .laptop-touchpad {
-      width: 20px;
-      height: 2px;
-      background: #4a5254;
-      margin: 0 auto;
-      border-radius: 1px;
-    }
-
     .loading-text {
       margin-top: 30px;
       font-size: 1rem;
       font-weight: 600;
       color: var(--text-medium);
-      animation: loadingDots 1.5s ease-in-out infinite;
-    }
-
-    @keyframes loadingDots {
-      0%, 20% { content: 'Building magic'; }
-      40% { content: 'Building magic.'; }
-      60% { content: 'Building magic..'; }
-      80%, 100% { content: 'Building magic...'; }
     }
 
     .loading-dots::after {
@@ -355,42 +326,32 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(80px);
-      opacity: 0.5;
-      transition: transform 0.3s ease-out, opacity 0.3s ease;
+      opacity: 0.4;
+      transition: transform 0.3s ease-out;
     }
 
     .orb-1 {
-      width: 600px;
-      height: 600px;
-      background: linear-gradient(135deg, rgba(59, 159, 216, 0.3) 0%, rgba(0, 184, 148, 0.2) 100%);
-      top: -200px;
-      right: -200px;
+      width: 500px;
+      height: 500px;
+      background: linear-gradient(135deg, rgba(59, 159, 216, 0.25) 0%, rgba(0, 184, 148, 0.15) 100%);
+      top: -150px;
+      right: -100px;
     }
 
     .orb-2 {
-      width: 500px;
-      height: 500px;
-      background: linear-gradient(135deg, rgba(0, 184, 148, 0.25) 0%, rgba(59, 159, 216, 0.15) 100%);
-      bottom: -150px;
-      left: -150px;
-    }
-
-    .orb-3 {
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(59, 159, 216, 0.2) 0%, transparent 70%);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
-
-    /* Cursor follower */
-    .cursor-glow {
-      position: fixed;
       width: 400px;
       height: 400px;
+      background: linear-gradient(135deg, rgba(0, 184, 148, 0.2) 0%, rgba(59, 159, 216, 0.1) 100%);
+      bottom: -100px;
+      left: 200px;
+    }
+
+    .cursor-glow {
+      position: fixed;
+      width: 350px;
+      height: 350px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(59, 159, 216, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(59, 159, 216, 0.12) 0%, transparent 70%);
       pointer-events: none;
       z-index: 1;
       transform: translate(-50%, -50%);
@@ -402,91 +363,187 @@
       opacity: 1;
     }
 
-    /* Floating particles */
-    .particles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: var(--primary-blue);
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: float 15s infinite ease-in-out;
-    }
-
-    .particle:nth-child(odd) {
-      background: var(--success);
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
-      25% { transform: translateY(-30px) translateX(15px); opacity: 0.5; }
-      50% { transform: translateY(-15px) translateX(-10px); opacity: 0.3; }
-      75% { transform: translateY(-40px) translateX(20px); opacity: 0.4; }
-    }
-
     /* ============================================
-       MAIN LAYOUT
+       LAYOUT - SIDEBAR + MAIN
     ============================================ */
-    .app-container {
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
       position: relative;
       z-index: 2;
-      min-height: 100vh;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 1.5rem;
     }
 
     /* ============================================
-       HEADER / NAVIGATION
+       SIDEBAR
     ============================================ */
-    header {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border-light);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-content {
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-sidebar);
+      color: #fff;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 100;
+      transition: transform 0.3s ease;
     }
 
-    .logo {
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .sidebar-logo {
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
 
-    .logo-img {
-      height: 45px;
+    .sidebar-logo img {
+      height: 38px;
       width: auto;
+      filter: brightness(0) invert(1);
     }
 
-    @media (min-width: 768px) {
-      .logo-img {
-        height: 55px;
-      }
+    .sidebar-nav {
+      flex: 1;
+      padding: 1rem 0;
+      overflow-y: auto;
     }
 
-    .header-actions {
+    .nav-section {
+      padding: 0 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.4);
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .nav-item {
       display: flex;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 0.25rem;
+    }
+
+    .nav-item:hover {
+      background: var(--bg-sidebar-hover);
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+      color: #fff;
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .nav-item .badge {
+      margin-left: auto;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.8);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
+    }
+
+    .nav-item.active .badge {
+      background: rgba(255,255,255,0.25);
+      color: #fff;
+    }
+
+    .sidebar-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--success) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+    }
+
+    .user-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .user-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .user-role {
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* ============================================
+       MAIN CONTENT
+    ============================================ */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      min-height: 100vh;
+    }
+
+    .main-header {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-light);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .main-body {
+      padding: 2rem;
     }
 
     /* ============================================
@@ -506,19 +563,6 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .btn:hover::before {
-      opacity: 1;
     }
 
     .btn-primary {
@@ -566,17 +610,6 @@
       box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
     }
 
-    .btn-danger {
-      background: transparent;
-      color: var(--error);
-      border: 1px solid var(--error);
-    }
-
-    .btn-danger:hover {
-      background: var(--error);
-      color: white;
-    }
-
     .btn-small {
       padding: 0.5rem 1rem;
       font-size: 0.75rem;
@@ -593,44 +626,27 @@
     /* ============================================
        STATS CARDS
     ============================================ */
-    .stats-section {
-      padding: 2rem 0;
-    }
-
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
-    @media (max-width: 1024px) {
+    @media (max-width: 1200px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .stats-grid { grid-template-columns: 1fr; }
     }
 
     .stat-card {
       background: var(--bg-white);
-      border-radius: 20px;
-      padding: 1.75rem;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 16px;
+      padding: 1.5rem;
       border: 1px solid var(--border-light);
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-blue), var(--success));
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     .stat-card:hover {
@@ -638,92 +654,54 @@
       box-shadow: var(--shadow-md);
     }
 
-    .stat-card:hover::before {
-      opacity: 1;
-    }
-
     .stat-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       margin-bottom: 1rem;
     }
 
-    .stat-icon.blue {
-      background: linear-gradient(135deg, rgba(59, 159, 216, 0.15) 0%, rgba(59, 159, 216, 0.05) 100%);
-    }
-
-    .stat-icon.green {
-      background: linear-gradient(135deg, rgba(0, 184, 148, 0.15) 0%, rgba(0, 184, 148, 0.05) 100%);
-    }
-
-    .stat-icon.orange {
-      background: linear-gradient(135deg, rgba(253, 203, 110, 0.2) 0%, rgba(253, 203, 110, 0.05) 100%);
-    }
-
-    .stat-icon.purple {
-      background: linear-gradient(135deg, rgba(162, 155, 254, 0.2) 0%, rgba(162, 155, 254, 0.05) 100%);
-    }
+    .stat-icon.blue { background: rgba(59, 159, 216, 0.1); }
+    .stat-icon.green { background: rgba(0, 184, 148, 0.1); }
+    .stat-icon.orange { background: rgba(253, 203, 110, 0.15); }
+    .stat-icon.purple { background: rgba(162, 155, 254, 0.15); }
 
     .stat-label {
       font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       color: var(--text-medium);
       margin-bottom: 0.5rem;
     }
 
     .stat-value {
-      font-size: 2.25rem;
+      font-size: 2rem;
       font-weight: 800;
       color: var(--text-dark);
-      line-height: 1;
-    }
-
-    .stat-change {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      margin-top: 0.75rem;
-      padding: 0.25rem 0.5rem;
-      border-radius: 6px;
-    }
-
-    .stat-change.positive {
-      color: var(--success);
-      background: rgba(0, 184, 148, 0.1);
-    }
-
-    .stat-change.negative {
-      color: var(--error);
-      background: rgba(225, 112, 85, 0.1);
     }
 
     /* ============================================
-       PAGES TABLE SECTION
+       PAGES SECTION
     ============================================ */
-    .pages-section {
+    .section-card {
       background: var(--bg-white);
-      border-radius: 24px;
-      overflow: hidden;
+      border-radius: 20px;
       border: 1px solid var(--border-light);
-      box-shadow: var(--shadow-sm);
+      overflow: hidden;
     }
 
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border-light);
-      background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+      background: var(--bg-light);
     }
 
     .section-title {
@@ -733,7 +711,7 @@
     }
 
     .section-title h2 {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       font-weight: 700;
       color: var(--text-dark);
     }
@@ -743,11 +721,11 @@
       color: white;
       font-size: 0.7rem;
       font-weight: 700;
-      padding: 0.25rem 0.6rem;
-      border-radius: 20px;
+      padding: 0.2rem 0.5rem;
+      border-radius: 10px;
     }
 
-    /* Table Styles */
+    /* Pages Table */
     .pages-table-wrapper {
       overflow-x: auto;
     }
@@ -758,30 +736,29 @@
     }
 
     .pages-table th {
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.25rem;
       text-align: left;
       font-size: 0.7rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.05em;
       color: var(--text-medium);
       background: var(--bg-light);
       border-bottom: 1px solid var(--border-light);
-      white-space: nowrap;
     }
 
     .pages-table td {
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.25rem;
       border-bottom: 1px solid var(--border-light);
       vertical-align: middle;
     }
 
     .pages-table tbody tr {
-      transition: all 0.2s ease;
+      transition: background 0.2s ease;
     }
 
     .pages-table tbody tr:hover {
-      background: linear-gradient(90deg, rgba(59, 159, 216, 0.03) 0%, transparent 100%);
+      background: rgba(59, 159, 216, 0.03);
     }
 
     .pages-table tbody tr:last-child td {
@@ -791,7 +768,7 @@
     .page-name {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.2rem;
     }
 
     .page-name strong {
@@ -804,12 +781,11 @@
       color: var(--text-light);
     }
 
-    /* Status Badge */
     .status-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.375rem;
-      padding: 0.375rem 0.875rem;
+      padding: 0.35rem 0.75rem;
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 600;
@@ -845,83 +821,61 @@
       background: var(--warning);
     }
 
-    /* Page Link */
     .page-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
       color: var(--primary-blue);
       text-decoration: none;
       font-size: 0.875rem;
       font-weight: 500;
-      transition: all 0.2s ease;
     }
 
     .page-link:hover {
-      color: var(--primary-blue-dark);
       text-decoration: underline;
     }
 
-    .page-link svg {
-      width: 14px;
-      height: 14px;
-      opacity: 0;
-      transform: translateX(-4px);
-      transition: all 0.2s ease;
-    }
-
-    .page-link:hover svg {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Actions */
     .actions {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.375rem;
     }
 
-    /* Metrics in table */
     .metric {
       font-weight: 600;
       color: var(--text-dark);
     }
 
     .metric-secondary {
-      font-size: 0.75rem;
       color: var(--text-light);
     }
 
     /* Empty State */
     .empty-state {
       text-align: center;
-      padding: 5rem 2rem;
+      padding: 4rem 2rem;
     }
 
     .empty-illustration {
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 2rem;
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 1.5rem;
       background: linear-gradient(135deg, var(--bg-light) 0%, #e8f4f8 100%);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 4rem;
+      font-size: 3.5rem;
     }
 
     .empty-state h3 {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: var(--text-dark);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }
 
     .empty-state p {
       color: var(--text-medium);
-      max-width: 400px;
-      margin: 0 auto 2rem;
-      line-height: 1.6;
+      max-width: 350px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.5;
     }
 
     /* ============================================
@@ -933,23 +887,19 @@
       inset: 0;
       background: rgba(45, 52, 54, 0.6);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       z-index: 1000;
       justify-content: center;
       align-items: center;
-      padding: 1.5rem;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      padding: 1rem;
     }
 
     .modal-overlay.active {
       display: flex;
-      opacity: 1;
     }
 
     .modal {
       background: var(--bg-white);
-      border-radius: 24px;
+      border-radius: 20px;
       width: 100%;
       max-width: 900px;
       max-height: 90vh;
@@ -957,36 +907,34 @@
       display: flex;
       flex-direction: column;
       box-shadow: var(--shadow-lg);
-      transform: translateY(20px);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .modal-overlay.active .modal {
-      transform: translateY(0);
+    .modal.modal-large {
+      max-width: 1200px;
     }
 
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border-light);
-      background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+      background: var(--bg-light);
     }
 
     .modal-header h2 {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       font-weight: 700;
       color: var(--text-dark);
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.5rem;
     }
 
     .modal-close {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
       background: transparent;
       border: none;
       color: var(--text-medium);
@@ -999,12 +947,12 @@
     }
 
     .modal-close:hover {
-      background: var(--bg-light);
+      background: var(--bg-white);
       color: var(--error);
     }
 
     .modal-body {
-      padding: 2rem;
+      padding: 1.5rem;
       overflow-y: auto;
       flex: 1;
     }
@@ -1013,14 +961,14 @@
       display: flex;
       justify-content: flex-end;
       gap: 0.75rem;
-      padding: 1.5rem 2rem;
+      padding: 1.25rem 1.5rem;
       border-top: 1px solid var(--border-light);
       background: var(--bg-light);
     }
 
     /* Form Styles */
     .form-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
     }
 
     .form-group label {
@@ -1036,12 +984,13 @@
     }
 
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
       width: 100%;
-      padding: 0.875rem 1rem;
+      padding: 0.75rem 1rem;
       background: var(--bg-light);
       border: 2px solid var(--border-light);
-      border-radius: 12px;
+      border-radius: 10px;
       color: var(--text-dark);
       font-size: 0.875rem;
       font-family: inherit;
@@ -1049,30 +998,25 @@
     }
 
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
       outline: none;
       border-color: var(--primary-blue);
       background: var(--bg-white);
-      box-shadow: 0 0 0 4px rgba(59, 159, 216, 0.1);
-    }
-
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color: var(--text-light);
     }
 
     .form-group textarea {
-      min-height: 280px;
-      font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+      min-height: 200px;
+      font-family: 'SF Mono', Monaco, monospace;
       font-size: 0.8125rem;
-      line-height: 1.6;
+      line-height: 1.5;
       resize: vertical;
     }
 
     .form-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
     @media (max-width: 640px) {
@@ -1082,41 +1026,33 @@
     .form-hint {
       font-size: 0.75rem;
       color: var(--text-light);
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.375rem;
+      margin-top: 0.375rem;
     }
 
     /* Deploy Result */
     .deploy-result {
-      background: linear-gradient(135deg, rgba(0, 184, 148, 0.1) 0%, rgba(0, 184, 148, 0.05) 100%);
+      background: rgba(0, 184, 148, 0.08);
       border: 2px solid var(--success);
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
     }
 
     .deploy-result h4 {
       color: var(--success);
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      margin-bottom: 0.375rem;
     }
 
     .deploy-result p {
       color: var(--text-medium);
       font-size: 0.875rem;
-      margin-bottom: 0.5rem;
     }
 
     .deploy-result a {
       color: var(--success);
       font-weight: 600;
-      word-break: break-all;
     }
 
     /* ============================================
@@ -1126,7 +1062,7 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     @media (max-width: 640px) {
@@ -1134,24 +1070,24 @@
     }
 
     .analytics-card {
-      background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
+      background: var(--bg-light);
       border: 1px solid var(--border-light);
-      border-radius: 16px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 1.25rem;
       text-align: center;
     }
 
     .analytics-card .label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       color: var(--text-medium);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.375rem;
     }
 
     .analytics-card .value {
-      font-size: 2rem;
+      font-size: 1.75rem;
       font-weight: 800;
       color: var(--text-dark);
     }
@@ -1159,14 +1095,13 @@
     /* Tabs */
     .tabs {
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 2rem;
+      gap: 0.25rem;
+      margin-bottom: 1.5rem;
       border-bottom: 2px solid var(--border-light);
-      padding-bottom: 0;
     }
 
     .tab {
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.25rem;
       background: none;
       border: none;
       color: var(--text-medium);
@@ -1218,7 +1153,7 @@
 
     .leads-table th,
     .leads-table td {
-      padding: 1rem;
+      padding: 0.875rem;
       text-align: left;
       border-bottom: 1px solid var(--border-light);
     }
@@ -1232,8 +1167,172 @@
       background: var(--bg-light);
     }
 
-    .leads-table tbody tr:hover {
+    /* ============================================
+       GENERATE PAGE MODAL
+    ============================================ */
+    .generate-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .generate-options { grid-template-columns: 1fr; }
+    }
+
+    .generate-option {
       background: var(--bg-light);
+      border: 2px solid var(--border-light);
+      border-radius: 14px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .generate-option:hover {
+      border-color: var(--primary-blue);
+      background: var(--bg-white);
+    }
+
+    .generate-option.selected {
+      border-color: var(--primary-blue);
+      background: rgba(59, 159, 216, 0.05);
+    }
+
+    .generate-option-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.5rem;
+    }
+
+    .generate-option h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.375rem;
+    }
+
+    .generate-option p {
+      font-size: 0.8rem;
+      color: var(--text-medium);
+      line-height: 1.4;
+    }
+
+    /* ============================================
+       VISUAL EDITOR MODAL
+    ============================================ */
+    .editor-layout {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 1.5rem;
+      height: 70vh;
+    }
+
+    @media (max-width: 1024px) {
+      .editor-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    .editor-preview {
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .editor-preview iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .editor-chat {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-light);
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-white);
+    }
+
+    .chat-header h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .chat-message {
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      max-width: 90%;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .chat-message.user {
+      background: var(--primary-blue);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-message.assistant {
+      background: var(--bg-white);
+      color: var(--text-dark);
+      align-self: flex-start;
+      border: 1px solid var(--border-light);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-input-area {
+      padding: 1rem;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-white);
+    }
+
+    .chat-input-wrapper {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border-light);
+      border-radius: 10px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      resize: none;
+    }
+
+    .chat-input:focus {
+      outline: none;
+      border-color: var(--primary-blue);
     }
 
     /* ============================================
@@ -1254,72 +1353,80 @@
     }
 
     /* ============================================
-       RESPONSIVE ADJUSTMENTS
+       MOBILE RESPONSIVE
     ============================================ */
-    @media (max-width: 768px) {
-      .container {
-        padding: 1rem;
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--text-dark);
+    }
+
+    @media (max-width: 1024px) {
+      .sidebar {
+        transform: translateX(-100%);
       }
 
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
+      .sidebar.open {
+        transform: translateX(0);
       }
 
-      .logo {
-        justify-content: center;
+      .main-content {
+        margin-left: 0;
       }
 
-      .section-header {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-        padding: 1.25rem;
+      .mobile-menu-toggle {
+        display: block;
       }
 
-      .pages-table th,
-      .pages-table td {
-        padding: 1rem;
-        font-size: 0.8rem;
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 99;
       }
 
-      .modal {
-        margin: 0.5rem;
-        max-height: 95vh;
-        border-radius: 20px;
-      }
-
-      .modal-header,
-      .modal-body,
-      .modal-footer {
-        padding: 1.25rem;
+      .sidebar-overlay.active {
+        display: block;
       }
     }
 
-    /* Hide columns on mobile */
-    @media (max-width: 1024px) {
+    @media (max-width: 768px) {
+      .main-body {
+        padding: 1rem;
+      }
+
+      .main-header {
+        padding: 1rem;
+      }
+
+      .page-title {
+        font-size: 1.25rem;
+      }
+
       .pages-table .hide-mobile {
         display: none;
       }
     }
 
     /* ============================================
-       SCROLLBAR STYLING
+       SCROLLBAR
     ============================================ */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
     }
 
     ::-webkit-scrollbar-track {
       background: var(--bg-light);
-      border-radius: 4px;
     }
 
     ::-webkit-scrollbar-thumb {
       background: var(--border-light);
-      border-radius: 4px;
+      border-radius: 3px;
     }
 
     ::-webkit-scrollbar-thumb:hover {
@@ -1332,40 +1439,27 @@
   <div class="loading-screen" id="loadingScreen">
     <div class="unicorn-loader">
       <div class="unicorn-character">
-        <!-- Tail -->
         <div class="unicorn-tail">
           <div class="tail-strand"></div>
           <div class="tail-strand"></div>
           <div class="tail-strand"></div>
         </div>
-
-        <!-- Back Legs -->
         <div class="unicorn-leg-back left"></div>
         <div class="unicorn-leg-back right"></div>
-
-        <!-- Body -->
         <div class="unicorn-body"></div>
-
-        <!-- Front Legs (typing) -->
         <div class="unicorn-leg-front left"></div>
         <div class="unicorn-leg-front right"></div>
-
-        <!-- Mane -->
         <div class="unicorn-mane">
           <div class="mane-strand"></div>
           <div class="mane-strand"></div>
           <div class="mane-strand"></div>
         </div>
-
-        <!-- Head -->
         <div class="unicorn-head"></div>
         <div class="unicorn-ear"></div>
         <div class="unicorn-horn"></div>
         <div class="unicorn-eye"></div>
         <div class="unicorn-snout"></div>
       </div>
-
-      <!-- Laptop -->
       <div class="laptop">
         <div class="laptop-screen">
           <div class="code-line"></div>
@@ -1373,9 +1467,7 @@
           <div class="code-line"></div>
           <div class="code-line"></div>
         </div>
-        <div class="laptop-base">
-          <div class="laptop-touchpad"></div>
-        </div>
+        <div class="laptop-base"></div>
       </div>
     </div>
     <div class="loading-text">Building magic<span class="loading-dots"></span></div>
@@ -1385,35 +1477,118 @@
   <div class="bg-interactive">
     <div class="bg-gradient-orb orb-1"></div>
     <div class="bg-gradient-orb orb-2"></div>
-    <div class="bg-gradient-orb orb-3"></div>
   </div>
   <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="particles" id="particles"></div>
 
-  <!-- Main App -->
-  <div class="app-container">
-    <header>
-      <div class="container">
-        <div class="header-content">
-          <div class="logo">
-            <img src="/logo.png" alt="Unicorn Marketers" class="logo-img">
-          </div>
-          <div class="header-actions">
-            <button class="btn btn-primary" onclick="openCreateModal()">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="8" y1="2" x2="8" y2="14"/>
-                <line x1="2" y1="8" x2="14" y2="8"/>
-              </svg>
-              New Landing Page
-            </button>
+  <!-- Mobile Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Main Layout -->
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <img src="/logo.png" alt="Unicorn Marketers">
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">Main</div>
+          <a class="nav-item active" data-page="dashboard">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7" rx="1"/>
+              <rect x="14" y="3" width="7" height="7" rx="1"/>
+              <rect x="3" y="14" width="7" height="7" rx="1"/>
+              <rect x="14" y="14" width="7" height="7" rx="1"/>
+            </svg>
+            Dashboard
+          </a>
+          <a class="nav-item" data-page="pages">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+            </svg>
+            Landing Pages
+            <span class="badge" id="navPageCount">0</span>
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Create</div>
+          <a class="nav-item" onclick="openGenerateModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+            Generate Page
+          </a>
+          <a class="nav-item" onclick="openCreateModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Import HTML
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Analytics</div>
+          <a class="nav-item" data-page="analytics">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 20V10"/>
+              <path d="M12 20V4"/>
+              <path d="M6 20v-6"/>
+            </svg>
+            Reports
+          </a>
+          <a class="nav-item" data-page="leads">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            Leads
+          </a>
+        </div>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <div class="user-avatar">UM</div>
+          <div class="user-details">
+            <div class="user-name">Unicorn Team</div>
+            <div class="user-role">Administrator</div>
           </div>
         </div>
       </div>
-    </header>
+    </aside>
 
-    <main class="container">
-      <!-- Stats Section -->
-      <section class="stats-section">
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="main-header">
+        <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <h1 class="page-title">Dashboard</h1>
+        <button class="btn btn-primary" onclick="openCreateModal()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="8" y1="2" x2="8" y2="14"/>
+            <line x1="2" y1="8" x2="14" y2="8"/>
+          </svg>
+          New Page
+        </button>
+      </header>
+
+      <div class="main-body">
+        <!-- Stats Grid -->
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-icon blue">📄</div>
@@ -1436,32 +1611,32 @@
             <div class="stat-value" id="statLeads">0</div>
           </div>
         </div>
-      </section>
 
-      <!-- Pages Section -->
-      <section class="pages-section">
-        <div class="section-header">
-          <div class="section-title">
-            <h2>Landing Pages</h2>
-            <span class="badge" id="pageCount">0</span>
+        <!-- Pages Table -->
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">
+              <h2>Landing Pages</h2>
+              <span class="badge" id="pageCount">0</span>
+            </div>
+            <button class="btn btn-secondary btn-small" onclick="loadPages()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 7a6 6 0 1 1 1 3.5"/>
+                <path d="M1 11V7h4"/>
+              </svg>
+              Refresh
+            </button>
           </div>
-          <button class="btn btn-secondary btn-small" onclick="loadPages()">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M1 7a6 6 0 1 1 1 3.5"/>
-              <path d="M1 11V7h4"/>
-            </svg>
-            Refresh
-          </button>
-        </div>
-        <div id="pagesContainer">
-          <div class="empty-state">
-            <div class="empty-illustration">🦄</div>
-            <h3>No landing pages yet</h3>
-            <p>Create your first landing page by pasting HTML from a Claude artifact. It's magical!</p>
-            <button class="btn btn-primary" onclick="openCreateModal()">Create Your First Page</button>
+          <div id="pagesContainer">
+            <div class="empty-state">
+              <div class="empty-illustration">🦄</div>
+              <h3>No landing pages yet</h3>
+              <p>Create your first page by generating one with AI or importing HTML.</p>
+              <button class="btn btn-primary" onclick="openGenerateModal()">Generate with AI</button>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
     </main>
   </div>
 
@@ -1469,18 +1644,13 @@
   <div class="modal-overlay" id="createModal">
     <div class="modal">
       <div class="modal-header">
-        <h2 id="modalTitle">
-          <span>✨</span>
-          New Landing Page
-        </h2>
+        <h2 id="modalTitle">✨ New Landing Page</h2>
         <button class="modal-close" onclick="closeCreateModal()">&times;</button>
       </div>
       <div class="modal-body">
         <div id="deployResult"></div>
-
         <form id="pageForm">
           <input type="hidden" id="pageId">
-
           <div class="form-row">
             <div class="form-group">
               <label for="pageName">Page Name <span>*</span></label>
@@ -1491,31 +1661,16 @@
               <input type="text" id="clientName" placeholder="e.g., Acme Corp">
             </div>
           </div>
-
           <div class="form-group">
             <label for="pageSlug">URL Slug</label>
             <input type="text" id="pageSlug" placeholder="summer-sale">
-            <div class="form-hint">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                <circle cx="6" cy="6" r="5" fill="none" stroke="currentColor"/>
-                <text x="6" y="9" text-anchor="middle" font-size="8">i</text>
-              </svg>
-              Leave blank to auto-generate from name
-            </div>
+            <div class="form-hint">Leave blank to auto-generate from name</div>
           </div>
-
           <div class="form-group">
             <label for="htmlContent">HTML Content <span>*</span></label>
             <textarea id="htmlContent" placeholder="Paste your landing page HTML here..." required></textarea>
-            <div class="form-hint">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                <circle cx="6" cy="6" r="5" fill="none" stroke="currentColor"/>
-                <text x="6" y="9" text-anchor="middle" font-size="8">i</text>
-              </svg>
-              Paste the full HTML from your Claude artifact. Tracking code will be auto-injected.
-            </div>
+            <div class="form-hint">Paste the full HTML. Tracking code will be auto-injected.</div>
           </div>
-
           <div class="form-row">
             <div class="form-group">
               <label for="metaTitle">Meta Title</label>
@@ -1526,31 +1681,25 @@
               <input type="text" id="metaDescription" placeholder="Page description for SEO">
             </div>
           </div>
-
           <div class="form-group">
             <label for="trackingPixel">Custom Tracking Code</label>
-            <textarea id="trackingPixel" style="min-height: 100px; font-family: 'SF Mono', Monaco, monospace;" placeholder="Optional: Facebook Pixel, Google Analytics, etc."></textarea>
+            <textarea id="trackingPixel" style="min-height: 80px;" placeholder="Facebook Pixel, Google Analytics, etc."></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeCreateModal()">Cancel</button>
-        <button type="button" class="btn btn-secondary" onclick="saveDraft()" id="saveDraftBtn">Save as Draft</button>
-        <button type="button" class="btn btn-success" onclick="deployPage()" id="deployBtn">
-          🚀 Deploy Live
-        </button>
+        <button type="button" class="btn btn-secondary" onclick="saveDraft()" id="saveDraftBtn">Save Draft</button>
+        <button type="button" class="btn btn-success" onclick="deployPage()" id="deployBtn">🚀 Deploy Live</button>
       </div>
     </div>
   </div>
 
   <!-- Analytics Modal -->
   <div class="modal-overlay" id="analyticsModal">
-    <div class="modal" style="max-width: 1000px">
+    <div class="modal modal-large">
       <div class="modal-header">
-        <h2 id="analyticsTitle">
-          <span>📊</span>
-          Page Analytics
-        </h2>
+        <h2 id="analyticsTitle">📊 Page Analytics</h2>
         <button class="modal-close" onclick="closeAnalyticsModal()">&times;</button>
       </div>
       <div class="modal-body">
@@ -1559,9 +1708,8 @@
           <button class="tab" onclick="switchTab(event, 'leads')">Leads</button>
           <button class="tab" onclick="switchTab(event, 'abtest')">A/B Testing</button>
         </div>
-
         <div id="tabOverview" class="tab-content active">
-          <div class="analytics-grid" id="analyticsStats">
+          <div class="analytics-grid">
             <div class="analytics-card">
               <div class="label">Page Views</div>
               <div class="value" id="aViews">0</div>
@@ -1575,104 +1723,188 @@
               <div class="value" id="aConversion">0%</div>
             </div>
           </div>
-
           <h4 style="margin-bottom: 1rem; font-weight: 600;">Traffic Sources</h4>
           <div id="trafficSources"></div>
         </div>
-
         <div id="tabLeads" class="tab-content">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h4 style="font-weight: 600;">Captured Leads</h4>
-            <button class="btn btn-small btn-secondary" onclick="exportLeads()">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M7 2v8M4 7l3 3 3-3M2 12h10"/>
-              </svg>
-              Export CSV
-            </button>
+            <button class="btn btn-small btn-secondary" onclick="exportLeads()">Export CSV</button>
           </div>
           <div id="leadsTable"></div>
         </div>
-
         <div id="tabAbtest" class="tab-content">
-          <h4 style="margin-bottom: 1.5rem; font-weight: 600;">A/B Test Results</h4>
+          <h4 style="margin-bottom: 1rem; font-weight: 600;">A/B Test Results</h4>
           <div id="abtestResults"></div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- Generate Page Modal -->
+  <div class="modal-overlay" id="generateModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>🚀 Generate Landing Page</h2>
+        <button class="modal-close" onclick="closeGenerateModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 1.5rem; color: var(--text-medium);">Choose the type of page you want to create:</p>
+
+        <div class="generate-options">
+          <div class="generate-option" onclick="selectGenerateType('advertorial')" data-type="advertorial">
+            <div class="generate-option-icon">📰</div>
+            <h4>Advertorial</h4>
+            <p>Editorial-style content that promotes a product naturally</p>
+          </div>
+          <div class="generate-option" onclick="selectGenerateType('sales-letter')" data-type="sales-letter">
+            <div class="generate-option-icon">✉️</div>
+            <h4>Sales Letter</h4>
+            <p>Long-form persuasive copy with proven frameworks</p>
+          </div>
+          <div class="generate-option" onclick="selectGenerateType('quiz')" data-type="quiz">
+            <div class="generate-option-icon">❓</div>
+            <h4>Quiz Funnel</h4>
+            <p>Interactive quiz that qualifies leads</p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="generateProduct">Product/Offer URL or Description <span>*</span></label>
+          <input type="text" id="generateProduct" placeholder="https://example.com/product or describe your offer...">
+        </div>
+
+        <div class="form-group">
+          <label for="generateAudience">Target Audience</label>
+          <textarea id="generateAudience" style="min-height: 80px;" placeholder="Describe your ideal customer..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="generateTone">Tone & Style</label>
+          <select id="generateTone">
+            <option value="professional">Professional & Trustworthy</option>
+            <option value="urgent">Urgent & Exciting</option>
+            <option value="friendly">Friendly & Conversational</option>
+            <option value="authoritative">Authoritative & Expert</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeGenerateModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" onclick="generatePage()" id="generateBtn">
+          ✨ Generate Page
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Visual Editor Modal -->
+  <div class="modal-overlay" id="editorModal">
+    <div class="modal modal-large" style="max-width: 95vw; height: 90vh;">
+      <div class="modal-header">
+        <h2 id="editorTitle">✏️ Edit Page</h2>
+        <button class="modal-close" onclick="closeEditorModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1rem; height: calc(100% - 130px);">
+        <div class="editor-layout">
+          <div class="editor-preview">
+            <iframe id="editorPreview" sandbox="allow-same-origin"></iframe>
+          </div>
+          <div class="editor-chat">
+            <div class="chat-header">
+              <h4>💬 AI Editor</h4>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+              <div class="chat-message assistant">
+                Hi! I can help you edit this page. Try saying things like:
+                <ul style="margin-top: 0.5rem; padding-left: 1.25rem;">
+                  <li>Change the headline to...</li>
+                  <li>Make the CTA button green</li>
+                  <li>Add a testimonial section</li>
+                  <li>Update the pricing to $99</li>
+                </ul>
+              </div>
+            </div>
+            <div class="chat-input-area">
+              <div class="chat-input-wrapper">
+                <textarea class="chat-input" id="chatInput" placeholder="Describe your changes..." rows="2"></textarea>
+                <button class="btn btn-primary btn-icon" onclick="sendChatMessage()" id="chatSendBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22,2 15,22 11,13 2,9"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeEditorModal()">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="saveAndDeploy()" id="saveDeployBtn">💾 Save & Deploy</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ============================================
-    // INTERACTIVE BACKGROUND & CURSOR EFFECTS
+    // GLOBALS
+    // ============================================
+    let currentPageId = null;
+    let pages = [];
+    let selectedGenerateType = null;
+    let currentEditingPage = null;
+
+    // ============================================
+    // LOADING & INIT
+    // ============================================
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loadingScreen').classList.add('hidden');
+      }, 1200);
+      loadPages();
+    });
+
+    // ============================================
+    // CURSOR EFFECT
     // ============================================
     const cursorGlow = document.getElementById('cursorGlow');
     const orbs = document.querySelectorAll('.bg-gradient-orb');
-    let mouseX = 0, mouseY = 0;
-    let orbPositions = [
-      { x: 0, y: 0 },
-      { x: 0, y: 0 },
-      { x: 0, y: 0 }
-    ];
 
     document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      // Update cursor glow position
-      cursorGlow.style.left = mouseX + 'px';
-      cursorGlow.style.top = mouseY + 'px';
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
       cursorGlow.classList.add('active');
 
-      // Subtle orb movement based on cursor
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      const deltaX = (mouseX - centerX) / centerX;
-      const deltaY = (mouseY - centerY) / centerY;
+      const deltaX = (e.clientX - centerX) / centerX;
+      const deltaY = (e.clientY - centerY) / centerY;
 
-      orbs[0].style.transform = `translate(${deltaX * 30}px, ${deltaY * 30}px)`;
-      orbs[1].style.transform = `translate(${-deltaX * 20}px, ${-deltaY * 20}px)`;
-      orbs[2].style.transform = `translate(${deltaX * 15}px, ${-deltaY * 15}px)`;
+      if (orbs[0]) orbs[0].style.transform = `translate(${deltaX * 20}px, ${deltaY * 20}px)`;
+      if (orbs[1]) orbs[1].style.transform = `translate(${-deltaX * 15}px, ${-deltaY * 15}px)`;
     });
 
     document.addEventListener('mouseleave', () => {
       cursorGlow.classList.remove('active');
     });
 
-    // Create floating particles
-    function createParticles() {
-      const container = document.getElementById('particles');
-      const particleCount = 20;
-
-      for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-        container.appendChild(particle);
-      }
+    // ============================================
+    // SIDEBAR
+    // ============================================
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('active');
     }
-    createParticles();
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sidebarOverlay').classList.remove('active');
+    }
 
     // ============================================
-    // LOADING SCREEN
+    // DATA LOADING
     // ============================================
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.getElementById('loadingScreen').classList.add('hidden');
-      }, 1500);
-    });
-
-    // ============================================
-    // APP LOGIC
-    // ============================================
-    let currentPageId = null;
-    let pages = [];
-
-    // Load pages on startup
-    loadPages();
-
     async function loadPages() {
       try {
         const res = await fetch('/api/pages');
@@ -1687,9 +1919,16 @@
     function updateStats() {
       document.getElementById('statPages').textContent = pages.length;
       document.getElementById('statLive').textContent = pages.filter(p => p.status === 'live').length;
-      document.getElementById('statViews').textContent = formatNumber(pages.reduce((sum, p) => sum + (p.view_count || 0), 0));
-      document.getElementById('statLeads').textContent = formatNumber(pages.reduce((sum, p) => sum + (p.lead_count || 0), 0));
+
+      // Fix: Ensure view_count is parsed as integer
+      const totalViews = pages.reduce((sum, p) => sum + (parseInt(p.view_count) || 0), 0);
+      document.getElementById('statViews').textContent = formatNumber(totalViews);
+
+      const totalLeads = pages.reduce((sum, p) => sum + (parseInt(p.lead_count) || 0), 0);
+      document.getElementById('statLeads').textContent = formatNumber(totalLeads);
+
       document.getElementById('pageCount').textContent = pages.length;
+      document.getElementById('navPageCount').textContent = pages.length;
     }
 
     function formatNumber(num) {
@@ -1706,8 +1945,8 @@
           <div class="empty-state">
             <div class="empty-illustration">🦄</div>
             <h3>No landing pages yet</h3>
-            <p>Create your first landing page by pasting HTML from a Claude artifact. It's magical!</p>
-            <button class="btn btn-primary" onclick="openCreateModal()">Create Your First Page</button>
+            <p>Create your first page by generating one with AI or importing HTML.</p>
+            <button class="btn btn-primary" onclick="openGenerateModal()">Generate with AI</button>
           </div>
         `;
         return;
@@ -1723,19 +1962,17 @@
                 <th>Status</th>
                 <th>Views</th>
                 <th>Leads</th>
-                <th class="hide-mobile">Conv. Rate</th>
-                <th>URL</th>
+                <th class="hide-mobile">Conv.</th>
+                <th class="hide-mobile">URL</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               ${pages.map(page => {
-                const convRate = page.view_count > 0
-                  ? ((page.lead_count / page.view_count) * 100).toFixed(1) + '%'
-                  : '—';
-                const liveUrl = page.status === 'live'
-                  ? `${getBaseUrl()}/${page.slug}/`
-                  : null;
+                const views = parseInt(page.view_count) || 0;
+                const leads = parseInt(page.lead_count) || 0;
+                const convRate = views > 0 ? ((leads / views) * 100).toFixed(1) + '%' : '—';
+                const liveUrl = page.status === 'live' ? `${getBaseUrl()}/${page.slug}/` : null;
 
                 return `
                   <tr>
@@ -1752,33 +1989,19 @@
                         ${page.status === 'live' ? 'Live' : 'Draft'}
                       </span>
                     </td>
-                    <td class="metric">${formatNumber(page.view_count || 0)}</td>
-                    <td class="metric">${formatNumber(page.lead_count || 0)}</td>
+                    <td class="metric">${formatNumber(views)}</td>
+                    <td class="metric">${formatNumber(leads)}</td>
                     <td class="hide-mobile metric">${convRate}</td>
-                    <td>
-                      ${liveUrl
-                        ? `<a href="${liveUrl}" target="_blank" class="page-link">
-                            ${page.slug}
-                            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                              <path d="M6 4h6v6M12 4L4 12"/>
-                            </svg>
-                          </a>`
-                        : '<span class="metric-secondary">—</span>'}
+                    <td class="hide-mobile">
+                      ${liveUrl ? `<a href="${liveUrl}" target="_blank" class="page-link">${page.slug}</a>` : '<span class="metric-secondary">—</span>'}
                     </td>
                     <td>
                       <div class="actions">
-                        <button class="btn btn-icon btn-ghost" onclick="openAnalytics('${page.id}')" title="Analytics">
-                          📊
-                        </button>
-                        <button class="btn btn-icon btn-ghost" onclick="editPage('${page.id}')" title="Edit">
-                          ✏️
-                        </button>
-                        ${page.status !== 'live'
-                          ? `<button class="btn btn-icon btn-ghost" onclick="quickDeploy('${page.id}')" title="Deploy" style="color: var(--success)">🚀</button>`
-                          : ''}
-                        <button class="btn btn-icon btn-ghost" onclick="deletePage('${page.id}')" title="Delete" style="color: var(--error)">
-                          🗑️
-                        </button>
+                        <button class="btn btn-icon btn-ghost" onclick="openEditor('${page.id}')" title="Visual Edit">🎨</button>
+                        <button class="btn btn-icon btn-ghost" onclick="openAnalytics('${page.id}')" title="Analytics">📊</button>
+                        <button class="btn btn-icon btn-ghost" onclick="editPage('${page.id}')" title="Edit HTML">✏️</button>
+                        ${page.status !== 'live' ? `<button class="btn btn-icon btn-ghost" onclick="quickDeploy('${page.id}')" title="Deploy" style="color: var(--success)">🚀</button>` : ''}
+                        <button class="btn btn-icon btn-ghost" onclick="deletePage('${page.id}')" title="Delete" style="color: var(--error)">🗑️</button>
                       </div>
                     </td>
                   </tr>
@@ -1794,8 +2017,11 @@
       return localStorage.getItem('pagesBaseUrl') || 'https://maxwellfinn.github.io/unicorn-landing-pages-live';
     }
 
+    // ============================================
+    // CREATE/EDIT MODAL
+    // ============================================
     function openCreateModal() {
-      document.getElementById('modalTitle').innerHTML = '<span>✨</span> New Landing Page';
+      document.getElementById('modalTitle').textContent = '✨ New Landing Page';
       document.getElementById('pageForm').reset();
       document.getElementById('pageId').value = '';
       document.getElementById('deployResult').innerHTML = '';
@@ -1813,7 +2039,7 @@
       const page = pages.find(p => p.id === id);
       if (!page) return;
 
-      document.getElementById('modalTitle').innerHTML = '<span>✏️</span> Edit Landing Page';
+      document.getElementById('modalTitle').textContent = '✏️ Edit Landing Page';
       document.getElementById('pageId').value = page.id;
       document.getElementById('pageName').value = page.name;
       document.getElementById('clientName').value = page.client_name || '';
@@ -1837,16 +2063,8 @@
         const url = id ? `/api/pages/${id}` : '/api/pages';
         const method = id ? 'PUT' : 'POST';
 
-        const res = await fetch(url, {
-          method,
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error);
-        }
+        const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        if (!res.ok) throw new Error((await res.json()).error);
 
         await loadPages();
         closeCreateModal();
@@ -1867,31 +2085,19 @@
 
         let res;
         if (id) {
-          await fetch(`/api/pages/${id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+          await fetch(`/api/pages/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
           res = await fetch(`/api/pages/${id}/deploy`, { method: 'POST' });
         } else {
-          res = await fetch('/api/deploy', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
+          res = await fetch('/api/deploy', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
         }
 
         const result = await res.json();
-
-        if (!res.ok) {
-          throw new Error(result.error);
-        }
+        if (!res.ok) throw new Error(result.error);
 
         document.getElementById('deployResult').innerHTML = `
           <div class="deploy-result">
             <h4>✅ Successfully Deployed!</h4>
-            <p>Your landing page is live at:</p>
-            <p><a href="${result.liveUrl}" target="_blank">${result.liveUrl}</a></p>
+            <p>Live at: <a href="${result.liveUrl}" target="_blank">${result.liveUrl}</a></p>
           </div>
         `;
 
@@ -1899,6 +2105,12 @@
         document.getElementById('saveDraftBtn').style.display = 'none';
 
         await loadPages();
+
+        // Auto-close after 2 seconds
+        setTimeout(() => {
+          closeCreateModal();
+        }, 2000);
+
       } catch (error) {
         alert('Deployment failed: ' + error.message);
       } finally {
@@ -1913,7 +2125,6 @@
       try {
         const res = await fetch(`/api/pages/${id}/deploy`, { method: 'POST' });
         const result = await res.json();
-
         if (!res.ok) throw new Error(result.error);
 
         alert('Deployed! Live at: ' + result.liveUrl);
@@ -1924,16 +2135,11 @@
     }
 
     async function deletePage(id) {
-      if (!confirm('Are you sure you want to delete this page? This will also remove it from GitHub Pages.')) {
-        return;
-      }
+      if (!confirm('Delete this page? This cannot be undone.')) return;
 
       try {
         const res = await fetch(`/api/pages/${id}`, { method: 'DELETE' });
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error);
-        }
+        if (!res.ok) throw new Error((await res.json()).error);
         await loadPages();
       } catch (error) {
         alert('Error: ' + error.message);
@@ -1952,18 +2158,19 @@
       };
     }
 
-    // Analytics Modal
+    // ============================================
+    // ANALYTICS MODAL
+    // ============================================
     async function openAnalytics(id) {
       currentPageId = id;
       const page = pages.find(p => p.id === id);
-      document.getElementById('analyticsTitle').innerHTML = `<span>📊</span> Analytics: ${escapeHtml(page?.name || 'Page')}`;
+      document.getElementById('analyticsTitle').textContent = `📊 Analytics: ${page?.name || 'Page'}`;
       document.getElementById('analyticsModal').classList.add('active');
       document.body.style.overflow = 'hidden';
 
-      // Reset to overview tab
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      document.querySelector('.tab').classList.add('active');
+      document.querySelectorAll('#analyticsModal .tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('#analyticsModal .tab-content').forEach(c => c.classList.remove('active'));
+      document.querySelector('#analyticsModal .tab').classList.add('active');
       document.getElementById('tabOverview').classList.add('active');
 
       await loadAnalytics(id);
@@ -1978,9 +2185,9 @@
     }
 
     function switchTab(event, tab) {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
+      const modal = event.target.closest('.modal');
+      modal.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      modal.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       event.target.classList.add('active');
       document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.add('active');
     }
@@ -1996,12 +2203,7 @@
 
         const sources = data.views_by_source || [];
         document.getElementById('trafficSources').innerHTML = sources.length > 0
-          ? `<table class="leads-table">
-              <thead><tr><th>Source</th><th>Views</th></tr></thead>
-              <tbody>
-                ${sources.map(s => `<tr><td>${escapeHtml(s.source)}</td><td class="metric">${formatNumber(s.views)}</td></tr>`).join('')}
-              </tbody>
-            </table>`
+          ? `<table class="leads-table"><thead><tr><th>Source</th><th>Views</th></tr></thead><tbody>${sources.map(s => `<tr><td>${escapeHtml(s.source)}</td><td class="metric">${formatNumber(s.views)}</td></tr>`).join('')}</tbody></table>`
           : '<p style="color: var(--text-light); text-align: center; padding: 2rem;">No traffic data yet</p>';
       } catch (error) {
         console.error('Failed to load analytics:', error);
@@ -2014,29 +2216,8 @@
         const leads = await res.json();
 
         document.getElementById('leadsTable').innerHTML = leads.length > 0
-          ? `<table class="leads-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Email</th>
-                  <th>Name</th>
-                  <th>Phone</th>
-                  <th>Source</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${leads.map(l => `
-                  <tr>
-                    <td>${new Date(l.created_at).toLocaleDateString()}</td>
-                    <td>${escapeHtml(l.email || '—')}</td>
-                    <td>${escapeHtml(l.name || '—')}</td>
-                    <td>${escapeHtml(l.phone || '—')}</td>
-                    <td>${escapeHtml(l.utm_source || 'direct')}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>`
-          : '<p style="color: var(--text-light); text-align: center; padding: 2rem;">No leads captured yet</p>';
+          ? `<table class="leads-table"><thead><tr><th>Date</th><th>Email</th><th>Name</th><th>Phone</th><th>Source</th></tr></thead><tbody>${leads.map(l => `<tr><td>${new Date(l.created_at).toLocaleDateString()}</td><td>${escapeHtml(l.email || '—')}</td><td>${escapeHtml(l.name || '—')}</td><td>${escapeHtml(l.phone || '—')}</td><td>${escapeHtml(l.utm_source || 'direct')}</td></tr>`).join('')}</tbody></table>`
+          : '<p style="color: var(--text-light); text-align: center; padding: 2rem;">No leads yet</p>';
       } catch (error) {
         console.error('Failed to load leads:', error);
       }
@@ -2046,45 +2227,177 @@
       try {
         const res = await fetch(`/api/pages/${id}/ab-results`);
         const data = await res.json();
-
         const allVariants = [data.control, ...(data.variants || [])];
 
-        document.getElementById('abtestResults').innerHTML = `
-          <table class="leads-table">
-            <thead>
-              <tr>
-                <th>Variant</th>
-                <th>Views</th>
-                <th>Conversions</th>
-                <th>Conv. Rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${allVariants.map(v => `
-                <tr>
-                  <td>${escapeHtml(v.name || v.variant_name)}</td>
-                  <td class="metric">${formatNumber(v.views)}</td>
-                  <td class="metric">${formatNumber(v.conversions)}</td>
-                  <td class="metric">${v.conversion_rate}%</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-          <p style="margin-top: 1.5rem; color: var(--text-light); font-size: 0.875rem;">
-            To add variants, use the API: POST /api/pages/${id}/variants
-          </p>
-        `;
+        document.getElementById('abtestResults').innerHTML = `<table class="leads-table"><thead><tr><th>Variant</th><th>Views</th><th>Conversions</th><th>Rate</th></tr></thead><tbody>${allVariants.map(v => `<tr><td>${escapeHtml(v.name || v.variant_name)}</td><td class="metric">${formatNumber(v.views)}</td><td class="metric">${formatNumber(v.conversions)}</td><td class="metric">${v.conversion_rate}%</td></tr>`).join('')}</tbody></table>`;
       } catch (error) {
         console.error('Failed to load A/B results:', error);
       }
     }
 
     function exportLeads() {
-      if (currentPageId) {
-        window.open(`/api/pages/${currentPageId}/leads/export`, '_blank');
+      if (currentPageId) window.open(`/api/pages/${currentPageId}/leads/export`, '_blank');
+    }
+
+    // ============================================
+    // GENERATE PAGE MODAL
+    // ============================================
+    function openGenerateModal() {
+      selectedGenerateType = null;
+      document.querySelectorAll('.generate-option').forEach(el => el.classList.remove('selected'));
+      document.getElementById('generateProduct').value = '';
+      document.getElementById('generateAudience').value = '';
+      document.getElementById('generateTone').value = 'professional';
+      document.getElementById('generateModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeGenerateModal() {
+      document.getElementById('generateModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function selectGenerateType(type) {
+      selectedGenerateType = type;
+      document.querySelectorAll('.generate-option').forEach(el => {
+        el.classList.toggle('selected', el.dataset.type === type);
+      });
+    }
+
+    async function generatePage() {
+      if (!selectedGenerateType) {
+        alert('Please select a page type');
+        return;
+      }
+
+      const product = document.getElementById('generateProduct').value.trim();
+      if (!product) {
+        alert('Please enter a product URL or description');
+        return;
+      }
+
+      const btn = document.getElementById('generateBtn');
+      btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+      btn.disabled = true;
+
+      try {
+        // This would integrate with Claude API via a backend endpoint
+        // For now, show a placeholder message
+        alert(`Page generation coming soon!\n\nType: ${selectedGenerateType}\nProduct: ${product}\n\nThis feature will use the marketing-skills-package to generate high-converting pages.`);
+        closeGenerateModal();
+      } catch (error) {
+        alert('Generation failed: ' + error.message);
+      } finally {
+        btn.innerHTML = '✨ Generate Page';
+        btn.disabled = false;
       }
     }
 
+    // ============================================
+    // VISUAL EDITOR MODAL
+    // ============================================
+    function openEditor(id) {
+      const page = pages.find(p => p.id === id);
+      if (!page) return;
+
+      currentEditingPage = page;
+      document.getElementById('editorTitle').textContent = `✏️ Edit: ${page.name}`;
+
+      // Load page into iframe
+      const iframe = document.getElementById('editorPreview');
+      iframe.srcdoc = page.html_content;
+
+      // Clear chat
+      document.getElementById('chatMessages').innerHTML = `
+        <div class="chat-message assistant">
+          Hi! I can help you edit "${page.name}". Try saying things like:
+          <ul style="margin-top: 0.5rem; padding-left: 1.25rem;">
+            <li>Change the headline to...</li>
+            <li>Make the CTA button green</li>
+            <li>Add a testimonial section</li>
+            <li>Update the pricing to $99</li>
+          </ul>
+        </div>
+      `;
+
+      document.getElementById('chatInput').value = '';
+      document.getElementById('editorModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeEditorModal() {
+      document.getElementById('editorModal').classList.remove('active');
+      document.body.style.overflow = '';
+      currentEditingPage = null;
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chatMessages = document.getElementById('chatMessages');
+
+      // Add user message
+      chatMessages.innerHTML += `<div class="chat-message user">${escapeHtml(message)}</div>`;
+      input.value = '';
+
+      // Scroll to bottom
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Simulate AI response (would integrate with Claude API)
+      setTimeout(() => {
+        chatMessages.innerHTML += `
+          <div class="chat-message assistant">
+            I understand you want to: "${escapeHtml(message)}"
+            <br><br>
+            This feature will be connected to Claude API to make real-time edits to your page. For now, you can edit the HTML directly using the ✏️ button.
+          </div>
+        `;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 1000);
+    }
+
+    // Handle Enter key in chat
+    document.addEventListener('DOMContentLoaded', () => {
+      const chatInput = document.getElementById('chatInput');
+      if (chatInput) {
+        chatInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+          }
+        });
+      }
+    });
+
+    async function saveAndDeploy() {
+      if (!currentEditingPage) return;
+
+      const btn = document.getElementById('saveDeployBtn');
+      btn.innerHTML = '<span class="loading-spinner"></span> Deploying...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`/api/pages/${currentEditingPage.id}/deploy`, { method: 'POST' });
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error);
+
+        await loadPages();
+
+        alert('Page deployed! Live at: ' + result.liveUrl);
+        closeEditorModal();
+      } catch (error) {
+        alert('Deployment failed: ' + error.message);
+      } finally {
+        btn.innerHTML = '💾 Save & Deploy';
+        btn.disabled = false;
+      }
+    }
+
+    // ============================================
+    // UTILITIES
+    // ============================================
     function escapeHtml(text) {
       if (!text) return '';
       const div = document.createElement('div');
@@ -2092,11 +2405,13 @@
       return div.innerHTML;
     }
 
-    // Close modals on escape key
+    // Close modals on escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeCreateModal();
         closeAnalyticsModal();
+        closeGenerateModal();
+        closeEditorModal();
       }
     });
 
@@ -2106,6 +2421,8 @@
         if (e.target === overlay) {
           closeCreateModal();
           closeAnalyticsModal();
+          closeGenerateModal();
+          closeEditorModal();
         }
       });
     });
