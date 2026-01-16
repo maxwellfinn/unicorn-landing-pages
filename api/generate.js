@@ -21,7 +21,12 @@ export default async function handler(req, res) {
 
     const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
     if (!CLAUDE_API_KEY) {
-      return res.status(500).json({ error: 'Claude API key not configured' });
+      return res.status(500).json({ error: 'Claude API key not configured. Please add CLAUDE_API_KEY to Vercel environment variables.' });
+    }
+
+    // Validate API key format
+    if (!CLAUDE_API_KEY.startsWith('sk-ant-')) {
+      return res.status(500).json({ error: 'Invalid Claude API key format. Key should start with sk-ant-' });
     }
 
     // Build the system prompt based on page type
@@ -58,10 +63,23 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorData = await response.text();
       console.error('Claude API error:', errorData);
-      return res.status(500).json({ error: 'Failed to communicate with Claude API' });
+
+      // Try to parse the error for more details
+      try {
+        const errorJson = JSON.parse(errorData);
+        return res.status(500).json({ error: `Claude API error: ${errorJson.error?.message || errorJson.message || 'Unknown error'}` });
+      } catch {
+        return res.status(500).json({ error: `Claude API error (${response.status}): ${errorData.substring(0, 100)}` });
+      }
     }
 
     const data = await response.json();
+
+    if (!data.content || !data.content[0] || !data.content[0].text) {
+      console.error('Unexpected Claude response format:', JSON.stringify(data));
+      return res.status(500).json({ error: 'Unexpected response format from Claude API' });
+    }
+
     const content = data.content[0].text;
 
     // Extract HTML from the response
