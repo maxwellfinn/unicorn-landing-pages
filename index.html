@@ -3018,7 +3018,8 @@
           body: JSON.stringify({
             page_type: selectedGenerateType,
             target_audience: document.getElementById('generateAudience').value.trim() || null,
-            offer_details: `URL: ${product}. Tone: ${document.getElementById('generateTone').value}`
+            offer_details: `Tone: ${document.getElementById('generateTone').value}`,
+            website_url: product.startsWith('http') ? product : null
           })
         });
 

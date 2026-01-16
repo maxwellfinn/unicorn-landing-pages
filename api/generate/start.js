@@ -21,7 +21,8 @@ export default async function handler(req, res) {
       page_type,
       template_id,
       target_audience,
-      offer_details
+      offer_details,
+      website_url  // URL to research
     } = req.body;
 
     if (!page_type) {
@@ -71,6 +72,11 @@ export default async function handler(req, res) {
       factcheck: null,
       assembly: null
     };
+
+    // Store website_url in step_outputs for research step to use
+    if (website_url) {
+      stepOutputs._config = { website_url };
+    }
 
     await sql`
       INSERT INTO page_generation_jobs (

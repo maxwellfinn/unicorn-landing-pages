@@ -8,11 +8,20 @@ import { v4 as uuidv4 } from 'uuid';
 export async function runResearchStep({ job, stepOutputs, additionalInput, jobId }) {
   const { website_url, target_audience, offer_details } = { ...job, ...additionalInput };
 
-  if (!website_url && !additionalInput.url) {
-    throw new Error('Website URL is required for research step');
+  // Look for URL in multiple places
+  let url = website_url || additionalInput.url || stepOutputs._config?.website_url;
+
+  // Try to extract URL from offer_details if it contains one
+  if (!url && offer_details) {
+    const urlMatch = offer_details.match(/https?:\/\/[^\s,]+/);
+    if (urlMatch) {
+      url = urlMatch[0];
+    }
   }
 
-  const url = website_url || additionalInput.url;
+  if (!url) {
+    throw new Error('Website URL is required for research step');
+  }
   const geminiApiKey = process.env.GEMINI_API_KEY;
 
   if (!geminiApiKey) {
