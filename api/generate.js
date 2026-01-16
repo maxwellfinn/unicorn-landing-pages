@@ -133,41 +133,77 @@ export default async function handler(req, res) {
 // ============================================================
 
 async function scrapeProductUrl(url, apiKey, fallbackName) {
-  const scrapePrompt = `Visit this URL and extract product/service information: ${url}
+  // First, fetch the actual webpage content
+  let pageContent = '';
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout for fetch
+
+    const pageResponse = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; UnicornBot/1.0)'
+      }
+    });
+    clearTimeout(timeoutId);
+
+    if (pageResponse.ok) {
+      const html = await pageResponse.text();
+      // Extract text content, removing scripts and styles
+      pageContent = html
+        .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .substring(0, 15000); // Limit to ~15k chars for Gemini
+    }
+  } catch (fetchError) {
+    console.log('Could not fetch URL directly:', fetchError.message);
+    // Continue without page content - Gemini will work with URL only
+  }
+
+  const scrapePrompt = `Analyze this webpage and extract product/service information.
+
+URL: ${url}
+${pageContent ? `\nPAGE CONTENT:\n${pageContent}` : ''}
 
 Extract and return as JSON:
 {
   "name": "Product/service name",
   "description": "Main description/tagline (2-3 sentences)",
-  "benefits": ["benefit 1", "benefit 2", ...], // List 5-8 key benefits
-  "price": "Price if visible (or price range)",
-  "testimonials": [{"quote": "...", "name": "...", "title": "..."}], // Any visible testimonials
-  "images": ["url1", "url2"], // Key product image URLs
-  "brandColors": ["#hex1", "#hex2"], // Primary brand colors from the site
-  "targetAudience": "Who this product is for",
-  "uniqueMechanism": "What makes this product different/how it works",
-  "painPoints": ["pain 1", "pain 2", ...], // Problems it solves
+  "benefits": ["benefit 1", "benefit 2", ...],
+  "price": "Price if visible",
+  "testimonials": [{"quote": "...", "name": "...", "title": "..."}],
+  "brandColors": ["#hex1", "#hex2"],
+  "targetAudience": "Who this is for",
+  "uniqueMechanism": "What makes this different",
+  "painPoints": ["pain 1", "pain 2", ...],
   "guarantee": "Any guarantee mentioned",
-  "socialProof": "Any stats like '10,000+ customers' etc"
+  "socialProof": "Stats like '10,000+ customers'"
 }
 
-If you can't access the URL or find certain info, use empty strings/arrays for those fields.
-Return ONLY valid JSON, no markdown or explanation.`;
+Return ONLY valid JSON.`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout for Gemini
 
   const response = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
       body: JSON.stringify({
         contents: [{ parts: [{ text: scrapePrompt }] }],
         generationConfig: {
           temperature: 0.3,
-          maxOutputTokens: 4096
+          maxOutputTokens: 2048
         }
       })
     }
   );
+  clearTimeout(timeoutId);
 
   if (!response.ok) {
     throw new Error('Gemini scraping failed');
@@ -181,7 +217,6 @@ Return ONLY valid JSON, no markdown or explanation.`;
 
   try {
     const parsed = JSON.parse(text);
-    // Ensure name has a fallback
     if (!parsed.name && fallbackName) {
       parsed.name = fallbackName;
     }
