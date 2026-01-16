@@ -7,7 +7,9 @@ export default async function handler(req, res) {
   }
 
   const { secret } = req.body;
-  if (secret !== process.env.INIT_DB_SECRET) {
+  // Allow initialization with INIT_DB_SECRET or SESSION_SECRET for flexibility
+  const validSecrets = [process.env.INIT_DB_SECRET, process.env.SESSION_SECRET].filter(Boolean);
+  if (!validSecrets.includes(secret)) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
