@@ -2277,14 +2277,39 @@
       }
 
       const btn = document.getElementById('generateBtn');
-      btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+      btn.innerHTML = '<span class="loading-spinner"></span> Generating (this may take 30-60 seconds)...';
       btn.disabled = true;
 
       try {
-        // This would integrate with Claude API via a backend endpoint
-        // For now, show a placeholder message
-        alert(`Page generation coming soon!\n\nType: ${selectedGenerateType}\nProduct: ${product}\n\nThis feature will use the marketing-skills-package to generate high-converting pages.`);
+        const res = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: selectedGenerateType,
+            productName: product,
+            productUrl: product.startsWith('http') ? product : null,
+            targetAudience: document.getElementById('generateAudience').value.trim() || null,
+            additionalContext: `Tone: ${document.getElementById('generateTone').value}`
+          })
+        });
+
+        const result = await res.json();
+        if (!res.ok) throw new Error(result.error);
+
+        // Close generate modal and open create modal with generated content
         closeGenerateModal();
+
+        // Pre-fill the create modal with generated content
+        document.getElementById('modalTitle').textContent = '✨ New Landing Page (AI Generated)';
+        document.getElementById('pageForm').reset();
+        document.getElementById('pageId').value = '';
+        document.getElementById('pageName').value = result.productName + ' - ' + selectedGenerateType.charAt(0).toUpperCase() + selectedGenerateType.slice(1);
+        document.getElementById('htmlContent').value = result.html;
+        document.getElementById('deployResult').innerHTML = '';
+        document.getElementById('saveDraftBtn').style.display = 'inline-flex';
+        document.getElementById('createModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+
       } catch (error) {
         alert('Generation failed: ' + error.message);
       } finally {
@@ -2331,31 +2356,79 @@
       currentEditingPage = null;
     }
 
-    function sendChatMessage() {
+    async function sendChatMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
-      if (!message) return;
+      if (!message || !currentEditingPage) return;
 
       const chatMessages = document.getElementById('chatMessages');
+      const sendBtn = document.getElementById('chatSendBtn');
 
       // Add user message
       chatMessages.innerHTML += `<div class="chat-message user">${escapeHtml(message)}</div>`;
       input.value = '';
 
-      // Scroll to bottom
+      // Add loading message
+      chatMessages.innerHTML += `<div class="chat-message assistant" id="chatLoading"><span class="loading-spinner" style="border-color: rgba(59,159,216,0.3); border-top-color: var(--primary-blue);"></span> Making changes...</div>`;
       chatMessages.scrollTop = chatMessages.scrollHeight;
 
-      // Simulate AI response (would integrate with Claude API)
-      setTimeout(() => {
+      // Disable input
+      sendBtn.disabled = true;
+      input.disabled = true;
+
+      try {
+        // Get current HTML from iframe
+        const iframe = document.getElementById('editorPreview');
+        const currentHtml = iframe.srcdoc;
+
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: message,
+            currentHtml: currentHtml,
+            pageContext: {
+              name: currentEditingPage.name,
+              client_name: currentEditingPage.client_name
+            }
+          })
+        });
+
+        const result = await res.json();
+
+        // Remove loading message
+        document.getElementById('chatLoading')?.remove();
+
+        if (!res.ok) throw new Error(result.error);
+
+        // Update iframe with new HTML
+        iframe.srcdoc = result.html;
+
+        // Update the stored page HTML
+        currentEditingPage.html_content = result.html;
+
+        // Add success message
         chatMessages.innerHTML += `
           <div class="chat-message assistant">
-            I understand you want to: "${escapeHtml(message)}"
-            <br><br>
-            This feature will be connected to Claude API to make real-time edits to your page. For now, you can edit the HTML directly using the ✏️ button.
+            ${escapeHtml(result.message)}
           </div>
         `;
+
+      } catch (error) {
+        // Remove loading message
+        document.getElementById('chatLoading')?.remove();
+
+        chatMessages.innerHTML += `
+          <div class="chat-message assistant" style="border-color: var(--error); background: rgba(225,112,85,0.05);">
+            Sorry, I encountered an error: ${escapeHtml(error.message)}
+          </div>
+        `;
+      } finally {
+        sendBtn.disabled = false;
+        input.disabled = false;
+        input.focus();
         chatMessages.scrollTop = chatMessages.scrollHeight;
-      }, 1000);
+      }
     }
 
     // Handle Enter key in chat
@@ -2375,17 +2448,33 @@
       if (!currentEditingPage) return;
 
       const btn = document.getElementById('saveDeployBtn');
-      btn.innerHTML = '<span class="loading-spinner"></span> Deploying...';
+      btn.innerHTML = '<span class="loading-spinner"></span> Saving & Deploying...';
       btn.disabled = true;
 
       try {
+        // First save the updated HTML
+        await fetch(`/api/pages/${currentEditingPage.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: currentEditingPage.name,
+            html_content: currentEditingPage.html_content,
+            client_name: currentEditingPage.client_name,
+            slug: currentEditingPage.slug,
+            meta_title: currentEditingPage.meta_title,
+            meta_description: currentEditingPage.meta_description,
+            tracking_pixel: currentEditingPage.tracking_pixel
+          })
+        });
+
+        // Then deploy
         const res = await fetch(`/api/pages/${currentEditingPage.id}/deploy`, { method: 'POST' });
         const result = await res.json();
         if (!res.ok) throw new Error(result.error);
 
         await loadPages();
 
-        alert('Page deployed! Live at: ' + result.liveUrl);
+        alert('Page saved and deployed! Live at: ' + result.liveUrl);
         closeEditorModal();
       } catch (error) {
         alert('Deployment failed: ' + error.message);
