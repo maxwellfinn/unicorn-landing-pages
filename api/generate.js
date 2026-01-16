@@ -26,10 +26,14 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Request body is required' });
     }
 
-    const { type, productUrl, productName, targetAudience, keyBenefits, additionalContext } = body;
+    const { type, productUrl, productName, targetAudience, additionalContext } = body;
 
-    if (!type || !productName) {
-      return res.status(400).json({ error: 'Type and product name are required' });
+    if (!type) {
+      return res.status(400).json({ error: 'Page type is required' });
+    }
+
+    if (!productUrl && !productName) {
+      return res.status(400).json({ error: 'Product URL or product name is required' });
     }
 
     const CLAUDE_API_KEY = process.env.CLAUDE_API_KEY;
@@ -38,45 +42,42 @@ export default async function handler(req, res) {
     if (!CLAUDE_API_KEY) {
       return res.status(500).json({ error: 'Claude API key not configured' });
     }
-    if (!GEMINI_API_KEY) {
-      return res.status(500).json({ error: 'Gemini API key not configured' });
-    }
 
-    // STEP 1: Use Gemini to create the HTML template structure
-    console.log('Step 1: Generating template with Gemini...');
-    const templatePrompt = getTemplatePrompt(type, productName, targetAudience);
+    // STEP 1: If URL provided, scrape product info with Gemini
+    let productInfo = {
+      name: productName || '',
+      description: '',
+      benefits: [],
+      price: '',
+      testimonials: [],
+      images: [],
+      brandColors: [],
+      targetAudience: targetAudience || ''
+    };
 
-    const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: templatePrompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 8192
-          }
-        })
+    if (productUrl && GEMINI_API_KEY) {
+      console.log('Step 1: Scraping product URL with Gemini...');
+      try {
+        productInfo = await scrapeProductUrl(productUrl, GEMINI_API_KEY, productName);
+        console.log('Product info extracted:', productInfo.name);
+      } catch (error) {
+        console.error('URL scraping failed, continuing with provided info:', error.message);
+        // Continue with what we have
       }
-    );
-
-    if (!geminiResponse.ok) {
-      const errorText = await geminiResponse.text();
-      console.error('Gemini error:', errorText);
-      return res.status(500).json({ error: `Gemini API error: ${errorText.substring(0, 200)}` });
     }
 
-    const geminiData = await geminiResponse.json();
-    const templateHtml = geminiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
-
-    if (!templateHtml) {
-      return res.status(500).json({ error: 'Gemini returned empty response' });
+    // Merge any additional context
+    if (targetAudience && !productInfo.targetAudience) {
+      productInfo.targetAudience = targetAudience;
+    }
+    if (additionalContext) {
+      productInfo.additionalContext = additionalContext;
     }
 
-    // STEP 2: Use Claude to write compelling copy
-    console.log('Step 2: Writing copy with Claude...');
-    const copyPrompt = getCopyPrompt(type, productName, targetAudience, keyBenefits, additionalContext);
+    // STEP 2: Generate complete page with Claude Sonnet
+    console.log('Step 2: Generating complete page with Claude Sonnet...');
+    const systemPrompt = getSystemPrompt(type);
+    const userPrompt = getUserPrompt(type, productInfo);
 
     const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -86,10 +87,10 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307',
-        max_tokens: 4096,
-        system: getClaudeSystemPrompt(type),
-        messages: [{ role: 'user', content: copyPrompt }]
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 16000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
       })
     });
 
@@ -100,39 +101,11 @@ export default async function handler(req, res) {
     }
 
     const claudeData = await claudeResponse.json();
-    const copyContent = claudeData.content?.[0]?.text || '';
+    let finalHtml = claudeData.content?.[0]?.text || '';
 
-    if (!copyContent) {
+    if (!finalHtml) {
       return res.status(500).json({ error: 'Claude returned empty response' });
     }
-
-    // STEP 3: Use Gemini to assemble final page (inject copy into template)
-    console.log('Step 3: Assembling final page with Gemini...');
-    const assemblePrompt = getAssemblePrompt(templateHtml, copyContent, type, productName);
-
-    const assembleResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: assemblePrompt }] }],
-          generationConfig: {
-            temperature: 0.3,
-            maxOutputTokens: 16384
-          }
-        })
-      }
-    );
-
-    if (!assembleResponse.ok) {
-      const errorText = await assembleResponse.text();
-      console.error('Gemini assemble error:', errorText);
-      return res.status(500).json({ error: `Gemini assembly error: ${errorText.substring(0, 200)}` });
-    }
-
-    const assembleData = await assembleResponse.json();
-    let finalHtml = assembleData.candidates?.[0]?.content?.parts?.[0]?.text || '';
 
     // Extract HTML from code blocks if present
     const htmlMatch = finalHtml.match(/```html\n([\s\S]*?)\n```/) || finalHtml.match(/```\n([\s\S]*?)\n```/);
@@ -140,14 +113,12 @@ export default async function handler(req, res) {
       finalHtml = htmlMatch[1];
     }
 
-    // Ensure it's valid HTML
-    if (!finalHtml.includes('<html') && !finalHtml.includes('<!DOCTYPE')) {
-      finalHtml = wrapInHtmlDocument(finalHtml, productName, type);
-    }
+    // Clean up any remaining markdown artifacts
+    finalHtml = finalHtml.replace(/^```html\s*/i, '').replace(/\s*```$/i, '');
 
     return res.status(200).json({
       type,
-      productName,
+      productName: productInfo.name || productName,
       html: finalHtml
     });
 
@@ -157,218 +128,515 @@ export default async function handler(req, res) {
   }
 }
 
-function getTemplatePrompt(type, productName, targetAudience) {
-  const templates = {
-    advertorial: `Create a clean, modern HTML template for an advertorial landing page. The design should look like a premium online publication/news article.
+// ============================================================
+// URL SCRAPING WITH GEMINI
+// ============================================================
 
-REQUIREMENTS:
-- Professional, editorial design (like NY Times, Forbes, or a health publication)
-- Clean typography with Georgia or similar serif font for body text
-- Max-width container (720px) centered on page
-- Generous white space and line-height (1.8)
-- Subtle, professional color scheme (dark text on light background)
-- Mobile responsive
-- Include placeholder sections marked with {{PLACEHOLDER_NAME}} for:
-  {{HEADLINE}} - The main editorial headline
-  {{BYLINE}} - Author name and date
-  {{HOOK}} - Opening paragraph that hooks the reader
-  {{PROBLEM}} - Section establishing the problem
-  {{DISCOVERY}} - The pivotal discovery/research section
-  {{MECHANISM}} - The unique mechanism explanation
-  {{SOLUTION}} - Product/solution introduction
-  {{TESTIMONIALS}} - Customer testimonials area
-  {{CTA}} - Call to action section
+async function scrapeProductUrl(url, apiKey, fallbackName) {
+  const scrapePrompt = `Visit this URL and extract product/service information: ${url}
 
-Include complete CSS styling. Make it beautiful and readable.
-Product context: ${productName}${targetAudience ? ` for ${targetAudience}` : ''}
-
-Return ONLY the HTML code wrapped in \`\`\`html code blocks.`,
-
-    'sales-letter': `Create a high-converting sales letter HTML template.
-
-REQUIREMENTS:
-- Bold, attention-grabbing headline area
-- Yellow highlights for emphasis (use sparingly)
-- Red for urgency elements
-- Clean layout with short paragraphs
-- Large, prominent CTA buttons (orange or green)
-- Trust badges area
-- Mobile responsive
-- Include placeholder sections marked with {{PLACEHOLDER_NAME}} for:
-  {{HEADLINE}} - Pattern-interrupt headline
-  {{SUBHEAD}} - Compelling subheadline
-  {{LEAD}} - The opening hook
-  {{PROBLEM}} - Problem agitation section
-  {{MECHANISM}} - Why other solutions fail
-  {{SOLUTION}} - The solution reveal
-  {{BENEFITS}} - Bullet points of benefits
-  {{PROOF}} - Testimonials and proof
-  {{OFFER}} - The offer and pricing
-  {{CTA}} - Main call to action
-  {{PS}} - P.S. section
-
-Include complete CSS styling.
-Product context: ${productName}${targetAudience ? ` for ${targetAudience}` : ''}
-
-Return ONLY the HTML code wrapped in \`\`\`html code blocks.`,
-
-    quiz: `Create an interactive quiz funnel HTML template with JavaScript.
-
-REQUIREMENTS:
-- Clean, modern, friendly design
-- Progress bar at top
-- Large, tappable option buttons
-- Smooth transitions between questions (CSS transitions)
-- Mobile-first responsive design
-- Include these screens:
-  1. Welcome screen with {{QUIZ_HEADLINE}} and {{QUIZ_INTRO}}
-  2. Question screens (use JavaScript array for questions)
-  3. Email capture screen with {{RESULTS_TEASER}}
-  4. Results screen with {{RESULTS_CONTENT}} and {{CTA}}
-
-The quiz should:
-- Track answers in a JavaScript object
-- Show progress (question X of Y)
-- Have 6-8 engaging questions
-- Reveal results after email capture
-
-Include all CSS and JavaScript inline.
-Product context: ${productName}${targetAudience ? ` for ${targetAudience}` : ''}
-
-Return ONLY the HTML code wrapped in \`\`\`html code blocks.`
-  };
-
-  return templates[type] || templates.advertorial;
+Extract and return as JSON:
+{
+  "name": "Product/service name",
+  "description": "Main description/tagline (2-3 sentences)",
+  "benefits": ["benefit 1", "benefit 2", ...], // List 5-8 key benefits
+  "price": "Price if visible (or price range)",
+  "testimonials": [{"quote": "...", "name": "...", "title": "..."}], // Any visible testimonials
+  "images": ["url1", "url2"], // Key product image URLs
+  "brandColors": ["#hex1", "#hex2"], // Primary brand colors from the site
+  "targetAudience": "Who this product is for",
+  "uniqueMechanism": "What makes this product different/how it works",
+  "painPoints": ["pain 1", "pain 2", ...], // Problems it solves
+  "guarantee": "Any guarantee mentioned",
+  "socialProof": "Any stats like '10,000+ customers' etc"
 }
 
-function getCopyPrompt(type, productName, targetAudience, keyBenefits, additionalContext) {
-  const baseContext = `
-Product/Offer: ${productName}
-${targetAudience ? `Target Audience: ${targetAudience}` : ''}
-${keyBenefits ? `Key Benefits: ${keyBenefits}` : ''}
-${additionalContext ? `Additional Context: ${additionalContext}` : ''}
+If you can't access the URL or find certain info, use empty strings/arrays for those fields.
+Return ONLY valid JSON, no markdown or explanation.`;
+
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: scrapePrompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 4096
+        }
+      })
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error('Gemini scraping failed');
+  }
+
+  const data = await response.json();
+  let text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+  // Clean up JSON
+  text = text.replace(/```json\n?/gi, '').replace(/```\n?/gi, '').trim();
+
+  try {
+    const parsed = JSON.parse(text);
+    // Ensure name has a fallback
+    if (!parsed.name && fallbackName) {
+      parsed.name = fallbackName;
+    }
+    return parsed;
+  } catch (e) {
+    console.error('Failed to parse Gemini response as JSON:', text.substring(0, 200));
+    return {
+      name: fallbackName || '',
+      description: text.substring(0, 500),
+      benefits: [],
+      price: '',
+      testimonials: [],
+      images: [],
+      brandColors: [],
+      targetAudience: ''
+    };
+  }
+}
+
+// ============================================================
+// SYSTEM PROMPTS - THE MAGIC SAUCE
+// ============================================================
+
+function getSystemPrompt(type) {
+  const baseDesignSystem = `
+## DESIGN SYSTEM REQUIREMENTS
+
+You are creating landing pages that match the quality of premium, high-converting pages. Every page must include:
+
+### Typography
+- Use Google Fonts: Poppins for headings, Inter or system fonts for body
+- Headings: Bold (700-800 weight), large sizes with clamp() for responsiveness
+- Body: 16-18px, line-height 1.6-1.8, color #333 or #2D3436
+- Generous letter-spacing on small caps/labels
+
+### Spacing & Layout
+- Mobile-first responsive design
+- Max-width containers (720px for articles, 1200px for wider layouts)
+- Section padding: 60-80px vertical, 20-24px horizontal on mobile
+- Use CSS clamp() for fluid typography: clamp(2rem, 5vw, 3.5rem)
+
+### Color Patterns
+- High contrast for readability
+- Accent colors used sparingly for CTAs and highlights
+- Use rgba() for subtle backgrounds and overlays
+- Dark sections to break up content and add visual interest
+
+### Interactive Elements
+- Buttons: Large (padding 16-20px 32-40px), rounded (8-12px), with hover states
+- Hover transforms: translateY(-2px) with box-shadow increase
+- Smooth transitions: 0.3s ease or cubic-bezier(0.4, 0, 0.2, 1)
+
+### Social Proof Patterns
+- Specific numbers ("75,000+ customers" not "thousands")
+- Star ratings with filled stars
+- Testimonials with names, titles/roles, and photos (use placeholder URLs)
+- Trust badges and guarantees
+
+### Mobile Responsiveness
+- @media (max-width: 768px) breakpoints
+- Stack layouts vertically on mobile
+- Reduce padding and font sizes appropriately
+- Touch-friendly button sizes (min 44px)
 `;
 
   const prompts = {
-    advertorial: `Write compelling advertorial copy for each section below. Write in an editorial, journalistic tone - NOT salesy. Use specific details, storytelling, and emotional hooks.
+    advertorial: `You are an expert landing page designer and direct-response copywriter. Create a complete, production-ready advertorial landing page.
 
-${baseContext}
+${baseDesignSystem}
 
-Write copy for each section (label each clearly):
+## ADVERTORIAL-SPECIFIC DESIGN
 
-HEADLINE: A curiosity-driven, news-worthy headline (NOT an ad headline)
-BYLINE: A credible author name and "Medical/Health/Finance Correspondent" type title
-HOOK: 2-3 paragraphs that immediately grab attention with a story or surprising fact (150-200 words)
-PROBLEM: Establish and agitate the problem the reader faces (200-300 words)
-DISCOVERY: The pivotal research/discovery that changes everything (150-200 words)
-MECHANISM: Explain WHY this solution works when others fail - the unique mechanism (200-300 words)
-SOLUTION: Naturally introduce the product as the solution (150-200 words)
-TESTIMONIALS: Write 3 realistic customer testimonials with names, ages, locations (150 words total)
-CTA: A soft, editorial-style call to action (100-150 words)
+Reference design: Premium editorial/news publication style (like NY Times health section or Forbes)
 
-Make it compelling, specific, and believable. Use concrete numbers and details.`,
+### Visual Style
+- Clean, editorial aesthetic
+- Serif font for body text (Georgia, Playfair Display) for credibility
+- Sans-serif for headlines (Poppins, Inter)
+- Black/dark backgrounds for key sections with light text
+- Accent color (like neon lime #CAFF2F or brand color) for highlights and CTAs
+- Professional, almost clinical feel
 
-    'sales-letter': `Write high-converting sales letter copy for each section below. Be bold, direct, and persuasive. Create urgency and desire.
+### Page Structure
+1. **Hero Section** - Problem-focused headline with credibility hook
+2. **Patient/Customer Story** - Open with a relatable story (name, age, specific struggle)
+3. **The Problem** - Establish why existing solutions fail (with stats)
+4. **The Discovery** - Expert credibility + scientific mechanism
+5. **The Solution** - Natural product introduction
+6. **How It Works** - 3-part system or unique mechanism breakdown
+7. **Proof Section** - Multiple testimonials with specific results
+8. **Risk Reversal** - Guarantee, FAQ answers
+9. **Final CTA** - Urgency + discount/offer
 
-${baseContext}
+### Copy Style
+- Editorial, journalistic tone (NOT salesy)
+- Specific numbers and statistics
+- Named experts with credentials
+- Story-driven with emotional hooks
+- "Uncomfortable truth" framing
+- Use phrases like "Here's what researchers discovered..." not "Buy now!"
 
-Write copy for each section (label each clearly):
+### Must Include
+- Byline with credible author name and title
+- Reading time estimate
+- Sticky CTA bar that appears on scroll
+- Multiple CTAs throughout (but not pushy)
+- Social proof stats in hero area
+- Before/after or transformation elements
+- Medical/expert disclaimer if health-related`,
 
-HEADLINE: A bold, pattern-interrupt headline that stops readers
-SUBHEAD: Elaborate on the headline promise
-LEAD: Hook them emotionally in the first 2-3 paragraphs (150-200 words)
-PROBLEM: Agitate their pain and frustration (200-250 words)
-MECHANISM: Explain why everything else has failed them (200-250 words)
-SOLUTION: Reveal your solution with excitement (150-200 words)
-BENEFITS: 10-12 compelling bullet points starting with action verbs
-PROOF: Write 3 powerful testimonials with specific results, names, details
-OFFER: Present the offer with value stacking (150-200 words)
-CTA: Urgent call to action with scarcity/deadline
-PS: 3 short P.S. statements reinforcing key points
+    listicle: `You are an expert landing page designer and native advertising specialist. Create a complete, production-ready listicle/native advertorial page.
 
-Be specific. Use numbers. Create desire and urgency.`,
+${baseDesignSystem}
 
-    quiz: `Write engaging quiz funnel copy.
+## LISTICLE-SPECIFIC DESIGN
 
-${baseContext}
+Reference design: Consumer advice article with embedded native ad (like a "10 Ways to Save Money" article)
 
-Write copy for each section (label each clearly):
+### Visual Style
+- News/magazine publication look
+- Clean header with publication-style branding
+- Red or brand color accent for header bar
+- White background with generous whitespace
+- Card-style sections for each tip
+- Comparison tables and savings callouts
 
-QUIZ_HEADLINE: An intriguing headline promising personalized results
-QUIZ_INTRO: 2-3 sentences setting up why this quiz matters (50 words)
-QUESTIONS: Write 6 engaging quiz questions with 3-4 answer options each. Make them feel personal and insightful. Format as:
-Q1: [Question]
-- Option A
-- Option B
-- Option C
+### Page Structure
+1. **Header Bar** - Publication-style with logo and tagline
+2. **Hero Section** - Listicle headline ("X Ways to..." or "X Things...")
+3. **Introduction** - Set up the value, mention local relevance if applicable
+4. **Tips 1-2** - Genuine, valuable advice (NOT the product)
+5. **Tip 3** - THE NATIVE AD - Naturally introduce the product as a "discovery"
+6. **Tips 4-6** - More genuine advice
+7. **Mid-Content CTA** - Subtle reminder of the product
+8. **Remaining Tips** - Complete the list with real value
+9. **Conclusion** - Wrap up with final CTA
 
-RESULTS_TEASER: Copy for the email capture screen - tease the value of results (50 words)
-RESULTS_CONTENT: Personalized results copy that leads to the solution (150 words)
-CTA: Call to action based on quiz results (75 words)
+### Native Ad Integration (Tip 3)
+- Position as a "discovery" or "hidden gem"
+- Use comparison (show competitor markup vs. product pricing)
+- Include specific savings calculations
+- Customer quote/testimonial
+- Soft CTA button ("Learn More" or "Try It Free")
+- Trust metrics (ratings, customer count)
 
-Make questions feel like a personalized assessment, not a sales pitch.`
+### Copy Style
+- Helpful, advice-column tone
+- Local references if applicable (city names, local businesses)
+- Specific dollar amounts for savings
+- Attributed quotes with names and context
+- "We surveyed..." or "Local experts recommend..." framing
+
+### Must Include
+- Numbered list format (clearly numbered tips)
+- Savings/benefit callouts with green accent
+- At least 5-6 genuine tips (not all about the product)
+- Comparison visual for the native ad section
+- Social proof (star rating, customer count)
+- Newsletter or contest CTA as engagement hook`,
+
+    quiz: `You are an expert landing page designer and quiz funnel specialist. Create a complete, production-ready interactive quiz page with JavaScript.
+
+${baseDesignSystem}
+
+## QUIZ-SPECIFIC DESIGN
+
+Reference design: Personalized product recommendation quiz (like Kiki+Lulu pajama finder)
+
+### Visual Style
+- Friendly, approachable aesthetic
+- Soft, inviting colors (pastels or brand colors)
+- Large, tappable option buttons with icons/emojis
+- Progress bar at top
+- Card-style question containers
+- Celebration/confetti on results
+
+### Page Structure
+1. **Welcome Screen**
+   - Engaging headline promising personalized results
+   - "Takes X seconds" + "X people have taken this"
+   - Social proof (ratings, customer count)
+   - Big "Start Quiz" button
+
+2. **Pre-Quiz Content** (optional scroll section)
+   - Testimonials
+   - Product previews
+   - Pain points the quiz addresses
+
+3. **Quiz Container** (JavaScript-driven)
+   - Question 1: Name input (for personalization)
+   - Questions 2-7: Multiple choice with styled options
+   - Email capture before results
+   - Results screen with personalized recommendations
+
+4. **Post-Results CTA**
+   - Product recommendations based on answers
+   - Discount code or special offer
+   - Direct purchase button
+
+### Question Types
+- Single select (click option, auto-advance)
+- Multi-select (select multiple, click Continue)
+- Emoji/icon options
+- Grid options for sizes/preferences
+
+### JavaScript Requirements
+- Track answers in array/object
+- Show/hide question screens (no page reloads)
+- Progress bar updates with each question
+- Name personalization in results ("Emma's Perfect Picks!")
+- Email validation before showing results
+- Smooth CSS transitions between screens
+
+### Must Include
+- 6-8 questions (not too long)
+- Progress indicator (Question X of Y)
+- Back button option
+- Skip option for non-required questions
+- Results personalization using quiz answers
+- Email capture with privacy assurance
+- Product recommendations based on answers`,
+
+    vip: `You are an expert landing page designer and email capture specialist. Create a complete, production-ready VIP/waitlist signup page.
+
+${baseDesignSystem}
+
+## VIP PAGE-SPECIFIC DESIGN
+
+Reference design: Exclusive insider access signup (like Kiki+Lulu VIP page)
+
+### Visual Style
+- Premium, exclusive feel
+- Elegant typography with good hierarchy
+- Brand colors with white/cream backgrounds
+- Soft gradients and subtle shadows
+- Aspirational imagery
+- Badge/tag styling for "VIP" and "Exclusive"
+
+### Page Structure
+1. **Header** - Clean brand logo
+2. **Hero Section**
+   - "Exclusive Invitation" or "VIP Access" tag
+   - Compelling headline about joining insiders
+   - Subhead with specific member count ("Join 12,847 moms")
+   - Email capture form (name + email)
+   - Privacy assurance
+
+3. **Benefits Grid**
+   - 6 VIP perks with icons
+   - Early access, exclusive discounts, sneak peeks, etc.
+
+4. **Preview Section**
+   - Upcoming drops or products
+   - "VIP Access Only" tags on some items
+
+5. **Testimonial**
+   - One strong testimonial from existing VIP member
+
+6. **Final CTA**
+   - Repeat email capture
+   - Urgency ("Don't miss the next drop")
+
+### Copy Style
+- Exclusivity language ("insider," "first access," "members only")
+- FOMO creation ("Our best prints sell out in hours")
+- Community feel ("Join X members who...")
+- Benefit-focused (what they GET, not what you want)
+
+### Must Include
+- Member count display
+- Multiple email capture forms (hero + bottom)
+- 6 clear VIP benefits with icons
+- Preview of exclusive/upcoming content
+- Testimonial from VIP member
+- Privacy/unsubscribe assurance`,
+
+    calculator: `You are an expert landing page designer and conversion specialist. Create a complete, production-ready savings calculator landing page with JavaScript.
+
+${baseDesignSystem}
+
+## CALCULATOR-SPECIFIC DESIGN
+
+Reference design: Interactive savings comparison tool (like Grabbl savings calculator)
+
+### Visual Style
+- Bold, high-contrast design
+- Accusatory/challenger brand positioning
+- Red/brand color for hero
+- Green for savings/positive numbers
+- Interactive sliders and inputs
+- Real-time updating numbers
+
+### Page Structure
+1. **Hero Section**
+   - Bold, accusatory headline ("Stop Getting Ripped Off by X")
+   - Direct statement of the problem
+   - Quick value prop
+
+2. **Calculator Section**
+   - Interactive inputs (sliders, dropdowns)
+   - Real-time calculation display
+   - Side-by-side comparison (them vs. us)
+   - Big savings number display
+
+3. **Proof Grid**
+   - Key metrics (customer count, rating, avg savings)
+   - Trust badges
+
+4. **How It Works**
+   - Simple 3-step process
+   - Clear differentiation from competitors
+
+5. **Final CTA**
+   - App download or signup
+   - Discount/bonus incentive
+
+### JavaScript Requirements
+- Slider inputs with real-time updates
+- Calculate savings based on:
+  - Order amount (adjustable)
+  - Frequency (2x, 4x, 8x per month)
+  - Competitor markup percentage
+- Display monthly and annual savings
+- Animate number changes
+
+### Copy Style
+- Accusatory/challenger tone
+- Direct comparison to competitors
+- Specific dollar amounts
+- Simple, punchy sentences
+- "You're paying X more because..."
+
+### Must Include
+- Interactive calculator with sliders
+- Real-time savings display
+- Competitor comparison
+- Trust metrics (ratings, customer count)
+- Clear CTA for app/signup
+- Mobile-friendly touch inputs`
   };
 
   return prompts[type] || prompts.advertorial;
 }
 
-function getClaudeSystemPrompt(type) {
-  return `You are a world-class direct response copywriter combining the skills of Gary Halbert, Eugene Schwartz, John Carlton, and Gary Bencivenga.
+// ============================================================
+// USER PROMPTS - PRODUCT CONTEXT
+// ============================================================
 
-Your copy is:
-- Specific (uses numbers, details, concrete examples)
-- Emotional (connects to deep desires and fears)
-- Believable (backed by logic and proof)
-- Compelling (impossible to stop reading)
+function getUserPrompt(type, productInfo) {
+  const productContext = `
+## PRODUCT/OFFER INFORMATION
 
-Write ONLY the requested copy sections. Label each section clearly. Do not include HTML or formatting - just the raw copy text.`;
-}
+**Product Name:** ${productInfo.name || 'Unknown Product'}
+**Description:** ${productInfo.description || 'No description provided'}
+**Price:** ${productInfo.price || 'Contact for pricing'}
+**Target Audience:** ${productInfo.targetAudience || 'General consumers'}
 
-function getAssemblePrompt(templateHtml, copyContent, type, productName) {
-  return `You have an HTML template and copywriting content. Your job is to assemble them into a final, polished landing page.
+**Key Benefits:**
+${productInfo.benefits?.length ? productInfo.benefits.map(b => `- ${b}`).join('\n') : '- Quality product\n- Great value\n- Customer satisfaction'}
 
-## HTML TEMPLATE:
-${templateHtml}
+**Pain Points Solved:**
+${productInfo.painPoints?.length ? productInfo.painPoints.map(p => `- ${p}`).join('\n') : '- Common frustrations in this space'}
 
-## COPYWRITING CONTENT:
-${copyContent}
+**Unique Mechanism/Differentiator:**
+${productInfo.uniqueMechanism || 'Superior quality and customer focus'}
 
-## INSTRUCTIONS:
-1. Take the HTML template above
-2. Replace each {{PLACEHOLDER}} with the corresponding copy from the copywriting content
-3. Format the copy appropriately (add paragraph tags, style testimonials nicely, etc.)
-4. Ensure all styling is preserved
-5. Make sure the final HTML is complete and valid
-6. For testimonials, wrap each in appropriate HTML (blockquote or styled div)
-7. For benefits/bullets, use proper list formatting
+**Social Proof:**
+${productInfo.socialProof || 'Trusted by thousands of customers'}
 
-Return ONLY the complete, assembled HTML document wrapped in \`\`\`html code blocks.
-The page should be ready to deploy - beautiful, functional, and conversion-focused.`;
-}
+**Guarantee:**
+${productInfo.guarantee || '30-day satisfaction guarantee'}
 
-function wrapInHtmlDocument(content, productName, type) {
-  const titles = {
-    advertorial: 'Article',
-    'sales-letter': 'Special Offer',
-    quiz: 'Quiz'
+**Existing Testimonials:**
+${productInfo.testimonials?.length ? productInfo.testimonials.map(t => `"${t.quote}" - ${t.name}${t.title ? `, ${t.title}` : ''}`).join('\n') : 'Create realistic testimonials based on the product benefits'}
+
+**Brand Colors:**
+${productInfo.brandColors?.length ? productInfo.brandColors.join(', ') : 'Use professional defaults'}
+
+${productInfo.additionalContext ? `**Additional Context:** ${productInfo.additionalContext}` : ''}
+`;
+
+  const typeInstructions = {
+    advertorial: `Create a complete advertorial landing page for this product.
+
+${productContext}
+
+Generate the COMPLETE HTML page including:
+- All CSS in a <style> tag (no external stylesheets except Google Fonts)
+- Responsive design with mobile breakpoints
+- Sticky CTA bar that appears on scroll (with JavaScript)
+- A compelling editorial narrative
+- At least 3 testimonials with names and specific results
+- Multiple CTAs throughout
+
+The page should be 100% production-ready. Return ONLY the HTML code starting with <!DOCTYPE html>.`,
+
+    listicle: `Create a complete listicle/native advertorial page featuring this product.
+
+${productContext}
+
+Generate a "X Ways to [Solve Problem]" style article where this product is naturally featured as one of the tips (around tip #3).
+
+The page should include:
+- At least 6 genuine, helpful tips
+- This product featured naturally as one tip (not #1)
+- Comparison showing this product's advantage
+- All CSS inline
+- Responsive design
+
+Return ONLY the HTML code starting with <!DOCTYPE html>.`,
+
+    quiz: `Create a complete interactive quiz funnel for this product.
+
+${productContext}
+
+Generate a personalized recommendation quiz that:
+- Asks 6-8 relevant questions
+- Collects name and email
+- Shows personalized results
+- Recommends this product based on answers
+
+Include all JavaScript for:
+- Question navigation
+- Answer tracking
+- Progress bar
+- Results generation
+
+Return ONLY the HTML code starting with <!DOCTYPE html>.`,
+
+    vip: `Create a complete VIP signup page for this brand.
+
+${productContext}
+
+Generate an exclusive insider signup page that:
+- Creates FOMO and exclusivity
+- Lists 6 VIP member benefits
+- Shows upcoming exclusive drops/products
+- Captures email for the VIP list
+
+Return ONLY the HTML code starting with <!DOCTYPE html>.`,
+
+    calculator: `Create a complete savings calculator page for this product.
+
+${productContext}
+
+Generate an interactive page that:
+- Shows how much users save with this product vs competitors
+- Has adjustable inputs (frequency, amount)
+- Calculates real-time savings
+- Creates urgency to switch
+
+Include all JavaScript for the calculator functionality.
+
+Return ONLY the HTML code starting with <!DOCTYPE html>.`
   };
 
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${productName} - ${titles[type] || 'Landing Page'}</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Georgia, serif; line-height: 1.8; color: #333; background: #fff; }
-        .container { max-width: 720px; margin: 0 auto; padding: 40px 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        ${content}
-    </div>
-</body>
-</html>`;
+  return typeInstructions[type] || typeInstructions.advertorial;
 }
