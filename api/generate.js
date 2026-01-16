@@ -76,14 +76,22 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('Claude API error:', errorData);
+      console.error('Claude API error response:', response.status, errorData);
 
       // Try to parse the error for more details
       try {
         const errorJson = JSON.parse(errorData);
-        return res.status(500).json({ error: `Claude API error: ${errorJson.error?.message || errorJson.message || 'Unknown error'}` });
+        const errorMessage = errorJson.error?.message || errorJson.error?.type || errorJson.message || JSON.stringify(errorJson);
+        return res.status(500).json({
+          error: `Claude API error: ${errorMessage}`,
+          status: response.status,
+          details: errorJson
+        });
       } catch {
-        return res.status(500).json({ error: `Claude API error (${response.status}): ${errorData.substring(0, 100)}` });
+        return res.status(500).json({
+          error: `Claude API error (${response.status}): ${errorData.substring(0, 200)}`,
+          rawResponse: errorData.substring(0, 500)
+        });
       }
     }
 
