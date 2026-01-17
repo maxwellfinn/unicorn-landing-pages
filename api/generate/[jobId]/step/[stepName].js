@@ -49,10 +49,32 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Get the job
+    // Get the job - use specific columns to avoid JOIN overwrites
     const jobResult = await sql`
-      SELECT j.*, c.*, bsg.*,
-        j.id as job_id, c.id as client_id, bsg.id as brand_guide_id
+      SELECT
+        j.id as job_id,
+        j.client_id,
+        j.page_id,
+        j.page_type,
+        j.template_id,
+        j.target_audience,
+        j.offer_details,
+        j.status,
+        j.current_step,
+        j.step_outputs,
+        j.error_message,
+        j.tokens_used,
+        j.estimated_cost,
+        c.name as client_name,
+        c.website_url,
+        c.business_research,
+        c.source_content,
+        bsg.id as brand_guide_id,
+        bsg.primary_color,
+        bsg.secondary_color,
+        bsg.heading_font,
+        bsg.body_font,
+        bsg.brand_voice
       FROM page_generation_jobs j
       LEFT JOIN clients c ON c.id = j.client_id
       LEFT JOIN brand_style_guides bsg ON bsg.client_id = c.id
@@ -64,6 +86,8 @@ export default async function handler(req, res) {
     }
 
     const jobData = jobResult.rows[0];
+    // Rename job_id back to id for consistency
+    jobData.id = jobData.job_id;
 
     if (jobData.status === 'completed') {
       return res.status(400).json({ success: false, error: 'Job is already completed' });
@@ -81,11 +105,29 @@ export default async function handler(req, res) {
       WHERE id = ${jobId}
     `;
 
-    // Get step outputs
-    const stepOutputs = jobData.step_outputs || {};
+    // Get step outputs - may need to parse if stored as string
+    let stepOutputs = jobData.step_outputs || {};
+    if (typeof stepOutputs === 'string') {
+      try {
+        stepOutputs = JSON.parse(stepOutputs);
+      } catch (e) {
+        stepOutputs = {};
+      }
+    }
 
     // Additional input from request body (for manual overrides)
     const additionalInput = req.body || {};
+
+    // Debug log to help troubleshoot
+    console.log('Step execution debug:', {
+      stepName,
+      jobId,
+      hasStepOutputs: !!stepOutputs,
+      stepOutputsKeys: Object.keys(stepOutputs),
+      configUrl: stepOutputs._config?.website_url,
+      jobWebsiteUrl: jobData.website_url,
+      additionalInputUrl: additionalInput.url
+    });
 
     // Run the step
     const stepHandler = STEP_HANDLERS[stepName];
