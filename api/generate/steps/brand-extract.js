@@ -13,11 +13,11 @@ export async function runBrandStep({ job, stepOutputs, additionalInput, jobId })
     throw new Error('Website URL is required for brand extraction');
   }
 
-  const url = website_url || additionalInput.url;
-  const claudeApiKey = process.env.ANTHROPIC_API_KEY;
+  const url = website_url || additionalInput.url || stepOutputs?._config?.website_url;
+  const claudeApiKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY;
 
   if (!claudeApiKey) {
-    throw new Error('ANTHROPIC_API_KEY not configured');
+    throw new Error('ANTHROPIC_API_KEY not configured. Available env vars: ' + Object.keys(process.env).filter(k => k.includes('API') || k.includes('KEY') || k.includes('CLAUDE') || k.includes('ANTHROP')).join(', '));
   }
 
   // Step 1: Fetch website and extract CSS
