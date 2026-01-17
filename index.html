@@ -1819,49 +1819,184 @@
     }
 
     /* ============================================
+       CLIENT LIST STYLES
+    ============================================ */
+    .clients-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .clients-table th {
+      padding: 1rem 1.25rem;
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-medium);
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .clients-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: middle;
+    }
+
+    .clients-table tbody tr {
+      transition: background 0.2s ease;
+      cursor: pointer;
+    }
+
+    .clients-table tbody tr:hover {
+      background: rgba(59, 159, 216, 0.03);
+    }
+
+    .clients-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .client-name-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+    }
+
+    .client-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .client-name-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+
+    .client-name-info strong {
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .client-name-info small {
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+
+    .industry-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(59, 159, 216, 0.1);
+      color: var(--primary-blue);
+    }
+
+    .research-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .research-badge.completed {
+      background: rgba(0, 184, 148, 0.1);
+      color: var(--success);
+    }
+
+    .research-badge.completed .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .research-badge.pending {
+      background: rgba(253, 203, 110, 0.15);
+      color: #d4a017;
+    }
+
+    .research-badge.pending .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--warning);
+    }
+
+    /* ============================================
        CLIENT DETAIL STYLES
     ============================================ */
     .client-detail-header {
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin-bottom: 24px;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
     }
 
-    .client-detail-title {
-      flex: 1;
+    .client-detail-back {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 1rem;
+    }
+
+    .client-detail-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
 
     .client-detail-title h2 {
       margin: 0;
       font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .client-detail-actions {
+      display: flex;
+      gap: 0.5rem;
     }
 
     .client-tabs {
       display: flex;
-      gap: 4px;
-      margin-bottom: 24px;
+      gap: 0.25rem;
+      margin-bottom: 1.5rem;
       background: var(--bg-white);
-      padding: 4px;
-      border-radius: 12px;
+      padding: 0.375rem;
+      border-radius: 14px;
       border: 1px solid var(--border-light);
       overflow-x: auto;
+      box-shadow: var(--shadow-sm);
     }
 
     .client-tab {
-      padding: 10px 20px;
+      padding: 0.625rem 1.25rem;
       border: none;
       background: transparent;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: 0.875rem;
+      font-weight: 600;
       color: var(--text-medium);
       cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.2s;
+      border-radius: 10px;
+      transition: all 0.2s ease;
       white-space: nowrap;
     }
 
@@ -1871,8 +2006,9 @@
     }
 
     .client-tab.active {
-      background: var(--primary-blue);
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
       color: white;
+      box-shadow: 0 4px 12px rgba(59, 159, 216, 0.25);
     }
 
     .client-tab-content {
@@ -1883,35 +2019,58 @@
       display: block;
     }
 
+    /* Overview Tab */
     .client-overview-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 20px;
-      margin-bottom: 20px;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .client-overview-grid { grid-template-columns: 1fr; }
+    }
+
+    .client-info-card {
+      padding: 1.5rem;
+    }
+
+    .client-info-card h3 {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
     }
 
     .client-info-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 1.25rem;
     }
 
     .info-item {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 0.375rem;
     }
 
     .info-item label {
-      font-size: 12px;
-      color: var(--text-light);
+      font-size: 0.7rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.05em;
+      color: var(--text-medium);
     }
 
     .info-item span, .info-item a {
-      font-size: 14px;
+      font-size: 0.9375rem;
       color: var(--text-dark);
+      font-weight: 500;
     }
 
     .info-link {
@@ -1926,256 +2085,411 @@
     .client-stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 1rem;
+    }
+
+    .client-stat-item {
       text-align: center;
+      padding: 1rem;
+      background: var(--bg-light);
+      border-radius: 12px;
+      transition: all 0.3s ease;
     }
 
-    .client-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    .client-stat-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
     }
 
-    .client-stat .stat-number {
-      font-size: 2rem;
-      font-weight: 700;
+    .client-stat-item .stat-number {
+      font-size: 1.75rem;
+      font-weight: 800;
       color: var(--primary-blue);
+      line-height: 1.2;
     }
 
-    .client-stat .stat-label {
-      font-size: 12px;
-      color: var(--text-light);
+    .client-stat-item .stat-label {
+      font-size: 0.7rem;
+      font-weight: 600;
       text-transform: uppercase;
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .status-badge.completed {
-      background: rgba(0, 184, 148, 0.1);
-      color: var(--success);
-    }
-
-    .status-badge.pending {
-      background: rgba(253, 203, 110, 0.2);
-      color: #b8860b;
+      letter-spacing: 0.05em;
+      color: var(--text-medium);
+      margin-top: 0.25rem;
     }
 
     .value-props-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 0.5rem;
+      padding: 1.5rem;
     }
 
     .value-prop-tag {
-      background: rgba(59, 159, 216, 0.1);
+      background: linear-gradient(135deg, rgba(59, 159, 216, 0.1) 0%, rgba(59, 159, 216, 0.05) 100%);
       color: var(--primary-blue);
-      padding: 6px 12px;
+      padding: 0.5rem 1rem;
       border-radius: 20px;
-      font-size: 13px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      border: 1px solid rgba(59, 159, 216, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .value-prop-tag:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 159, 216, 0.15);
     }
 
     /* Brand Guide Styles */
     .brand-guide-container {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 1.5rem;
+    }
+
+    .brand-section-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .brand-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-light);
+    }
+
+    .brand-section-header h3 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .brand-section-body {
+      padding: 1.5rem;
     }
 
     .color-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.25rem;
     }
 
     .color-item {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0.5rem;
     }
 
     .color-item label {
-      font-size: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--text-medium);
-      font-weight: 500;
     }
 
     .color-input-group {
       display: flex;
-      gap: 8px;
+      gap: 0.5rem;
       align-items: center;
     }
 
     .color-input-group input[type="color"] {
-      width: 48px;
-      height: 36px;
+      width: 52px;
+      height: 40px;
       border: 2px solid var(--border-light);
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
-      padding: 2px;
+      padding: 3px;
+      transition: all 0.2s ease;
+    }
+
+    .color-input-group input[type="color"]:hover {
+      border-color: var(--primary-blue);
     }
 
     .color-hex-input {
       flex: 1;
-      padding: 8px 12px;
+      padding: 0.625rem 0.875rem;
       border: 1px solid var(--border-light);
-      border-radius: 8px;
+      border-radius: 10px;
       font-family: 'Monaco', 'Consolas', monospace;
-      font-size: 13px;
+      font-size: 0.8125rem;
+      transition: all 0.2s ease;
+    }
+
+    .color-hex-input:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(59, 159, 216, 0.15);
     }
 
     .typography-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .typography-grid { grid-template-columns: 1fr; }
     }
 
     .font-preview {
-      margin-top: 16px;
-      padding: 16px;
-      background: var(--bg-light);
-      border-radius: 8px;
+      margin-top: 1.25rem;
+      padding: 1.25rem;
+      background: linear-gradient(135deg, var(--bg-light) 0%, #f0f4f8 100%);
+      border-radius: 12px;
       border: 1px solid var(--border-light);
+    }
+
+    .font-preview h4 {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-medium);
+      margin-bottom: 0.75rem;
     }
 
     .spacing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .spacing-grid { grid-template-columns: 1fr; }
     }
 
     .button-preview-grid {
       display: flex;
-      gap: 24px;
+      gap: 1.5rem;
       align-items: flex-end;
+      flex-wrap: wrap;
     }
 
     .button-preview-item {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0.5rem;
     }
 
     .button-preview-item label {
-      font-size: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--text-medium);
     }
 
     .btn-preview-primary {
-      padding: 12px 24px;
+      padding: 0.875rem 1.75rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
 
     .btn-preview-secondary {
-      padding: 12px 24px;
+      padding: 0.875rem 1.75rem;
       background: transparent;
       border: 2px solid;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
 
     /* Research Styles */
     .research-container {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 1.5rem;
     }
 
-    .research-section {
-      margin-bottom: 16px;
+    .research-section-card {
+      padding: 0;
+      overflow: hidden;
     }
 
-    .research-section h4 {
-      font-size: 13px;
-      color: var(--text-medium);
-      margin-bottom: 8px;
+    .research-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-light);
+    }
+
+    .research-section-header h3 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .research-section-body {
+      padding: 1.5rem;
+    }
+
+    .research-field {
+      margin-bottom: 1.25rem;
+    }
+
+    .research-field:last-child {
+      margin-bottom: 0;
+    }
+
+    .research-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.05em;
+      color: var(--text-medium);
+      margin-bottom: 0.5rem;
     }
 
     .research-input {
       width: 100%;
-      padding: 10px 12px;
+      padding: 0.75rem 1rem;
       border: 1px solid var(--border-light);
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .research-input:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(59, 159, 216, 0.15);
     }
 
     .research-textarea {
       width: 100%;
       min-height: 100px;
-      padding: 10px 12px;
+      padding: 0.75rem 1rem;
       border: 1px solid var(--border-light);
-      border-radius: 8px;
-      font-size: 14px;
+      border-radius: 10px;
+      font-size: 0.9375rem;
+      font-family: inherit;
       resize: vertical;
+      transition: all 0.2s ease;
+    }
+
+    .research-textarea:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(59, 159, 216, 0.15);
     }
 
     .products-list, .audiences-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 1rem;
     }
 
     .product-card, .audience-card {
       background: var(--bg-light);
       border: 1px solid var(--border-light);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .product-card:hover, .audience-card:hover {
+      border-color: var(--primary-blue);
+      box-shadow: 0 4px 12px rgba(59, 159, 216, 0.1);
     }
 
     .product-card h4, .audience-card h4 {
-      margin: 0 0 8px 0;
-      font-size: 14px;
+      margin: 0 0 0.5rem 0;
+      font-size: 0.9375rem;
+      font-weight: 700;
       color: var(--text-dark);
     }
 
     .product-card p, .audience-card p {
       margin: 0;
-      font-size: 13px;
+      font-size: 0.875rem;
       color: var(--text-medium);
+      line-height: 1.5;
     }
 
     /* Facts Styles */
     .facts-container {
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 1.5rem;
+    }
+
+    .facts-section-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .facts-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-light);
+    }
+
+    .facts-section-header h3 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .facts-section-body {
+      padding: 1.5rem;
     }
 
     .facts-list, .statistics-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0.875rem;
     }
 
     .fact-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 12px;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
       background: var(--bg-light);
-      border-radius: 8px;
+      border-radius: 12px;
       border: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+
+    .fact-item:hover {
+      border-color: var(--primary-blue);
+      transform: translateX(4px);
     }
 
     .fact-type {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
+      padding: 0.375rem 0.625rem;
+      border-radius: 6px;
+      font-size: 0.6875rem;
+      font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.02em;
+      flex-shrink: 0;
     }
 
     .fact-type.statistic {
@@ -2198,68 +2512,114 @@
     }
 
     .fact-text {
-      font-size: 14px;
+      font-size: 0.9375rem;
       color: var(--text-dark);
-      margin-bottom: 4px;
+      margin-bottom: 0.375rem;
+      line-height: 1.5;
     }
 
     .fact-source {
-      font-size: 12px;
+      font-size: 0.75rem;
       color: var(--text-light);
     }
 
     .testimonials-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1rem;
     }
 
     .testimonial-card {
       background: var(--bg-light);
       border: 1px solid var(--border-light);
-      border-radius: 8px;
-      padding: 16px;
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
     }
 
     .testimonial-quote {
       font-style: italic;
       color: var(--text-dark);
-      margin-bottom: 12px;
+      margin-bottom: 1rem;
       position: relative;
-      padding-left: 16px;
+      padding-left: 1rem;
       border-left: 3px solid var(--primary-blue);
+      line-height: 1.6;
     }
 
     .testimonial-author {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 0.875rem;
+      color: var(--text-dark);
     }
 
     .testimonial-role {
-      font-size: 12px;
+      font-size: 0.75rem;
       color: var(--text-light);
+      margin-top: 0.125rem;
     }
 
     /* Client Pages List */
+    .client-pages-section {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .client-pages-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+      background: var(--bg-light);
+    }
+
+    .client-pages-header h3 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .client-pages-body {
+      padding: 1.5rem;
+    }
+
     .client-pages-list {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0.875rem;
     }
 
     .client-page-item {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 16px;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
       background: var(--bg-light);
-      border-radius: 8px;
+      border-radius: 12px;
       border: 1px solid var(--border-light);
+      transition: all 0.2s ease;
+    }
+
+    .client-page-item:hover {
+      border-color: var(--primary-blue);
+      transform: translateX(4px);
     }
 
     .client-page-item .page-name {
       flex: 1;
-      font-weight: 500;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+
+    .text-muted {
+      color: var(--text-light);
+      font-size: 0.875rem;
     }
 
     .client-page-item .page-status {
@@ -2698,7 +3058,7 @@
                 </button>
               </div>
             </div>
-            <div id="clientsListContainer">
+            <div id="clientsListContainer" class="pages-table-wrapper">
               <div class="empty-state">
                 <div class="empty-illustration">👥</div>
                 <h3>No clients yet</h3>
@@ -2712,17 +3072,19 @@
         <!-- Client Detail Section (hidden by default) -->
         <div id="clientDetailSection" class="page-section" style="display: none;">
           <div class="client-detail-header">
-            <button class="btn btn-secondary btn-small" onclick="showClientsPage()">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M9 12L4 7l5-5"/>
-              </svg>
-              Back to Clients
-            </button>
-            <div class="client-detail-title">
-              <h2 id="clientDetailName">Client Name</h2>
-              <span class="badge" id="clientDetailIndustry">Industry</span>
+            <div class="client-detail-back">
+              <button class="btn btn-secondary btn-small" onclick="showClientsPage()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 12L4 7l5-5"/>
+                </svg>
+                Back
+              </button>
+              <div class="client-detail-title">
+                <h2 id="clientDetailName">Client Name</h2>
+                <span class="industry-badge" id="clientDetailIndustry">Industry</span>
+              </div>
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div class="client-detail-actions">
               <button class="btn btn-secondary btn-small" onclick="triggerClientResearch()">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="5.5" cy="5.5" r="4.5"/>
@@ -2752,8 +3114,14 @@
           <!-- Overview Tab -->
           <div id="clientTabOverview" class="client-tab-content active">
             <div class="client-overview-grid">
-              <div class="section-card">
-                <h3>Client Information</h3>
+              <div class="section-card client-info-card">
+                <h3>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                  </svg>
+                  Client Information
+                </h3>
                 <div class="client-info-grid">
                   <div class="info-item">
                     <label>Website</label>
@@ -2765,7 +3133,7 @@
                   </div>
                   <div class="info-item">
                     <label>Research Status</label>
-                    <span id="clientResearchStatus" class="status-badge">—</span>
+                    <span id="clientResearchStatus" class="research-badge pending"><span class="dot"></span>—</span>
                   </div>
                   <div class="info-item">
                     <label>Last Researched</label>
@@ -2773,18 +3141,25 @@
                   </div>
                 </div>
               </div>
-              <div class="section-card">
-                <h3>Quick Stats</h3>
+              <div class="section-card client-info-card">
+                <h3>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 20V10"/>
+                    <path d="M18 20V4"/>
+                    <path d="M6 20v-4"/>
+                  </svg>
+                  Quick Stats
+                </h3>
                 <div class="client-stats-grid">
-                  <div class="client-stat">
+                  <div class="client-stat-item">
                     <span class="stat-number" id="clientPagesCount">0</span>
                     <span class="stat-label">Pages</span>
                   </div>
-                  <div class="client-stat">
+                  <div class="client-stat-item">
                     <span class="stat-number" id="clientFactsCount">0</span>
                     <span class="stat-label">Facts</span>
                   </div>
-                  <div class="client-stat">
+                  <div class="client-stat-item">
                     <span class="stat-number" id="clientTestimonialsCount">0</span>
                     <span class="stat-label">Testimonials</span>
                   </div>
@@ -2792,7 +3167,14 @@
               </div>
             </div>
             <div class="section-card">
-              <h3>Value Propositions</h3>
+              <div class="section-header">
+                <div class="section-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                  </svg>
+                  <h2>Value Propositions</h2>
+                </div>
+              </div>
               <div id="clientValueProps" class="value-props-list">
                 <p class="text-muted">No value propositions found. Run research to extract them.</p>
               </div>
@@ -2802,110 +3184,171 @@
           <!-- Brand Guide Tab -->
           <div id="clientTabBrand" class="client-tab-content">
             <div class="brand-guide-container">
-              <div class="section-card">
-                <div class="section-header">
-                  <h3>Colors</h3>
-                  <button class="btn btn-secondary btn-small" onclick="saveBrandGuide()">Save Changes</button>
+              <div class="section-card brand-section-card">
+                <div class="brand-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="13.5" cy="6.5" r="2.5"/>
+                      <circle cx="6.5" cy="17.5" r="2.5"/>
+                      <circle cx="17.5" cy="17.5" r="2.5"/>
+                      <path d="M13.5 9v1.5a3.5 3.5 0 0 1-3.5 3.5H9"/>
+                      <path d="M6.5 15V10a3.5 3.5 0 0 1 3.5-3.5h1"/>
+                      <path d="M17.5 15v-1.5a3.5 3.5 0 0 0-3.5-3.5H12"/>
+                    </svg>
+                    Colors
+                  </h3>
+                  <button class="btn btn-primary btn-small" onclick="saveBrandGuide()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                      <polyline points="17 21 17 13 7 13 7 21"/>
+                      <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save Changes
+                  </button>
                 </div>
-                <div class="color-grid">
-                  <div class="color-item">
-                    <label>Primary</label>
-                    <div class="color-input-group">
-                      <input type="color" id="brandPrimaryColor" value="#3974ff">
-                      <input type="text" id="brandPrimaryColorHex" value="#3974ff" class="color-hex-input">
+                <div class="brand-section-body">
+                  <div class="color-grid">
+                    <div class="color-item">
+                      <label>Primary</label>
+                      <div class="color-input-group">
+                        <input type="color" id="brandPrimaryColor" value="#3974ff">
+                        <input type="text" id="brandPrimaryColorHex" value="#3974ff" class="color-hex-input">
+                      </div>
                     </div>
-                  </div>
-                  <div class="color-item">
-                    <label>Secondary</label>
-                    <div class="color-input-group">
-                      <input type="color" id="brandSecondaryColor" value="#00ACE9">
-                      <input type="text" id="brandSecondaryColorHex" value="#00ACE9" class="color-hex-input">
+                    <div class="color-item">
+                      <label>Secondary</label>
+                      <div class="color-input-group">
+                        <input type="color" id="brandSecondaryColor" value="#00ACE9">
+                        <input type="text" id="brandSecondaryColorHex" value="#00ACE9" class="color-hex-input">
+                      </div>
                     </div>
-                  </div>
-                  <div class="color-item">
-                    <label>Accent</label>
-                    <div class="color-input-group">
-                      <input type="color" id="brandAccentColor" value="#3D916B">
-                      <input type="text" id="brandAccentColorHex" value="#3D916B" class="color-hex-input">
+                    <div class="color-item">
+                      <label>Accent</label>
+                      <div class="color-input-group">
+                        <input type="color" id="brandAccentColor" value="#3D916B">
+                        <input type="text" id="brandAccentColorHex" value="#3D916B" class="color-hex-input">
+                      </div>
                     </div>
-                  </div>
-                  <div class="color-item">
-                    <label>Background</label>
-                    <div class="color-input-group">
-                      <input type="color" id="brandBackgroundColor" value="#ffffff">
-                      <input type="text" id="brandBackgroundColorHex" value="#ffffff" class="color-hex-input">
+                    <div class="color-item">
+                      <label>Background</label>
+                      <div class="color-input-group">
+                        <input type="color" id="brandBackgroundColor" value="#ffffff">
+                        <input type="text" id="brandBackgroundColorHex" value="#ffffff" class="color-hex-input">
+                      </div>
                     </div>
-                  </div>
-                  <div class="color-item">
-                    <label>Text</label>
-                    <div class="color-input-group">
-                      <input type="color" id="brandTextColor" value="#1f2937">
-                      <input type="text" id="brandTextColorHex" value="#1f2937" class="color-hex-input">
+                    <div class="color-item">
+                      <label>Text</label>
+                      <div class="color-input-group">
+                        <input type="color" id="brandTextColor" value="#1f2937">
+                        <input type="text" id="brandTextColorHex" value="#1f2937" class="color-hex-input">
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="section-card">
-                <h3>Typography</h3>
-                <div class="typography-grid">
-                  <div class="form-group">
-                    <label>Heading Font</label>
-                    <input type="text" id="brandHeadingFont" placeholder="system-ui, -apple-system, sans-serif">
-                  </div>
-                  <div class="form-group">
-                    <label>Body Font</label>
-                    <input type="text" id="brandBodyFont" placeholder="system-ui, -apple-system, sans-serif">
-                  </div>
+              <div class="section-card brand-section-card">
+                <div class="brand-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="4 7 4 4 20 4 20 7"/>
+                      <line x1="9" y1="20" x2="15" y2="20"/>
+                      <line x1="12" y1="4" x2="12" y2="20"/>
+                    </svg>
+                    Typography
+                  </h3>
                 </div>
-                <div class="font-preview">
-                  <h4 style="margin-bottom: 8px;">Preview</h4>
-                  <div id="fontPreviewHeading" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Heading Text Sample</div>
-                  <div id="fontPreviewBody" style="font-size: 16px; line-height: 1.5;">Body text sample. This is how your landing page copy will look with the selected fonts.</div>
-                </div>
-              </div>
-
-              <div class="section-card">
-                <h3>Spacing & Layout</h3>
-                <div class="spacing-grid">
-                  <div class="form-group">
-                    <label>Border Radius</label>
-                    <input type="text" id="brandBorderRadius" placeholder="8px">
+                <div class="brand-section-body">
+                  <div class="typography-grid">
+                    <div class="form-group">
+                      <label>Heading Font</label>
+                      <input type="text" id="brandHeadingFont" placeholder="system-ui, -apple-system, sans-serif" class="research-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Body Font</label>
+                      <input type="text" id="brandBodyFont" placeholder="system-ui, -apple-system, sans-serif" class="research-input">
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label>Spacing Unit</label>
-                    <input type="text" id="brandSpacingUnit" placeholder="4px">
-                  </div>
-                  <div class="form-group">
-                    <label>Max Width</label>
-                    <input type="text" id="brandMaxWidth" placeholder="1200px">
+                  <div class="font-preview">
+                    <h4>Preview</h4>
+                    <div id="fontPreviewHeading" style="font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-dark);">Heading Text Sample</div>
+                    <div id="fontPreviewBody" style="font-size: 1rem; line-height: 1.6; color: var(--text-medium);">Body text sample. This is how your landing page copy will look with the selected fonts.</div>
                   </div>
                 </div>
               </div>
 
-              <div class="section-card">
-                <h3>Button Styles</h3>
-                <div class="button-preview-grid">
-                  <div class="button-preview-item">
-                    <label>Primary Button</label>
-                    <button id="brandPrimaryBtnPreview" class="btn-preview-primary">Call to Action</button>
-                  </div>
-                  <div class="button-preview-item">
-                    <label>Secondary Button</label>
-                    <button id="brandSecondaryBtnPreview" class="btn-preview-secondary">Learn More</button>
+              <div class="section-card brand-section-card">
+                <div class="brand-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/>
+                      <path d="M3 9h18"/>
+                      <path d="M9 21V9"/>
+                    </svg>
+                    Spacing & Layout
+                  </h3>
+                </div>
+                <div class="brand-section-body">
+                  <div class="spacing-grid">
+                    <div class="form-group">
+                      <label>Border Radius</label>
+                      <input type="text" id="brandBorderRadius" placeholder="8px" class="research-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Spacing Unit</label>
+                      <input type="text" id="brandSpacingUnit" placeholder="4px" class="research-input">
+                    </div>
+                    <div class="form-group">
+                      <label>Max Width</label>
+                      <input type="text" id="brandMaxWidth" placeholder="1200px" class="research-input">
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="section-card">
-                <h3>Brand Voice</h3>
-                <div class="form-group">
-                  <label>Tone</label>
-                  <input type="text" id="brandVoiceTone" placeholder="professional, friendly, authoritative">
+              <div class="section-card brand-section-card">
+                <div class="brand-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="4"/>
+                      <path d="M8 12h8"/>
+                    </svg>
+                    Button Styles
+                  </h3>
                 </div>
-                <div class="form-group">
-                  <label>Keywords (comma-separated)</label>
-                  <input type="text" id="brandVoiceKeywords" placeholder="innovative, trusted, premium">
+                <div class="brand-section-body">
+                  <div class="button-preview-grid">
+                    <div class="button-preview-item">
+                      <label>Primary Button</label>
+                      <button id="brandPrimaryBtnPreview" class="btn-preview-primary">Call to Action</button>
+                    </div>
+                    <div class="button-preview-item">
+                      <label>Secondary Button</label>
+                      <button id="brandSecondaryBtnPreview" class="btn-preview-secondary">Learn More</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-card brand-section-card">
+                <div class="brand-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M12 20h9"/>
+                      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                    </svg>
+                    Brand Voice
+                  </h3>
+                </div>
+                <div class="brand-section-body">
+                  <div class="research-field">
+                    <label>Tone</label>
+                    <input type="text" id="brandVoiceTone" placeholder="professional, friendly, authoritative" class="research-input">
+                  </div>
+                  <div class="research-field">
+                    <label>Keywords (comma-separated)</label>
+                    <input type="text" id="brandVoiceKeywords" placeholder="innovative, trusted, premium" class="research-input">
+                  </div>
                 </div>
               </div>
             </div>
@@ -2914,51 +3357,93 @@
           <!-- Research Tab -->
           <div id="clientTabResearch" class="client-tab-content">
             <div class="research-container">
-              <div class="section-card">
-                <div class="section-header">
-                  <h3>Business Research</h3>
-                  <button class="btn btn-secondary btn-small" onclick="saveResearchData()">Save Changes</button>
+              <div class="section-card research-section-card">
+                <div class="research-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    Business Research
+                  </h3>
+                  <button class="btn btn-primary btn-small" onclick="saveResearchData()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                      <polyline points="17 21 17 13 7 13 7 21"/>
+                      <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save Changes
+                  </button>
                 </div>
-                <div class="research-section">
-                  <h4>Company Name</h4>
-                  <input type="text" id="researchCompanyName" class="research-input">
-                </div>
-                <div class="research-section">
-                  <h4>Industry</h4>
-                  <input type="text" id="researchIndustry" class="research-input">
-                </div>
-                <div class="research-section">
-                  <h4>Tagline</h4>
-                  <input type="text" id="researchTagline" class="research-input">
-                </div>
-                <div class="research-section">
-                  <h4>Value Propositions</h4>
-                  <textarea id="researchValueProps" class="research-textarea" placeholder="One per line"></textarea>
-                </div>
-                <div class="research-section">
-                  <h4>Brand Voice Description</h4>
-                  <textarea id="researchBrandVoice" class="research-textarea"></textarea>
-                </div>
-                <div class="research-section">
-                  <h4>Unique Differentiators</h4>
-                  <textarea id="researchDifferentiators" class="research-textarea" placeholder="One per line"></textarea>
+                <div class="research-section-body">
+                  <div class="research-field">
+                    <label>Company Name</label>
+                    <input type="text" id="researchCompanyName" class="research-input">
+                  </div>
+                  <div class="research-field">
+                    <label>Industry</label>
+                    <input type="text" id="researchIndustry" class="research-input">
+                  </div>
+                  <div class="research-field">
+                    <label>Tagline</label>
+                    <input type="text" id="researchTagline" class="research-input">
+                  </div>
+                  <div class="research-field">
+                    <label>Value Propositions</label>
+                    <textarea id="researchValueProps" class="research-textarea" placeholder="One per line"></textarea>
+                  </div>
+                  <div class="research-field">
+                    <label>Brand Voice Description</label>
+                    <textarea id="researchBrandVoice" class="research-textarea"></textarea>
+                  </div>
+                  <div class="research-field">
+                    <label>Unique Differentiators</label>
+                    <textarea id="researchDifferentiators" class="research-textarea" placeholder="One per line"></textarea>
+                  </div>
                 </div>
               </div>
 
-              <div class="section-card">
-                <h3>Products/Services</h3>
-                <div id="researchProductsList" class="products-list">
-                  <p class="text-muted">No products found. Run research or add manually.</p>
+              <div class="section-card research-section-card">
+                <div class="research-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                      <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                      <line x1="12" y1="22.08" x2="12" y2="12"/>
+                    </svg>
+                    Products/Services
+                  </h3>
+                  <button class="btn btn-secondary btn-small" onclick="addProductField()">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="7" y1="2" x2="7" y2="12"/>
+                      <line x1="2" y1="7" x2="12" y2="7"/>
+                    </svg>
+                    Add Product
+                  </button>
                 </div>
-                <button class="btn btn-secondary btn-small" onclick="addProductField()" style="margin-top: 12px;">
-                  + Add Product
-                </button>
+                <div class="research-section-body">
+                  <div id="researchProductsList" class="products-list">
+                    <p class="text-muted">No products found. Run research or add manually.</p>
+                  </div>
+                </div>
               </div>
 
-              <div class="section-card">
-                <h3>Target Audiences</h3>
-                <div id="researchAudiencesList" class="audiences-list">
-                  <p class="text-muted">No target audiences found.</p>
+              <div class="section-card research-section-card">
+                <div class="research-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    Target Audiences
+                  </h3>
+                </div>
+                <div class="research-section-body">
+                  <div id="researchAudiencesList" class="audiences-list">
+                    <p class="text-muted">No target audiences found.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2967,29 +3452,61 @@
           <!-- Facts Tab -->
           <div id="clientTabFacts" class="client-tab-content">
             <div class="facts-container">
-              <div class="section-card">
-                <div class="section-header">
-                  <h3>Verified Claims & Testimonials</h3>
+              <div class="section-card facts-section-card">
+                <div class="facts-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    Verified Claims
+                  </h3>
                   <button class="btn btn-primary btn-small" onclick="addNewFact()">
-                    + Add Fact
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="7" y1="2" x2="7" y2="12"/>
+                      <line x1="2" y1="7" x2="12" y2="7"/>
+                    </svg>
+                    Add Fact
                   </button>
                 </div>
-                <div id="verifiedFactsList" class="facts-list">
-                  <p class="text-muted">No verified facts yet. These are extracted during research.</p>
+                <div class="facts-section-body">
+                  <div id="verifiedFactsList" class="facts-list">
+                    <p class="text-muted">No verified facts yet. These are extracted during research.</p>
+                  </div>
                 </div>
               </div>
 
-              <div class="section-card">
-                <h3>Testimonials</h3>
-                <div id="testimonialsList" class="testimonials-grid">
-                  <p class="text-muted">No testimonials found.</p>
+              <div class="section-card facts-section-card">
+                <div class="facts-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Testimonials
+                  </h3>
+                </div>
+                <div class="facts-section-body">
+                  <div id="testimonialsList" class="testimonials-grid">
+                    <p class="text-muted">No testimonials found.</p>
+                  </div>
                 </div>
               </div>
 
-              <div class="section-card">
-                <h3>Statistics</h3>
-                <div id="statisticsList" class="statistics-list">
-                  <p class="text-muted">No statistics found.</p>
+              <div class="section-card facts-section-card">
+                <div class="facts-section-header">
+                  <h3>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <line x1="18" y1="20" x2="18" y2="10"/>
+                      <line x1="12" y1="20" x2="12" y2="4"/>
+                      <line x1="6" y1="20" x2="6" y2="14"/>
+                    </svg>
+                    Statistics
+                  </h3>
+                </div>
+                <div class="facts-section-body">
+                  <div id="statisticsList" class="statistics-list">
+                    <p class="text-muted">No statistics found.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2997,18 +3514,29 @@
 
           <!-- Pages Tab -->
           <div id="clientTabPages" class="client-tab-content">
-            <div class="section-card">
-              <div class="section-header">
-                <h3>Generated Pages</h3>
+            <div class="section-card client-pages-section">
+              <div class="client-pages-header">
+                <h3>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  Generated Pages
+                </h3>
                 <button class="btn btn-primary btn-small" onclick="generatePageForClient()">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M7 1L1 4l6 3 6-3-6-3z"/>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
                   </svg>
                   Generate New Page
                 </button>
               </div>
-              <div id="clientPagesList" class="client-pages-list">
-                <p class="text-muted">No pages generated for this client yet.</p>
+              <div class="client-pages-body">
+                <div id="clientPagesList" class="client-pages-list">
+                  <p class="text-muted">No pages generated for this client yet.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -3601,29 +4129,50 @@
         return;
       }
 
+      const getInitials = (name) => {
+        return name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      };
+
       container.innerHTML = `
         <table class="clients-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Website</th>
+              <th>Client</th>
               <th>Industry</th>
-              <th>Research</th>
+              <th>Research Status</th>
               <th>Created</th>
-              <th>Actions</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             ${clients.map(c => `
-              <tr>
-                <td class="client-name-cell" onclick="openClientDetail('${c.id}')">${escapeHtml(c.name)}</td>
-                <td>${c.website_url ? `<a href="${escapeHtml(c.website_url)}" target="_blank" class="info-link">${escapeHtml(c.website_url.replace('https://', '').replace('http://', '').split('/')[0])}</a>` : '—'}</td>
-                <td>${escapeHtml(c.industry || '—')}</td>
-                <td><span class="status-badge ${c.research_status || 'pending'}">${c.research_status || 'pending'}</span></td>
-                <td>${new Date(c.created_at).toLocaleDateString()}</td>
+              <tr onclick="openClientDetail('${c.id}')">
                 <td>
-                  <button class="btn btn-secondary btn-small" onclick="openClientDetail('${c.id}')">View</button>
-                  <button class="btn btn-secondary btn-small" onclick="deleteClient('${c.id}')" style="color: var(--error);">Delete</button>
+                  <div class="client-name-cell">
+                    <div class="client-avatar">${getInitials(c.name)}</div>
+                    <div class="client-name-info">
+                      <strong>${escapeHtml(c.name)}</strong>
+                      <small>${c.website_url ? escapeHtml(c.website_url.replace('https://', '').replace('http://', '').split('/')[0]) : 'No website'}</small>
+                    </div>
+                  </div>
+                </td>
+                <td>${c.industry ? `<span class="industry-badge">${escapeHtml(c.industry)}</span>` : '<span class="text-muted">—</span>'}</td>
+                <td>
+                  <span class="research-badge ${c.research_status === 'completed' ? 'completed' : 'pending'}">
+                    <span class="dot"></span>
+                    ${c.research_status === 'completed' ? 'Completed' : 'Pending'}
+                  </span>
+                </td>
+                <td><span class="text-muted">${new Date(c.created_at).toLocaleDateString()}</span></td>
+                <td>
+                  <div class="actions">
+                    <button class="btn btn-ghost btn-icon" onclick="event.stopPropagation(); deleteClient('${c.id}')" title="Delete">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                      </svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
             `).join('')}
@@ -3791,8 +4340,9 @@
       document.getElementById('clientIndustryInfo').textContent = client.industry || '—';
 
       const statusEl = document.getElementById('clientResearchStatus');
-      statusEl.textContent = client.research_status || 'pending';
-      statusEl.className = `status-badge ${client.research_status || 'pending'}`;
+      const status = client.research_status || 'pending';
+      statusEl.innerHTML = `<span class="dot"></span>${status === 'completed' ? 'Completed' : 'Pending'}`;
+      statusEl.className = `research-badge ${status === 'completed' ? 'completed' : 'pending'}`;
 
       document.getElementById('clientLastResearched').textContent = client.last_researched_at
         ? new Date(client.last_researched_at).toLocaleDateString()
