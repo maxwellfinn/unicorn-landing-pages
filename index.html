@@ -1819,6 +1819,536 @@
     }
 
     /* ============================================
+       CLIENT DETAIL STYLES
+    ============================================ */
+    .client-detail-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .client-detail-title {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .client-detail-title h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .client-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      background: var(--bg-white);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      overflow-x: auto;
+    }
+
+    .client-tab {
+      padding: 10px 20px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-medium);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .client-tab:hover {
+      background: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .client-tab.active {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .client-tab-content {
+      display: none;
+    }
+
+    .client-tab-content.active {
+      display: block;
+    }
+
+    .client-overview-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .client-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .info-item label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-item span, .info-item a {
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .info-link {
+      color: var(--primary-blue);
+      text-decoration: none;
+    }
+
+    .info-link:hover {
+      text-decoration: underline;
+    }
+
+    .client-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      text-align: center;
+    }
+
+    .client-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .client-stat .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .client-stat .stat-label {
+      font-size: 12px;
+      color: var(--text-light);
+      text-transform: uppercase;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.completed {
+      background: rgba(0, 184, 148, 0.1);
+      color: var(--success);
+    }
+
+    .status-badge.pending {
+      background: rgba(253, 203, 110, 0.2);
+      color: #b8860b;
+    }
+
+    .value-props-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .value-prop-tag {
+      background: rgba(59, 159, 216, 0.1);
+      color: var(--primary-blue);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    /* Brand Guide Styles */
+    .brand-guide-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .color-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .color-item label {
+      font-size: 12px;
+      color: var(--text-medium);
+      font-weight: 500;
+    }
+
+    .color-input-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .color-input-group input[type="color"] {
+      width: 48px;
+      height: 36px;
+      border: 2px solid var(--border-light);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 2px;
+    }
+
+    .color-hex-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-family: 'Monaco', 'Consolas', monospace;
+      font-size: 13px;
+    }
+
+    .typography-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .font-preview {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+    }
+
+    .spacing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .button-preview-grid {
+      display: flex;
+      gap: 24px;
+      align-items: flex-end;
+    }
+
+    .button-preview-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .button-preview-item label {
+      font-size: 12px;
+      color: var(--text-medium);
+    }
+
+    .btn-preview-primary {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-preview-secondary {
+      padding: 12px 24px;
+      background: transparent;
+      border: 2px solid;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    /* Research Styles */
+    .research-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .research-section {
+      margin-bottom: 16px;
+    }
+
+    .research-section h4 {
+      font-size: 13px;
+      color: var(--text-medium);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .research-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .research-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    .products-list, .audiences-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .product-card, .audience-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .product-card h4, .audience-card h4 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .product-card p, .audience-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-medium);
+    }
+
+    /* Facts Styles */
+    .facts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .facts-list, .statistics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .fact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+    }
+
+    .fact-type {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .fact-type.statistic {
+      background: rgba(59, 159, 216, 0.1);
+      color: var(--primary-blue);
+    }
+
+    .fact-type.testimonial {
+      background: rgba(0, 184, 148, 0.1);
+      color: var(--success);
+    }
+
+    .fact-type.feature {
+      background: rgba(253, 203, 110, 0.2);
+      color: #b8860b;
+    }
+
+    .fact-content {
+      flex: 1;
+    }
+
+    .fact-text {
+      font-size: 14px;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+
+    .fact-source {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-light);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .testimonial-quote {
+      font-style: italic;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+      position: relative;
+      padding-left: 16px;
+      border-left: 3px solid var(--primary-blue);
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .testimonial-role {
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    /* Client Pages List */
+    .client-pages-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .client-page-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-light);
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+    }
+
+    .client-page-item .page-name {
+      flex: 1;
+      font-weight: 500;
+    }
+
+    .client-page-item .page-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    .client-page-item .page-status.live {
+      background: rgba(0, 184, 148, 0.1);
+      color: var(--success);
+    }
+
+    .client-page-item .page-status.draft {
+      background: rgba(253, 203, 110, 0.2);
+      color: #b8860b;
+    }
+
+    .text-muted {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    /* Clients List Table */
+    .clients-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .clients-table th,
+    .clients-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .clients-table th {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .clients-table tr:hover {
+      background: var(--bg-light);
+    }
+
+    .clients-table .client-name-cell {
+      font-weight: 500;
+      color: var(--primary-blue);
+      cursor: pointer;
+    }
+
+    .clients-table .client-name-cell:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .client-overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .client-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .typography-grid,
+      .spacing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .color-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .client-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .button-preview-grid {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    /* ============================================
        LOADING SPINNER
     ============================================ */
     .loading-spinner {
@@ -2139,6 +2669,347 @@
               <h3>No landing pages yet</h3>
               <p>Create your first page by generating one with AI or importing HTML.</p>
               <button class="btn btn-primary" onclick="openGenerateModal()">Generate with AI</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clients Section (hidden by default) -->
+        <div id="clientsSection" class="page-section" style="display: none;">
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">
+                <h2>All Clients</h2>
+                <span class="badge" id="clientsPageCount">0</span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-secondary btn-small" onclick="loadClientsPage()">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 7a6 6 0 1 1 1 3.5"/>
+                    <path d="M1 11V7h4"/>
+                  </svg>
+                  Refresh
+                </button>
+                <button class="btn btn-primary btn-small" onclick="openAddClientModal()">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="7" y1="2" x2="7" y2="12"/>
+                    <line x1="2" y1="7" x2="12" y2="7"/>
+                  </svg>
+                  Add Client
+                </button>
+              </div>
+            </div>
+            <div id="clientsListContainer">
+              <div class="empty-state">
+                <div class="empty-illustration">👥</div>
+                <h3>No clients yet</h3>
+                <p>Add your first client to store their brand assets and research.</p>
+                <button class="btn btn-primary" onclick="openAddClientModal()">Add Client</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Client Detail Section (hidden by default) -->
+        <div id="clientDetailSection" class="page-section" style="display: none;">
+          <div class="client-detail-header">
+            <button class="btn btn-secondary btn-small" onclick="showClientsPage()">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12L4 7l5-5"/>
+              </svg>
+              Back to Clients
+            </button>
+            <div class="client-detail-title">
+              <h2 id="clientDetailName">Client Name</h2>
+              <span class="badge" id="clientDetailIndustry">Industry</span>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-small" onclick="triggerClientResearch()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="5.5" cy="5.5" r="4.5"/>
+                  <path d="M13 13l-4-4"/>
+                </svg>
+                Re-Research
+              </button>
+              <button class="btn btn-primary btn-small" onclick="generatePageForClient()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 1L1 4l6 3 6-3-6-3z"/>
+                  <path d="M1 10l6 3 6-3"/>
+                </svg>
+                Generate Page
+              </button>
+            </div>
+          </div>
+
+          <!-- Client Tabs -->
+          <div class="client-tabs">
+            <button class="client-tab active" data-tab="overview" onclick="switchClientTab('overview')">Overview</button>
+            <button class="client-tab" data-tab="brand" onclick="switchClientTab('brand')">Brand Guide</button>
+            <button class="client-tab" data-tab="research" onclick="switchClientTab('research')">Research</button>
+            <button class="client-tab" data-tab="facts" onclick="switchClientTab('facts')">Verified Facts</button>
+            <button class="client-tab" data-tab="pages" onclick="switchClientTab('pages')">Pages</button>
+          </div>
+
+          <!-- Overview Tab -->
+          <div id="clientTabOverview" class="client-tab-content active">
+            <div class="client-overview-grid">
+              <div class="section-card">
+                <h3>Client Information</h3>
+                <div class="client-info-grid">
+                  <div class="info-item">
+                    <label>Website</label>
+                    <a href="#" id="clientWebsiteLink" target="_blank" class="info-link">—</a>
+                  </div>
+                  <div class="info-item">
+                    <label>Industry</label>
+                    <span id="clientIndustryInfo">—</span>
+                  </div>
+                  <div class="info-item">
+                    <label>Research Status</label>
+                    <span id="clientResearchStatus" class="status-badge">—</span>
+                  </div>
+                  <div class="info-item">
+                    <label>Last Researched</label>
+                    <span id="clientLastResearched">—</span>
+                  </div>
+                </div>
+              </div>
+              <div class="section-card">
+                <h3>Quick Stats</h3>
+                <div class="client-stats-grid">
+                  <div class="client-stat">
+                    <span class="stat-number" id="clientPagesCount">0</span>
+                    <span class="stat-label">Pages</span>
+                  </div>
+                  <div class="client-stat">
+                    <span class="stat-number" id="clientFactsCount">0</span>
+                    <span class="stat-label">Facts</span>
+                  </div>
+                  <div class="client-stat">
+                    <span class="stat-number" id="clientTestimonialsCount">0</span>
+                    <span class="stat-label">Testimonials</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="section-card">
+              <h3>Value Propositions</h3>
+              <div id="clientValueProps" class="value-props-list">
+                <p class="text-muted">No value propositions found. Run research to extract them.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Brand Guide Tab -->
+          <div id="clientTabBrand" class="client-tab-content">
+            <div class="brand-guide-container">
+              <div class="section-card">
+                <div class="section-header">
+                  <h3>Colors</h3>
+                  <button class="btn btn-secondary btn-small" onclick="saveBrandGuide()">Save Changes</button>
+                </div>
+                <div class="color-grid">
+                  <div class="color-item">
+                    <label>Primary</label>
+                    <div class="color-input-group">
+                      <input type="color" id="brandPrimaryColor" value="#3974ff">
+                      <input type="text" id="brandPrimaryColorHex" value="#3974ff" class="color-hex-input">
+                    </div>
+                  </div>
+                  <div class="color-item">
+                    <label>Secondary</label>
+                    <div class="color-input-group">
+                      <input type="color" id="brandSecondaryColor" value="#00ACE9">
+                      <input type="text" id="brandSecondaryColorHex" value="#00ACE9" class="color-hex-input">
+                    </div>
+                  </div>
+                  <div class="color-item">
+                    <label>Accent</label>
+                    <div class="color-input-group">
+                      <input type="color" id="brandAccentColor" value="#3D916B">
+                      <input type="text" id="brandAccentColorHex" value="#3D916B" class="color-hex-input">
+                    </div>
+                  </div>
+                  <div class="color-item">
+                    <label>Background</label>
+                    <div class="color-input-group">
+                      <input type="color" id="brandBackgroundColor" value="#ffffff">
+                      <input type="text" id="brandBackgroundColorHex" value="#ffffff" class="color-hex-input">
+                    </div>
+                  </div>
+                  <div class="color-item">
+                    <label>Text</label>
+                    <div class="color-input-group">
+                      <input type="color" id="brandTextColor" value="#1f2937">
+                      <input type="text" id="brandTextColorHex" value="#1f2937" class="color-hex-input">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Typography</h3>
+                <div class="typography-grid">
+                  <div class="form-group">
+                    <label>Heading Font</label>
+                    <input type="text" id="brandHeadingFont" placeholder="system-ui, -apple-system, sans-serif">
+                  </div>
+                  <div class="form-group">
+                    <label>Body Font</label>
+                    <input type="text" id="brandBodyFont" placeholder="system-ui, -apple-system, sans-serif">
+                  </div>
+                </div>
+                <div class="font-preview">
+                  <h4 style="margin-bottom: 8px;">Preview</h4>
+                  <div id="fontPreviewHeading" style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Heading Text Sample</div>
+                  <div id="fontPreviewBody" style="font-size: 16px; line-height: 1.5;">Body text sample. This is how your landing page copy will look with the selected fonts.</div>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Spacing & Layout</h3>
+                <div class="spacing-grid">
+                  <div class="form-group">
+                    <label>Border Radius</label>
+                    <input type="text" id="brandBorderRadius" placeholder="8px">
+                  </div>
+                  <div class="form-group">
+                    <label>Spacing Unit</label>
+                    <input type="text" id="brandSpacingUnit" placeholder="4px">
+                  </div>
+                  <div class="form-group">
+                    <label>Max Width</label>
+                    <input type="text" id="brandMaxWidth" placeholder="1200px">
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Button Styles</h3>
+                <div class="button-preview-grid">
+                  <div class="button-preview-item">
+                    <label>Primary Button</label>
+                    <button id="brandPrimaryBtnPreview" class="btn-preview-primary">Call to Action</button>
+                  </div>
+                  <div class="button-preview-item">
+                    <label>Secondary Button</label>
+                    <button id="brandSecondaryBtnPreview" class="btn-preview-secondary">Learn More</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Brand Voice</h3>
+                <div class="form-group">
+                  <label>Tone</label>
+                  <input type="text" id="brandVoiceTone" placeholder="professional, friendly, authoritative">
+                </div>
+                <div class="form-group">
+                  <label>Keywords (comma-separated)</label>
+                  <input type="text" id="brandVoiceKeywords" placeholder="innovative, trusted, premium">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Research Tab -->
+          <div id="clientTabResearch" class="client-tab-content">
+            <div class="research-container">
+              <div class="section-card">
+                <div class="section-header">
+                  <h3>Business Research</h3>
+                  <button class="btn btn-secondary btn-small" onclick="saveResearchData()">Save Changes</button>
+                </div>
+                <div class="research-section">
+                  <h4>Company Name</h4>
+                  <input type="text" id="researchCompanyName" class="research-input">
+                </div>
+                <div class="research-section">
+                  <h4>Industry</h4>
+                  <input type="text" id="researchIndustry" class="research-input">
+                </div>
+                <div class="research-section">
+                  <h4>Tagline</h4>
+                  <input type="text" id="researchTagline" class="research-input">
+                </div>
+                <div class="research-section">
+                  <h4>Value Propositions</h4>
+                  <textarea id="researchValueProps" class="research-textarea" placeholder="One per line"></textarea>
+                </div>
+                <div class="research-section">
+                  <h4>Brand Voice Description</h4>
+                  <textarea id="researchBrandVoice" class="research-textarea"></textarea>
+                </div>
+                <div class="research-section">
+                  <h4>Unique Differentiators</h4>
+                  <textarea id="researchDifferentiators" class="research-textarea" placeholder="One per line"></textarea>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Products/Services</h3>
+                <div id="researchProductsList" class="products-list">
+                  <p class="text-muted">No products found. Run research or add manually.</p>
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="addProductField()" style="margin-top: 12px;">
+                  + Add Product
+                </button>
+              </div>
+
+              <div class="section-card">
+                <h3>Target Audiences</h3>
+                <div id="researchAudiencesList" class="audiences-list">
+                  <p class="text-muted">No target audiences found.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Facts Tab -->
+          <div id="clientTabFacts" class="client-tab-content">
+            <div class="facts-container">
+              <div class="section-card">
+                <div class="section-header">
+                  <h3>Verified Claims & Testimonials</h3>
+                  <button class="btn btn-primary btn-small" onclick="addNewFact()">
+                    + Add Fact
+                  </button>
+                </div>
+                <div id="verifiedFactsList" class="facts-list">
+                  <p class="text-muted">No verified facts yet. These are extracted during research.</p>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Testimonials</h3>
+                <div id="testimonialsList" class="testimonials-grid">
+                  <p class="text-muted">No testimonials found.</p>
+                </div>
+              </div>
+
+              <div class="section-card">
+                <h3>Statistics</h3>
+                <div id="statisticsList" class="statistics-list">
+                  <p class="text-muted">No statistics found.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pages Tab -->
+          <div id="clientTabPages" class="client-tab-content">
+            <div class="section-card">
+              <div class="section-header">
+                <h3>Generated Pages</h3>
+                <button class="btn btn-primary btn-small" onclick="generatePageForClient()">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 1L1 4l6 3 6-3-6-3z"/>
+                  </svg>
+                  Generate New Page
+                </button>
+              </div>
+              <div id="clientPagesList" class="client-pages-list">
+                <p class="text-muted">No pages generated for this client yet.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -2684,6 +3555,10 @@
     // ============================================
     // CLIENT MANAGEMENT
     // ============================================
+    let currentClientId = null;
+    let currentClientData = null;
+    let currentBrandGuide = null;
+
     async function loadClients() {
       try {
         const res = await fetch('/api/clients');
@@ -2695,6 +3570,66 @@
       } catch (error) {
         console.error('Failed to load clients:', error);
       }
+    }
+
+    async function loadClientsPage() {
+      try {
+        const res = await fetch('/api/clients');
+        const result = await res.json();
+        if (result.success) {
+          clients = result.clients || [];
+          renderClientsList();
+        }
+      } catch (error) {
+        console.error('Failed to load clients:', error);
+      }
+    }
+
+    function renderClientsList() {
+      const container = document.getElementById('clientsListContainer');
+      document.getElementById('clientsPageCount').textContent = clients.length;
+
+      if (clients.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-illustration">👥</div>
+            <h3>No clients yet</h3>
+            <p>Add your first client to store their brand assets and research.</p>
+            <button class="btn btn-primary" onclick="openAddClientModal()">Add Client</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <table class="clients-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Website</th>
+              <th>Industry</th>
+              <th>Research</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${clients.map(c => `
+              <tr>
+                <td class="client-name-cell" onclick="openClientDetail('${c.id}')">${escapeHtml(c.name)}</td>
+                <td>${c.website_url ? `<a href="${escapeHtml(c.website_url)}" target="_blank" class="info-link">${escapeHtml(c.website_url.replace('https://', '').replace('http://', '').split('/')[0])}</a>` : '—'}</td>
+                <td>${escapeHtml(c.industry || '—')}</td>
+                <td><span class="status-badge ${c.research_status || 'pending'}">${c.research_status || 'pending'}</span></td>
+                <td>${new Date(c.created_at).toLocaleDateString()}</td>
+                <td>
+                  <button class="btn btn-secondary btn-small" onclick="openClientDetail('${c.id}')">View</button>
+                  <button class="btn btn-secondary btn-small" onclick="deleteClient('${c.id}')" style="color: var(--error);">Delete</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
     }
 
     function openAddClientModal() {
@@ -2716,12 +3651,514 @@
         if (result.success) {
           alert('Client created! You can now generate pages for this client.');
           loadClients();
+          loadClientsPage();
         } else {
           throw new Error(result.error);
         }
       } catch (error) {
         alert('Error creating client: ' + error.message);
       }
+    }
+
+    async function deleteClient(id) {
+      if (!confirm('Delete this client? This will also delete their brand guide and verified facts. This cannot be undone.')) return;
+
+      try {
+        const res = await fetch(`/api/clients/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error((await res.json()).error);
+        loadClients();
+        loadClientsPage();
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+
+    // ============================================
+    // PAGE NAVIGATION
+    // ============================================
+    function showPage(pageName) {
+      // Update nav items
+      document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+        item.classList.toggle('active', item.dataset.page === pageName);
+      });
+
+      // Update page title
+      const titles = {
+        dashboard: 'Dashboard',
+        pages: 'Landing Pages',
+        clients: 'Clients',
+        analytics: 'Analytics',
+        leads: 'Leads'
+      };
+      document.querySelector('.page-title').textContent = titles[pageName] || 'Dashboard';
+
+      // Show/hide sections
+      const dashboardContent = document.querySelector('.stats-grid');
+      const pagesSection = document.querySelector('.section-card:has(#pagesContainer)');
+      const clientsSection = document.getElementById('clientsSection');
+      const clientDetailSection = document.getElementById('clientDetailSection');
+
+      // Hide all sections first
+      if (dashboardContent) dashboardContent.style.display = 'none';
+      if (pagesSection) pagesSection.style.display = 'none';
+      if (clientsSection) clientsSection.style.display = 'none';
+      if (clientDetailSection) clientDetailSection.style.display = 'none';
+
+      // Show relevant sections based on page
+      if (pageName === 'dashboard') {
+        if (dashboardContent) dashboardContent.style.display = 'grid';
+        if (pagesSection) pagesSection.style.display = 'block';
+      } else if (pageName === 'pages') {
+        if (pagesSection) pagesSection.style.display = 'block';
+      } else if (pageName === 'clients') {
+        if (clientsSection) clientsSection.style.display = 'block';
+        loadClientsPage();
+      }
+
+      closeSidebar();
+    }
+
+    function showClientsPage() {
+      showPage('clients');
+    }
+
+    // ============================================
+    // CLIENT DETAIL
+    // ============================================
+    async function openClientDetail(clientId) {
+      currentClientId = clientId;
+
+      try {
+        const res = await fetch(`/api/clients/${clientId}`);
+        const result = await res.json();
+
+        if (!result.success) {
+          throw new Error(result.error);
+        }
+
+        currentClientData = result.client;
+        currentBrandGuide = result.brand_guide;
+
+        // Hide other sections, show client detail
+        document.querySelector('.stats-grid').style.display = 'none';
+        document.querySelector('.section-card:has(#pagesContainer)').style.display = 'none';
+        document.getElementById('clientsSection').style.display = 'none';
+        document.getElementById('clientDetailSection').style.display = 'block';
+
+        // Update header
+        document.getElementById('clientDetailName').textContent = currentClientData.name;
+        document.getElementById('clientDetailIndustry').textContent = currentClientData.industry || 'Unknown Industry';
+
+        // Populate all tabs
+        populateOverviewTab(currentClientData, result);
+        populateBrandGuideTab(currentBrandGuide);
+        populateResearchTab(currentClientData);
+        populateFactsTab(result.verified_claims, currentClientData);
+        populatePagesTab(result.landing_pages);
+
+        // Switch to overview tab
+        switchClientTab('overview');
+
+      } catch (error) {
+        alert('Error loading client: ' + error.message);
+      }
+    }
+
+    function switchClientTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.client-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+      });
+
+      // Update tab content
+      document.querySelectorAll('.client-tab-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(`clientTab${tabName.charAt(0).toUpperCase() + tabName.slice(1)}`).classList.add('active');
+    }
+
+    function populateOverviewTab(client, fullData) {
+      // Client info
+      const websiteLink = document.getElementById('clientWebsiteLink');
+      if (client.website_url) {
+        websiteLink.href = client.website_url;
+        websiteLink.textContent = client.website_url.replace('https://', '').replace('http://', '');
+      } else {
+        websiteLink.href = '#';
+        websiteLink.textContent = '—';
+      }
+
+      document.getElementById('clientIndustryInfo').textContent = client.industry || '—';
+
+      const statusEl = document.getElementById('clientResearchStatus');
+      statusEl.textContent = client.research_status || 'pending';
+      statusEl.className = `status-badge ${client.research_status || 'pending'}`;
+
+      document.getElementById('clientLastResearched').textContent = client.last_researched_at
+        ? new Date(client.last_researched_at).toLocaleDateString()
+        : 'Never';
+
+      // Stats
+      document.getElementById('clientPagesCount').textContent = fullData.landing_pages?.length || 0;
+      document.getElementById('clientFactsCount').textContent = fullData.verified_claims?.length || 0;
+
+      const research = client.business_research || {};
+      document.getElementById('clientTestimonialsCount').textContent = research.testimonials?.length || 0;
+
+      // Value props
+      const valuePropsEl = document.getElementById('clientValueProps');
+      const valueProps = research.value_propositions || [];
+      if (valueProps.length > 0) {
+        valuePropsEl.innerHTML = valueProps.map(vp => `<span class="value-prop-tag">${escapeHtml(vp)}</span>`).join('');
+      } else {
+        valuePropsEl.innerHTML = '<p class="text-muted">No value propositions found. Run research to extract them.</p>';
+      }
+    }
+
+    function populateBrandGuideTab(brandGuide) {
+      if (!brandGuide) {
+        // Set defaults
+        document.getElementById('brandPrimaryColor').value = '#3974ff';
+        document.getElementById('brandPrimaryColorHex').value = '#3974ff';
+        document.getElementById('brandSecondaryColor').value = '#00ACE9';
+        document.getElementById('brandSecondaryColorHex').value = '#00ACE9';
+        document.getElementById('brandAccentColor').value = '#3D916B';
+        document.getElementById('brandAccentColorHex').value = '#3D916B';
+        document.getElementById('brandBackgroundColor').value = '#ffffff';
+        document.getElementById('brandBackgroundColorHex').value = '#ffffff';
+        document.getElementById('brandTextColor').value = '#1f2937';
+        document.getElementById('brandTextColorHex').value = '#1f2937';
+        document.getElementById('brandHeadingFont').value = '';
+        document.getElementById('brandBodyFont').value = '';
+        document.getElementById('brandBorderRadius').value = '8px';
+        document.getElementById('brandSpacingUnit').value = '4px';
+        document.getElementById('brandMaxWidth').value = '1200px';
+        document.getElementById('brandVoiceTone').value = '';
+        document.getElementById('brandVoiceKeywords').value = '';
+        return;
+      }
+
+      // Colors
+      setColorInput('brandPrimaryColor', brandGuide.primary_color || '#3974ff');
+      setColorInput('brandSecondaryColor', brandGuide.secondary_color || '#00ACE9');
+      setColorInput('brandAccentColor', brandGuide.accent_color || '#3D916B');
+      setColorInput('brandBackgroundColor', brandGuide.background_color || '#ffffff');
+      setColorInput('brandTextColor', brandGuide.text_color || '#1f2937');
+
+      // Typography
+      document.getElementById('brandHeadingFont').value = brandGuide.heading_font || '';
+      document.getElementById('brandBodyFont').value = brandGuide.body_font || '';
+
+      // Spacing
+      document.getElementById('brandBorderRadius').value = brandGuide.border_radius || '8px';
+      document.getElementById('brandSpacingUnit').value = brandGuide.spacing_unit || '4px';
+      document.getElementById('brandMaxWidth').value = brandGuide.max_width || '1200px';
+
+      // Brand voice
+      document.getElementById('brandVoiceTone').value = brandGuide.brand_voice || '';
+      const keywords = brandGuide.tone_keywords || [];
+      document.getElementById('brandVoiceKeywords').value = Array.isArray(keywords) ? keywords.join(', ') : '';
+
+      // Update previews
+      updateBrandPreviews();
+    }
+
+    function setColorInput(baseName, value) {
+      const colorInput = document.getElementById(baseName);
+      const hexInput = document.getElementById(baseName + 'Hex');
+      if (colorInput) colorInput.value = value;
+      if (hexInput) hexInput.value = value;
+    }
+
+    function updateBrandPreviews() {
+      const primaryColor = document.getElementById('brandPrimaryColor').value;
+      const textColor = document.getElementById('brandTextColor').value;
+      const headingFont = document.getElementById('brandHeadingFont').value || 'system-ui, -apple-system, sans-serif';
+      const bodyFont = document.getElementById('brandBodyFont').value || 'system-ui, -apple-system, sans-serif';
+      const borderRadius = document.getElementById('brandBorderRadius').value || '8px';
+
+      // Font preview
+      document.getElementById('fontPreviewHeading').style.fontFamily = headingFont;
+      document.getElementById('fontPreviewBody').style.fontFamily = bodyFont;
+
+      // Button previews
+      const primaryBtn = document.getElementById('brandPrimaryBtnPreview');
+      primaryBtn.style.background = primaryColor;
+      primaryBtn.style.color = '#ffffff';
+      primaryBtn.style.borderRadius = borderRadius;
+
+      const secondaryBtn = document.getElementById('brandSecondaryBtnPreview');
+      secondaryBtn.style.borderColor = primaryColor;
+      secondaryBtn.style.color = primaryColor;
+      secondaryBtn.style.borderRadius = borderRadius;
+    }
+
+    // Sync color inputs
+    document.addEventListener('DOMContentLoaded', () => {
+      const colorFields = ['brandPrimaryColor', 'brandSecondaryColor', 'brandAccentColor', 'brandBackgroundColor', 'brandTextColor'];
+
+      colorFields.forEach(field => {
+        const colorInput = document.getElementById(field);
+        const hexInput = document.getElementById(field + 'Hex');
+
+        if (colorInput && hexInput) {
+          colorInput.addEventListener('input', () => {
+            hexInput.value = colorInput.value;
+            updateBrandPreviews();
+          });
+
+          hexInput.addEventListener('input', () => {
+            if (/^#[0-9A-Fa-f]{6}$/.test(hexInput.value)) {
+              colorInput.value = hexInput.value;
+              updateBrandPreviews();
+            }
+          });
+        }
+      });
+
+      // Font and spacing changes
+      ['brandHeadingFont', 'brandBodyFont', 'brandBorderRadius'].forEach(field => {
+        const input = document.getElementById(field);
+        if (input) {
+          input.addEventListener('input', updateBrandPreviews);
+        }
+      });
+
+      // Set up nav click handlers
+      document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+        item.addEventListener('click', () => {
+          showPage(item.dataset.page);
+        });
+      });
+    });
+
+    async function saveBrandGuide() {
+      if (!currentClientId) return;
+
+      const brandData = {
+        primary_color: document.getElementById('brandPrimaryColor').value,
+        secondary_color: document.getElementById('brandSecondaryColor').value,
+        accent_color: document.getElementById('brandAccentColor').value,
+        background_color: document.getElementById('brandBackgroundColor').value,
+        text_color: document.getElementById('brandTextColor').value,
+        heading_font: document.getElementById('brandHeadingFont').value,
+        body_font: document.getElementById('brandBodyFont').value,
+        border_radius: document.getElementById('brandBorderRadius').value,
+        spacing_unit: document.getElementById('brandSpacingUnit').value,
+        max_width: document.getElementById('brandMaxWidth').value,
+        brand_voice: document.getElementById('brandVoiceTone').value,
+        tone_keywords: document.getElementById('brandVoiceKeywords').value.split(',').map(k => k.trim()).filter(k => k)
+      };
+
+      try {
+        const res = await fetch(`/api/clients/${currentClientId}/brand`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(brandData)
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert('Brand guide saved successfully!');
+          currentBrandGuide = result.brand_guide;
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        alert('Error saving brand guide: ' + error.message);
+      }
+    }
+
+    function populateResearchTab(client) {
+      const research = client.business_research || {};
+
+      document.getElementById('researchCompanyName').value = research.company_name || '';
+      document.getElementById('researchIndustry').value = research.industry || '';
+      document.getElementById('researchTagline').value = research.tagline || '';
+      document.getElementById('researchValueProps').value = (research.value_propositions || []).join('\n');
+      document.getElementById('researchBrandVoice').value = research.brand_voice || '';
+      document.getElementById('researchDifferentiators').value = (research.unique_differentiators || []).join('\n');
+
+      // Products
+      const productsList = document.getElementById('researchProductsList');
+      const products = research.products || [];
+      if (products.length > 0) {
+        productsList.innerHTML = products.map((p, i) => `
+          <div class="product-card" data-index="${i}">
+            <h4>${escapeHtml(p.name || 'Product ' + (i + 1))}</h4>
+            <p>${escapeHtml(p.description || 'No description')}</p>
+            ${p.price ? `<p><strong>Price:</strong> ${escapeHtml(p.price)}</p>` : ''}
+            ${p.key_features?.length ? `<p><strong>Features:</strong> ${p.key_features.map(f => escapeHtml(f)).join(', ')}</p>` : ''}
+          </div>
+        `).join('');
+      } else {
+        productsList.innerHTML = '<p class="text-muted">No products found. Run research or add manually.</p>';
+      }
+
+      // Audiences
+      const audiencesList = document.getElementById('researchAudiencesList');
+      const audiences = research.target_audiences || [];
+      if (audiences.length > 0) {
+        audiencesList.innerHTML = audiences.map((a, i) => `
+          <div class="audience-card" data-index="${i}">
+            <h4>${escapeHtml(a.segment || 'Audience ' + (i + 1))}</h4>
+            ${a.pain_points?.length ? `<p><strong>Pain Points:</strong> ${a.pain_points.map(p => escapeHtml(p)).join(', ')}</p>` : ''}
+            ${a.desires?.length ? `<p><strong>Desires:</strong> ${a.desires.map(d => escapeHtml(d)).join(', ')}</p>` : ''}
+          </div>
+        `).join('');
+      } else {
+        audiencesList.innerHTML = '<p class="text-muted">No target audiences found.</p>';
+      }
+    }
+
+    async function saveResearchData() {
+      if (!currentClientId || !currentClientData) return;
+
+      const research = {
+        ...currentClientData.business_research,
+        company_name: document.getElementById('researchCompanyName').value,
+        industry: document.getElementById('researchIndustry').value,
+        tagline: document.getElementById('researchTagline').value,
+        value_propositions: document.getElementById('researchValueProps').value.split('\n').filter(v => v.trim()),
+        brand_voice: document.getElementById('researchBrandVoice').value,
+        unique_differentiators: document.getElementById('researchDifferentiators').value.split('\n').filter(v => v.trim())
+      };
+
+      try {
+        const res = await fetch(`/api/clients/${currentClientId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            industry: research.industry,
+            business_research: research
+          })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert('Research data saved successfully!');
+          currentClientData = result.client;
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        alert('Error saving research data: ' + error.message);
+      }
+    }
+
+    function populateFactsTab(claims, client) {
+      const research = client.business_research || {};
+
+      // Verified claims
+      const factsList = document.getElementById('verifiedFactsList');
+      if (claims && claims.length > 0) {
+        factsList.innerHTML = claims.map(c => `
+          <div class="fact-item">
+            <span class="fact-type ${c.claim_type || 'feature'}">${c.claim_type || 'claim'}</span>
+            <div class="fact-content">
+              <div class="fact-text">${escapeHtml(c.claim_text)}</div>
+              ${c.source_url ? `<div class="fact-source">Source: ${escapeHtml(c.source_url)}</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        factsList.innerHTML = '<p class="text-muted">No verified facts yet. These are extracted during research.</p>';
+      }
+
+      // Testimonials
+      const testimonialsList = document.getElementById('testimonialsList');
+      const testimonials = research.testimonials || [];
+      if (testimonials.length > 0) {
+        testimonialsList.innerHTML = testimonials.map(t => `
+          <div class="testimonial-card">
+            <div class="testimonial-quote">"${escapeHtml(t.quote)}"</div>
+            <div class="testimonial-author">${escapeHtml(t.author || 'Anonymous')}</div>
+            ${t.role_or_context ? `<div class="testimonial-role">${escapeHtml(t.role_or_context)}</div>` : ''}
+          </div>
+        `).join('');
+      } else {
+        testimonialsList.innerHTML = '<p class="text-muted">No testimonials found.</p>';
+      }
+
+      // Statistics
+      const statisticsList = document.getElementById('statisticsList');
+      const statistics = research.statistics || [];
+      if (statistics.length > 0) {
+        statisticsList.innerHTML = statistics.map(s => `
+          <div class="fact-item">
+            <span class="fact-type statistic">stat</span>
+            <div class="fact-content">
+              <div class="fact-text"><strong>${escapeHtml(s.claim)}</strong> - ${escapeHtml(s.context || '')}</div>
+              ${s.source_url ? `<div class="fact-source">Source: ${escapeHtml(s.source_url)}</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        statisticsList.innerHTML = '<p class="text-muted">No statistics found.</p>';
+      }
+    }
+
+    function populatePagesTab(pages) {
+      const pagesList = document.getElementById('clientPagesList');
+
+      if (pages && pages.length > 0) {
+        pagesList.innerHTML = pages.map(p => `
+          <div class="client-page-item">
+            <span class="page-name">${escapeHtml(p.name)}</span>
+            <span class="page-status ${p.status}">${p.status}</span>
+            <span style="color: var(--text-light); font-size: 12px;">${new Date(p.created_at).toLocaleDateString()}</span>
+            <button class="btn btn-secondary btn-small" onclick="openEditor('${p.id}')">Edit</button>
+          </div>
+        `).join('');
+      } else {
+        pagesList.innerHTML = '<p class="text-muted">No pages generated for this client yet.</p>';
+      }
+    }
+
+    async function triggerClientResearch() {
+      if (!currentClientId || !currentClientData?.website_url) {
+        alert('Client needs a website URL to run research.');
+        return;
+      }
+
+      if (!confirm('Run deep research on this client\'s website? This may take 30-60 seconds.')) return;
+
+      try {
+        const res = await fetch(`/api/clients/${currentClientId}/research`, {
+          method: 'POST'
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          alert('Research completed! Refreshing data...');
+          openClientDetail(currentClientId);
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (error) {
+        alert('Research failed: ' + error.message);
+      }
+    }
+
+    function generatePageForClient() {
+      if (!currentClientId) return;
+      // Open generate modal with client pre-selected
+      // For now, just open the modal
+      openGenerateModal();
+      // TODO: Pre-fill client in generate modal
+    }
+
+    function addNewFact() {
+      const text = prompt('Enter the fact or claim:');
+      if (!text) return;
+
+      const type = prompt('Type (statistic, testimonial, feature):') || 'feature';
+      // TODO: Add API call to save new fact
+      alert('Adding facts manually coming soon. Run research to extract facts automatically.');
+    }
+
+    function addProductField() {
+      alert('Adding products manually coming soon. Run research to extract products automatically.');
     }
 
     // ============================================
