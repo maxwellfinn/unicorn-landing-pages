@@ -11,7 +11,7 @@ export async function runDesignStep({ job, stepOutputs, additionalInput, jobId }
   const strategy = stepOutputs.strategy?.result?.strategy || {};
   const researchData = stepOutputs.research?.result?.business_research || {};
 
-  const claudeApiKey = process.env.ANTHROPIC_API_KEY;
+  const claudeApiKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY;
 
   if (!claudeApiKey) {
     throw new Error('ANTHROPIC_API_KEY not configured');
