@@ -6,21 +6,42 @@ import { v4 as uuidv4 } from 'uuid';
  * Scrapes multiple pages and extracts comprehensive business information
  */
 export async function runResearchStep({ job, stepOutputs, additionalInput, jobId }) {
+  // Debug logging to trace URL passing
+  console.log('Research step received:', {
+    jobId,
+    jobWebsiteUrl: job?.website_url,
+    additionalInputUrl: additionalInput?.url,
+    stepOutputsConfig: stepOutputs?._config,
+    stepOutputsKeys: Object.keys(stepOutputs || {}),
+    stepOutputsType: typeof stepOutputs,
+    stepOutputsStringified: JSON.stringify(stepOutputs)?.substring(0, 500)
+  });
+
   const { website_url, target_audience, offer_details } = { ...job, ...additionalInput };
 
-  // Look for URL in multiple places
-  let url = website_url || additionalInput.url || stepOutputs._config?.website_url;
+  // Look for URL in multiple places - with detailed logging
+  let url = website_url || additionalInput?.url || stepOutputs?._config?.website_url || job?.website_url;
+
+  console.log('URL resolution:', {
+    fromJobSpread: website_url,
+    fromAdditionalInput: additionalInput?.url,
+    fromStepOutputsConfig: stepOutputs?._config?.website_url,
+    fromJobDirect: job?.website_url,
+    resolved: url
+  });
 
   // Try to extract URL from offer_details if it contains one
   if (!url && offer_details) {
     const urlMatch = offer_details.match(/https?:\/\/[^\s,]+/);
     if (urlMatch) {
       url = urlMatch[0];
+      console.log('Extracted URL from offer_details:', url);
     }
   }
 
   if (!url) {
-    throw new Error('Website URL is required for research step');
+    // Detailed error with context
+    throw new Error(`Website URL is required for research step. Debug: stepOutputs=${JSON.stringify(stepOutputs)?.substring(0, 200)}, job.website_url=${job?.website_url}`);
   }
   const geminiApiKey = process.env.GEMINI_API_KEY;
 

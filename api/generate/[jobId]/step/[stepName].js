@@ -107,10 +107,19 @@ export default async function handler(req, res) {
 
     // Get step outputs - may need to parse if stored as string
     let stepOutputs = jobData.step_outputs || {};
+    console.log('Raw step_outputs from DB:', {
+      type: typeof stepOutputs,
+      value: JSON.stringify(stepOutputs)?.substring(0, 500),
+      isNull: stepOutputs === null,
+      isUndefined: stepOutputs === undefined
+    });
+
     if (typeof stepOutputs === 'string') {
       try {
         stepOutputs = JSON.parse(stepOutputs);
+        console.log('Parsed step_outputs from string:', Object.keys(stepOutputs));
       } catch (e) {
+        console.log('Failed to parse step_outputs:', e.message);
         stepOutputs = {};
       }
     }
@@ -125,6 +134,7 @@ export default async function handler(req, res) {
       hasStepOutputs: !!stepOutputs,
       stepOutputsKeys: Object.keys(stepOutputs),
       configUrl: stepOutputs._config?.website_url,
+      configObject: stepOutputs._config,
       jobWebsiteUrl: jobData.website_url,
       additionalInputUrl: additionalInput.url
     });
