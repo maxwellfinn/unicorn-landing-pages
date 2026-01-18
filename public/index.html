@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unicorn AI | Marketing Platform</title>
-  <link rel="icon" type="image/png" href="/icon.png">
-  <link rel="apple-touch-icon" href="/icon.png">
+  <title>Landing Pages | Unicorn Marketers</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     * {
@@ -15,22 +13,16 @@
     }
 
     :root {
-      /* Brand Colors - Blue Gradient from Icon */
+      /* Brand Colors */
       --primary-blue: #3B9FD8;
-      --primary-blue-dark: #2878A8;
-      --primary-blue-light: #5BB5E8;
-      --primary-blue-lighter: #00C4E8;
+      --primary-blue-dark: #2d7fb0;
+      --primary-blue-light: #5bb5e8;
 
-      /* Secondary Blues - From Icon Gradient */
-      --secondary-blue: #5BA3C8;
-      --secondary-blue-light: #7DBDDC;
-      --tertiary-blue: #3A7A9E;
-
-      /* Accent Colors - Using Blues */
-      --accent: #00C4E8;
-      --accent-dark: #3B9FD8;
-      --accent-light: #5BB5E8;
-      --accent-muted: rgba(59, 159, 216, 0.15);
+      /* Accent Colors - Lime/Chartreuse (from inspiration) */
+      --accent-lime: #BFFF00;
+      --accent-lime-dark: #A3D900;
+      --accent-lime-light: #D4FF4D;
+      --accent-lime-muted: rgba(191, 255, 0, 0.15);
 
       /* Neutral Colors */
       --dark-gray: #3D4246;
@@ -42,17 +34,17 @@
       --bg-white: #FFFFFF;
       --bg-light: #F8FAFB;
       --bg-card: #FFFFFF;
-      --bg-sidebar: #1a2634;
-      --bg-sidebar-hover: #243342;
-      --bg-sidebar-active: #2d3e4f;
+      --bg-sidebar: #0f1115;
+      --bg-sidebar-hover: #1a1d21;
+      --bg-sidebar-active: #252830;
 
       /* Borders */
       --border-light: #E8EDEF;
       --border-card: rgba(0, 0, 0, 0.06);
 
       /* Status Colors */
-      --success: #3B9FD8;
-      --success-light: rgba(59, 159, 216, 0.1);
+      --success: #00B894;
+      --success-light: rgba(0, 184, 148, 0.1);
       --warning: #FDCB6E;
       --warning-light: rgba(253, 203, 110, 0.1);
       --error: #E17055;
@@ -192,7 +184,7 @@
 
     .mane-strand:nth-child(1) { background: var(--primary-blue); left: 0; }
     .mane-strand:nth-child(2) { background: #5bb5e8; left: 6px; animation-delay: 0.1s; height: 25px; top: -3px; }
-    .mane-strand:nth-child(3) { background: #5BA3C8; left: 12px; animation-delay: 0.2s; height: 22px; top: -1px; }
+    .mane-strand:nth-child(3) { background: #00B894; left: 12px; animation-delay: 0.2s; height: 22px; top: -1px; }
 
     @keyframes maneWave {
       0%, 100% { transform: rotate(-5deg); }
@@ -283,7 +275,7 @@
 
     .tail-strand:nth-child(1) { background: var(--primary-blue); left: 0; }
     .tail-strand:nth-child(2) { background: #5bb5e8; left: 5px; animation-delay: 0.1s; }
-    .tail-strand:nth-child(3) { background: #5BA3C8; left: 10px; animation-delay: 0.2s; }
+    .tail-strand:nth-child(3) { background: #00B894; left: 10px; animation-delay: 0.2s; }
 
     @keyframes tailWag {
       0%, 100% { transform: rotate(-15deg); }
@@ -323,7 +315,7 @@
     }
 
     .code-line:nth-child(1) { width: 25px; background: var(--primary-blue); top: 10px; left: 8px; }
-    .code-line:nth-child(2) { width: 35px; background: #5BA3C8; top: 17px; left: 8px; animation-delay: 0.2s; }
+    .code-line:nth-child(2) { width: 35px; background: #00B894; top: 17px; left: 8px; animation-delay: 0.2s; }
     .code-line:nth-child(3) { width: 20px; background: #FDCB6E; top: 24px; left: 8px; animation-delay: 0.4s; }
     .code-line:nth-child(4) { width: 30px; background: var(--primary-blue-light); top: 31px; left: 8px; animation-delay: 0.6s; }
 
@@ -470,7 +462,7 @@
       width: 40px;
       height: 40px;
       border-radius: var(--radius-md);
-      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent) 100%);
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-lime) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -481,13 +473,6 @@
       width: 24px;
       height: 24px;
       color: var(--bg-sidebar);
-    }
-
-    .sidebar-logo-icon-img {
-      width: 36px;
-      height: 36px;
-      object-fit: contain;
-      flex-shrink: 0;
     }
 
     .sidebar-logo-text {
@@ -558,12 +543,12 @@
     }
 
     .nav-item.active {
-      background: var(--accent);
+      background: var(--accent-lime);
       color: var(--bg-sidebar);
     }
 
     .nav-item.active:hover {
-      background: var(--accent-dark);
+      background: var(--accent-lime-dark);
     }
 
     .nav-item svg {
@@ -617,7 +602,7 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--accent);
+      background: var(--accent-lime);
       transition: opacity var(--transition-normal);
     }
 
@@ -655,7 +640,7 @@
       width: 36px;
       height: 36px;
       border-radius: var(--radius-md);
-      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent) 100%);
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--accent-lime) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -775,15 +760,15 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, transparent 0%, var(--accent-muted) 100%);
+      background: linear-gradient(135deg, transparent 0%, var(--accent-lime-muted) 100%);
       opacity: 0;
       transition: opacity var(--transition-normal);
     }
 
     .metric-card:hover {
       transform: translateY(-4px);
-      border-color: var(--accent);
-      box-shadow: var(--shadow-card-hover), 0 0 0 1px var(--accent-muted);
+      border-color: var(--accent-lime);
+      box-shadow: var(--shadow-card-hover), 0 0 0 1px var(--accent-lime-muted);
     }
 
     .metric-card:hover::before {
@@ -819,8 +804,8 @@
     .metric-icon.blue svg { color: var(--primary-blue); }
     .metric-icon.green { background: var(--success-light); }
     .metric-icon.green svg { color: var(--success); }
-    .metric-icon.cyan { background: var(--accent-muted); }
-    .metric-icon.cyan svg { color: var(--accent-dark); }
+    .metric-icon.lime { background: var(--accent-lime-muted); }
+    .metric-icon.lime svg { color: var(--accent-lime-dark); }
     .metric-icon.orange { background: var(--warning-light); }
     .metric-icon.orange svg { color: var(--warning); }
 
@@ -930,7 +915,7 @@
     }
 
     .quick-action-card.accent:hover {
-      border-color: var(--accent);
+      border-color: var(--accent-lime);
     }
 
     .quick-action-icon {
@@ -960,7 +945,7 @@
     }
 
     .quick-action-card.accent:hover .quick-action-icon {
-      background: var(--accent);
+      background: var(--accent-lime);
     }
 
     .quick-action-card.accent:hover .quick-action-icon svg {
@@ -1053,8 +1038,8 @@
     .activity-icon.success svg { color: var(--success); }
     .activity-icon.blue { background: rgba(59, 159, 216, 0.1); }
     .activity-icon.blue svg { color: var(--primary-blue); }
-    .activity-icon.cyan { background: var(--accent-muted); }
-    .activity-icon.cyan svg { color: var(--accent-dark); }
+    .activity-icon.lime { background: var(--accent-lime-muted); }
+    .activity-icon.lime svg { color: var(--accent-lime-dark); }
 
     .activity-card-body {
       padding: 0;
@@ -1276,14 +1261,14 @@
     }
 
     .btn-accent {
-      background: var(--accent);
+      background: var(--accent-lime);
       color: var(--bg-sidebar);
       font-weight: 700;
       box-shadow: 0 4px 15px rgba(191, 255, 0, 0.3);
     }
 
     .btn-accent:hover {
-      background: var(--accent-dark);
+      background: var(--accent-lime-dark);
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(191, 255, 0, 0.4);
     }
@@ -1403,7 +1388,7 @@
     }
 
     .stat-icon.blue { background: rgba(59, 159, 216, 0.1); }
-    .stat-icon.green { background: rgba(59, 159, 216, 0.1); }
+    .stat-icon.green { background: rgba(0, 184, 148, 0.1); }
     .stat-icon.orange { background: rgba(253, 203, 110, 0.15); }
     .stat-icon.purple { background: rgba(162, 155, 254, 0.15); }
 
@@ -2290,7 +2275,7 @@
 
     .preview-dot.red { background: #ff5f57; }
     .preview-dot.yellow { background: #ffbd2e; }
-    .preview-dot.green { background: var(--primary-blue); }
+    .preview-dot.green { background: #28c840; }
 
     .preview-url {
       flex: 1;
@@ -3466,7 +3451,7 @@
        AD GENERATOR
     ============================================ */
     .badge-new {
-      background: linear-gradient(135deg, var(--primary-blue), #5BA3C8);
+      background: linear-gradient(135deg, var(--primary-blue), #00B894);
       color: white;
       font-size: 0.65rem;
       padding: 0.2rem 0.5rem;
@@ -4055,7 +4040,11 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="sidebar-logo">
-          <img src="/icon.png" alt="Unicorn" class="sidebar-logo-icon-img">
+          <div class="sidebar-logo-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
           <span class="sidebar-logo-text">Unicorn AI</span>
         </div>
       </div>
@@ -4211,7 +4200,7 @@
 
             <div class="metric-card">
               <div class="metric-card-header">
-                <div class="metric-icon blue">
+                <div class="metric-icon green">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
@@ -4233,7 +4222,7 @@
 
             <div class="metric-card">
               <div class="metric-card-header">
-                <div class="metric-icon cyan">
+                <div class="metric-icon lime">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                     <circle cx="12" cy="12" r="3"/>
@@ -4255,7 +4244,7 @@
 
             <div class="metric-card">
               <div class="metric-card-header">
-                <div class="metric-icon blue">
+                <div class="metric-icon orange">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>

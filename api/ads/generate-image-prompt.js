@@ -1,6 +1,6 @@
-import { sql } from '@vercel/postgres';
 import { v4 as uuidv4 } from 'uuid';
 import { verifyAuth } from '../../lib/auth.js';
+import db, { query } from '../../lib/database.js';
 
 /**
  * Advanced Image Prompt Generator for Meta Ads
@@ -805,35 +805,31 @@ export default async function handler(req, res) {
       });
     }
 
-    // Get client data with brand guide
-    const clientResult = await sql`
-      SELECT c.*,
-             b.primary_color, b.secondary_color, b.accent_color, b.background_color, b.text_color,
-             b.heading_font, b.body_font, b.brand_voice, b.tone_keywords,
-             b.button_style, b.card_style
-      FROM clients c
-      LEFT JOIN brand_style_guides b ON c.id = b.client_id
-      WHERE c.id = ${client_id}
-    `;
+    // Get client data with brand guide using unified database
+    const client = await db.getClientById(client_id);
 
-    if (clientResult.rows.length === 0) {
+    if (!client) {
       return res.status(404).json({
         success: false,
         error: 'Client not found'
       });
     }
 
-    const client = clientResult.rows[0];
     const businessResearch = client.business_research || {};
 
     // Get associated ad copy if provided
     let adCopy = null;
     if (ad_copy_id) {
-      const adCopyResult = await sql`
-        SELECT * FROM ad_copy WHERE id = ${ad_copy_id}
-      `;
-      if (adCopyResult.rows.length > 0) {
-        adCopy = adCopyResult.rows[0];
+      try {
+        const adCopyResult = await query(
+          'SELECT * FROM ad_copy WHERE id = $1',
+          [ad_copy_id]
+        );
+        if (adCopyResult.rows.length > 0) {
+          adCopy = adCopyResult.rows[0];
+        }
+      } catch (e) {
+        console.warn('Could not fetch ad copy:', e.message);
       }
     }
 
@@ -933,44 +929,44 @@ export default async function handler(req, res) {
 
     // Store generated prompts in database
     const savedPrompts = [];
-    const now = new Date().toISOString();
 
     if (generatedPrompts.prompts) {
       for (const promptData of generatedPrompts.prompts) {
         const promptId = uuidv4();
-        await sql`
-          INSERT INTO image_prompts (
-            id, campaign_id, client_id, user_id, ad_copy_id,
-            prompt_text, negative_prompt, style_reference, aspect_ratio,
-            image_type, model_target, generation_context, created_at
-          )
-          VALUES (
-            ${promptId},
-            ${campaign_id || null},
-            ${client_id},
-            ${user.userId},
-            ${ad_copy_id || null},
-            ${promptData.prompt || ''},
-            ${promptData.negative_prompt || ''},
-            ${promptData.style_category || ''},
-            ${aspect_ratio},
-            ${promptData.ad_style || 'custom'},
-            'nano_banana_2',
-            ${JSON.stringify({
+        try {
+          await db.saveImagePrompt({
+            id: promptId,
+            campaign_id: campaign_id || null,
+            client_id,
+            user_id: user.userId,
+            ad_copy_id: ad_copy_id || null,
+            prompt_text: promptData.prompt || '',
+            negative_prompt: promptData.negative_prompt || '',
+            style_reference: promptData.style_category || '',
+            aspect_ratio,
+            image_type: promptData.ad_style || 'custom',
+            model_target: 'nano_banana_2',
+            generation_context: {
               awareness_level: resolvedAwareness?.name,
               biases_applied: resolvedBiases.map(b => b?.name),
               power_stack: power_stack,
               styles_used: resolvedStyles.map(s => s?.name),
               persona: persona,
               strategic_notes: promptData.strategic_notes
-            })}::jsonb,
-            ${now}
-          )
-        `;
-        savedPrompts.push({
-          id: promptId,
-          ...promptData
-        });
+            }
+          });
+          savedPrompts.push({
+            id: promptId,
+            ...promptData
+          });
+        } catch (saveError) {
+          console.error('Error saving image prompt:', saveError);
+          // Continue with remaining prompts even if one fails
+          savedPrompts.push({
+            id: promptId,
+            ...promptData
+          });
+        }
       }
     }
 

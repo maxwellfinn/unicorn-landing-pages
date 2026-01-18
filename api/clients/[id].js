@@ -1,10 +1,10 @@
-import { sql } from '@vercel/postgres';
+import db, { query } from '../../lib/database.js';
 
 export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -19,44 +19,44 @@ export default async function handler(req, res) {
   try {
     if (req.method === 'GET') {
       // Get single client with all related data
-      const clientResult = await sql`
-        SELECT * FROM clients WHERE id = ${id}
-      `;
+      const client = await db.getClientById(id);
 
-      if (clientResult.rows.length === 0) {
+      if (!client) {
         return res.status(404).json({ success: false, error: 'Client not found' });
       }
 
-      const client = clientResult.rows[0];
-
       // Get brand guide
-      const brandResult = await sql`
-        SELECT * FROM brand_style_guides WHERE client_id = ${id}
-      `;
+      const brandResult = await query(
+        'SELECT * FROM brand_style_guides WHERE client_id = $1',
+        [id]
+      );
 
       // Get verified claims
-      const claimsResult = await sql`
-        SELECT * FROM verified_claims WHERE client_id = ${id} ORDER BY created_at DESC
-      `;
+      const claimsResult = await query(
+        'SELECT * FROM verified_claims WHERE client_id = $1 ORDER BY created_at DESC',
+        [id]
+      );
 
       // Get landing pages
-      const pagesResult = await sql`
-        SELECT id, name, slug, status, created_at FROM landing_pages WHERE client_id = ${id} ORDER BY created_at DESC
-      `;
+      const pagesResult = await query(
+        'SELECT id, name, slug, status, created_at FROM landing_pages WHERE client_id = $1 ORDER BY created_at DESC',
+        [id]
+      );
 
-      // Get recent jobs
-      const jobsResult = await sql`
-        SELECT * FROM page_generation_jobs WHERE client_id = ${id} ORDER BY created_at DESC LIMIT 10
-      `;
+      // Get recent jobs (if table exists)
+      let jobsResult = { rows: [] };
+      try {
+        jobsResult = await query(
+          'SELECT * FROM page_generation_jobs WHERE client_id = $1 ORDER BY created_at DESC LIMIT 10',
+          [id]
+        );
+      } catch (e) {
+        // Table might not exist in SQLite
+      }
 
       return res.status(200).json({
         success: true,
-        client: {
-          ...client,
-          business_research: client.business_research || null,
-          verified_facts: client.verified_facts || null,
-          testimonials: client.testimonials || null
-        },
+        client,
         brand_guide: brandResult.rows[0] || null,
         verified_claims: claimsResult.rows,
         landing_pages: pagesResult.rows,
@@ -68,33 +68,25 @@ export default async function handler(req, res) {
       // Update client
       const { name, website_url, industry, business_research, verified_facts, testimonials, research_status } = req.body;
 
-      const now = new Date().toISOString();
-
-      await sql`
-        UPDATE clients
-        SET
-          name = COALESCE(${name}, name),
-          website_url = COALESCE(${website_url}, website_url),
-          industry = COALESCE(${industry}, industry),
-          business_research = COALESCE(${business_research ? JSON.stringify(business_research) : null}::jsonb, business_research),
-          verified_facts = COALESCE(${verified_facts ? JSON.stringify(verified_facts) : null}::jsonb, verified_facts),
-          testimonials = COALESCE(${testimonials ? JSON.stringify(testimonials) : null}::jsonb, testimonials),
-          research_status = COALESCE(${research_status}, research_status),
-          updated_at = ${now}
-        WHERE id = ${id}
-      `;
-
-      const result = await sql`SELECT * FROM clients WHERE id = ${id}`;
+      const client = await db.updateClient(id, {
+        name,
+        website_url,
+        industry,
+        business_research,
+        verified_facts,
+        testimonials,
+        research_status
+      });
 
       return res.status(200).json({
         success: true,
-        client: result.rows[0]
+        client
       });
     }
 
     if (req.method === 'DELETE') {
       // Delete client (cascades to brand_guide, verified_claims)
-      await sql`DELETE FROM clients WHERE id = ${id}`;
+      await query('DELETE FROM clients WHERE id = $1', [id]);
 
       return res.status(200).json({
         success: true,

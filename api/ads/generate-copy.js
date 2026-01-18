@@ -1,6 +1,6 @@
-import { sql } from '@vercel/postgres';
 import { v4 as uuidv4 } from 'uuid';
 import { verifyAuth } from '../../lib/auth.js';
+import db from '../../lib/database.js';
 
 /**
  * Meta Ad Copy Generator
@@ -45,34 +45,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // Get client data
-    const clientResult = await sql`
-      SELECT c.*, b.brand_voice, b.tone_keywords
-      FROM clients c
-      LEFT JOIN brand_style_guides b ON c.id = b.client_id
-      WHERE c.id = ${client_id}
-    `;
+    // Get client data using unified database
+    const client = await db.getClientById(client_id);
 
-    if (clientResult.rows.length === 0) {
+    if (!client) {
       return res.status(404).json({
         success: false,
         error: 'Client not found'
       });
     }
 
-    const client = clientResult.rows[0];
     const businessResearch = client.business_research || {};
 
     // Get verified claims for the client
-    const claimsResult = await sql`
-      SELECT claim_text, claim_type
-      FROM verified_claims
-      WHERE client_id = ${client_id}
-      AND verification_status = 'verified'
-      ORDER BY confidence_score DESC
-      LIMIT 10
-    `;
-    const verifiedClaims = claimsResult.rows;
+    const verifiedClaims = await db.getVerifiedClaims(client_id, 10);
 
     const claudeApiKey = process.env.ANTHROPIC_API_KEY || process.env.CLAUDE_API_KEY;
     if (!claudeApiKey) {
@@ -128,42 +114,41 @@ export default async function handler(req, res) {
 
     // Store generated copies in database
     const savedCopies = [];
-    const now = new Date().toISOString();
 
     if (adVariations.variations) {
       for (const variation of adVariations.variations) {
         const copyId = uuidv4();
-        await sql`
-          INSERT INTO ad_copy (
-            id, campaign_id, client_id, user_id, channel, ad_type,
-            primary_text, headline, description, cta, hook_angle,
-            target_audience, offer_details, generation_prompt, model_used,
-            tokens_used, created_at
-          )
-          VALUES (
-            ${copyId},
-            ${campaign_id || null},
-            ${client_id},
-            ${user.userId},
-            'meta',
-            ${ad_type},
-            ${variation.primary_text || ''},
-            ${variation.headline || ''},
-            ${variation.description || ''},
-            ${variation.cta || ''},
-            ${variation.hook_angle || hook_angle || ''},
-            ${target_audience || ''},
-            ${offer_details || ''},
-            ${prompt.substring(0, 2000)},
-            'claude-sonnet-4',
-            ${(claudeData.usage?.input_tokens || 0) + (claudeData.usage?.output_tokens || 0)},
-            ${now}
-          )
-        `;
-        savedCopies.push({
-          id: copyId,
-          ...variation
-        });
+        try {
+          await db.saveAdCopy({
+            id: copyId,
+            campaign_id: campaign_id || null,
+            client_id,
+            user_id: user.userId,
+            channel: 'meta',
+            ad_type,
+            primary_text: variation.primary_text || '',
+            headline: variation.headline || '',
+            description: variation.description || '',
+            cta: variation.cta || '',
+            hook_angle: variation.hook_angle || hook_angle || '',
+            target_audience: target_audience || '',
+            offer_details: offer_details || '',
+            generation_prompt: prompt.substring(0, 2000),
+            model_used: 'claude-sonnet-4',
+            tokens_used: (claudeData.usage?.input_tokens || 0) + (claudeData.usage?.output_tokens || 0)
+          });
+          savedCopies.push({
+            id: copyId,
+            ...variation
+          });
+        } catch (saveError) {
+          console.error('Error saving ad copy:', saveError);
+          // Continue with remaining variations even if one fails
+          savedCopies.push({
+            id: copyId,
+            ...variation
+          });
+        }
       }
     }
 

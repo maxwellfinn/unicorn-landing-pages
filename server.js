@@ -27,8 +27,8 @@ app.use(session({
   cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
 }));
 
-// Serve static files (dashboard)
-app.use(express.static(join(__dirname, 'public')));
+// Serve static files (dashboard) - serves from root directory
+app.use(express.static(__dirname));
 
 // Initialize GitHub
 if (process.env.GITHUB_TOKEN) {
