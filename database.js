@@ -236,6 +236,172 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_page_generation_jobs_status ON page_generation_jobs(status);
   CREATE INDEX IF NOT EXISTS idx_verified_claims_client_id ON verified_claims(client_id);
   CREATE INDEX IF NOT EXISTS idx_landing_pages_client_id ON landing_pages(client_id);
+
+  -- ============================================
+  -- PHASE 1: AI MARKETING ASSISTANT TABLES
+  -- ============================================
+
+  -- Users table for authentication
+  CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    name TEXT NOT NULL,
+    role TEXT DEFAULT 'marketer',
+    avatar_url TEXT,
+    is_active INTEGER DEFAULT 1,
+    last_login_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+  );
+
+  -- User sessions for JWT refresh tokens
+  CREATE TABLE IF NOT EXISTS user_sessions (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL,
+    refresh_token TEXT UNIQUE NOT NULL,
+    expires_at TEXT NOT NULL,
+    ip_address TEXT,
+    user_agent TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
+
+  -- Campaigns - organize ads by client campaigns
+  CREATE TABLE IF NOT EXISTS campaigns (
+    id TEXT PRIMARY KEY,
+    client_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    objective TEXT,
+    channel TEXT DEFAULT 'meta',
+    target_audience TEXT,
+    budget TEXT,
+    start_date TEXT,
+    end_date TEXT,
+    status TEXT DEFAULT 'draft',
+    notes TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
+  -- Ad copy generations
+  CREATE TABLE IF NOT EXISTS ad_copy (
+    id TEXT PRIMARY KEY,
+    campaign_id TEXT,
+    client_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    channel TEXT DEFAULT 'meta',
+    ad_type TEXT,
+    primary_text TEXT,
+    headline TEXT,
+    description TEXT,
+    cta TEXT,
+    hook_angle TEXT,
+    target_audience TEXT,
+    offer_details TEXT,
+    generation_prompt TEXT,
+    model_used TEXT,
+    tokens_used INTEGER,
+    rating INTEGER,
+    feedback TEXT,
+    is_favorite INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+  );
+
+  -- Image prompt generations for AI image tools
+  CREATE TABLE IF NOT EXISTS image_prompts (
+    id TEXT PRIMARY KEY,
+    campaign_id TEXT,
+    client_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    ad_copy_id TEXT,
+    prompt_text TEXT NOT NULL,
+    negative_prompt TEXT,
+    style_reference TEXT,
+    aspect_ratio TEXT DEFAULT '1:1',
+    image_type TEXT,
+    model_target TEXT DEFAULT 'nano_banana_2',
+    generation_context TEXT,
+    rating INTEGER,
+    feedback TEXT,
+    is_favorite INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE SET NULL,
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (ad_copy_id) REFERENCES ad_copy(id) ON DELETE SET NULL
+  );
+
+  -- Ad performance data (for future Meta API integration)
+  CREATE TABLE IF NOT EXISTS ad_performance (
+    id TEXT PRIMARY KEY,
+    ad_copy_id TEXT,
+    campaign_id TEXT,
+    external_ad_id TEXT,
+    channel TEXT DEFAULT 'meta',
+    impressions INTEGER DEFAULT 0,
+    clicks INTEGER DEFAULT 0,
+    spend REAL DEFAULT 0,
+    conversions INTEGER DEFAULT 0,
+    revenue REAL DEFAULT 0,
+    ctr REAL,
+    cpc REAL,
+    cpm REAL,
+    roas REAL,
+    date_range_start TEXT,
+    date_range_end TEXT,
+    raw_data TEXT,
+    synced_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ad_copy_id) REFERENCES ad_copy(id) ON DELETE CASCADE,
+    FOREIGN KEY (campaign_id) REFERENCES campaigns(id) ON DELETE CASCADE
+  );
+
+  -- Swipe files / winning ad examples
+  CREATE TABLE IF NOT EXISTS swipe_files (
+    id TEXT PRIMARY KEY,
+    user_id TEXT,
+    client_id TEXT,
+    title TEXT NOT NULL,
+    channel TEXT,
+    ad_type TEXT,
+    primary_text TEXT,
+    headline TEXT,
+    description TEXT,
+    image_description TEXT,
+    image_url TEXT,
+    landing_page_url TEXT,
+    why_it_works TEXT,
+    hooks_used TEXT,
+    tags TEXT,
+    source TEXT,
+    performance_notes TEXT,
+    is_public INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE SET NULL
+  );
+
+  -- Indexes for new tables
+  CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+  CREATE INDEX IF NOT EXISTS idx_user_sessions_user_id ON user_sessions(user_id);
+  CREATE INDEX IF NOT EXISTS idx_user_sessions_refresh_token ON user_sessions(refresh_token);
+  CREATE INDEX IF NOT EXISTS idx_campaigns_client_id ON campaigns(client_id);
+  CREATE INDEX IF NOT EXISTS idx_campaigns_user_id ON campaigns(user_id);
+  CREATE INDEX IF NOT EXISTS idx_ad_copy_client_id ON ad_copy(client_id);
+  CREATE INDEX IF NOT EXISTS idx_ad_copy_campaign_id ON ad_copy(campaign_id);
+  CREATE INDEX IF NOT EXISTS idx_ad_copy_user_id ON ad_copy(user_id);
+  CREATE INDEX IF NOT EXISTS idx_image_prompts_client_id ON image_prompts(client_id);
+  CREATE INDEX IF NOT EXISTS idx_image_prompts_ad_copy_id ON image_prompts(ad_copy_id);
+  CREATE INDEX IF NOT EXISTS idx_ad_performance_ad_copy_id ON ad_performance(ad_copy_id);
+  CREATE INDEX IF NOT EXISTS idx_swipe_files_user_id ON swipe_files(user_id);
+  CREATE INDEX IF NOT EXISTS idx_swipe_files_tags ON swipe_files(tags);
 `);
 
 export default db;
