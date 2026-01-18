@@ -6682,7 +6682,7 @@
               client_id: adGenClientId,
               ad_type: document.getElementById('adCopyAdType').value,
               tone: document.getElementById('adCopyTone').value,
-              hook_framework: document.getElementById('adCopyHook').value,
+              hook_angle: document.getElementById('adCopyHook').value,
               target_audience: document.getElementById('adCopyAudience').value,
               offer_details: document.getElementById('adCopyOffer').value,
               num_variations: parseInt(document.getElementById('adCopyVariations').value)
@@ -6706,7 +6706,7 @@
               aspect_ratio: document.getElementById('adImageAspect').value,
               num_prompts: parseInt(document.getElementById('adImagePrompts').value),
               custom_concept: document.getElementById('adImageConcept').value,
-              ad_copy_id: copyResults?.ad_copies?.[0]?.id
+              ad_copy_id: copyResults?.variations?.[0]?.id || copyResults?.ad_copies?.[0]?.id
             })
           });
           imageResults = await imageRes.json();
@@ -6736,10 +6736,11 @@
       copyList.innerHTML = '';
       imageList.innerHTML = '';
 
-      // Display copy results
-      if (copyResults?.success && copyResults.ad_copies) {
+      // Display copy results (API returns 'variations' not 'ad_copies')
+      const copies = copyResults?.variations || copyResults?.ad_copies || [];
+      if (copyResults?.success && copies.length > 0) {
         copySection.style.display = 'block';
-        copyList.innerHTML = copyResults.ad_copies.map((copy, i) => `
+        copyList.innerHTML = copies.map((copy, i) => `
           <div class="ad-result-card">
             <div class="ad-result-card-header">
               <h4>Variation ${i + 1} - ${copy.hook_angle || 'Hook'}</h4>
