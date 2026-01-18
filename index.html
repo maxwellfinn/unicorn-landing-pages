@@ -2726,6 +2726,365 @@
     }
 
     /* ============================================
+       AD GENERATOR
+    ============================================ */
+    .badge-new {
+      background: linear-gradient(135deg, var(--primary-blue), #00B894);
+      color: white;
+      font-size: 0.65rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .ad-generator-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .ad-gen-step {
+      background: var(--bg-light);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .ad-gen-step-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ad-gen-step-title::before {
+      content: '';
+      width: 24px;
+      height: 24px;
+      background: var(--primary-blue);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ad-client-info-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .ad-client-info-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ad-client-info-header span:first-child {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .ad-client-info-body {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .ad-client-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .ad-client-stat .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-medium);
+    }
+
+    .ad-gen-modes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .ad-gen-mode-card {
+      background: white;
+      border: 2px solid var(--border-light);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .ad-gen-mode-card:hover {
+      border-color: var(--primary-blue-light);
+      transform: translateY(-2px);
+    }
+
+    .ad-gen-mode-card.selected {
+      border-color: var(--primary-blue);
+      background: rgba(59, 159, 216, 0.05);
+    }
+
+    .ad-gen-mode-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .ad-gen-mode-card h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .ad-gen-mode-card p {
+      font-size: 0.85rem;
+      color: var(--text-medium);
+    }
+
+    .bias-grid, .style-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 0.5rem;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+    }
+
+    .bias-item, .style-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background: var(--bg-light);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.15s ease;
+    }
+
+    .bias-item:hover, .style-item:hover {
+      background: rgba(59, 159, 216, 0.1);
+    }
+
+    .bias-item.selected, .style-item.selected {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    .bias-item input, .style-item input {
+      display: none;
+    }
+
+    .power-stacks {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .power-stack-label {
+      font-size: 0.8rem;
+      color: var(--text-medium);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .power-stack-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .power-stack-btn {
+      padding: 0.4rem 0.8rem;
+      border: 1px solid var(--border-light);
+      background: white;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .power-stack-btn:hover {
+      border-color: var(--primary-blue);
+      color: var(--primary-blue);
+    }
+
+    .power-stack-btn.selected {
+      background: var(--primary-blue);
+      color: white;
+      border-color: var(--primary-blue);
+    }
+
+    .ad-gen-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      padding: 1rem 0;
+    }
+
+    .ad-gen-results {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      padding: 1.5rem;
+    }
+
+    .ad-results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .ad-results-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .ad-results-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .results-section-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-medium);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ad-copy-results-list, .ad-image-results-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .ad-result-card {
+      background: var(--bg-light);
+      border-radius: 8px;
+      padding: 1rem;
+      border: 1px solid var(--border-light);
+    }
+
+    .ad-result-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .ad-result-card-header h4 {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .ad-result-card-header .copy-btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.7rem;
+      background: white;
+      border: 1px solid var(--border-light);
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .ad-result-card-header .copy-btn:hover {
+      background: var(--primary-blue);
+      color: white;
+      border-color: var(--primary-blue);
+    }
+
+    .ad-copy-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .ad-copy-field {
+      background: white;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border-light);
+    }
+
+    .ad-copy-field-label {
+      font-size: 0.7rem;
+      color: var(--text-medium);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .ad-copy-field-value {
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .ad-prompt-content {
+      background: white;
+      padding: 1rem;
+      border-radius: 6px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .ad-prompt-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .ad-prompt-tag {
+      padding: 0.2rem 0.5rem;
+      background: rgba(59, 159, 216, 0.1);
+      color: var(--primary-blue);
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+
+    .ad-gen-stats {
+      display: flex;
+      gap: 1.5rem;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border-light);
+      font-size: 0.85rem;
+      color: var(--text-medium);
+    }
+
+    @media (max-width: 768px) {
+      .ad-gen-modes {
+        grid-template-columns: 1fr;
+      }
+
+      .ad-client-info-body {
+        grid-template-columns: 1fr;
+      }
+
+      .bias-grid, .style-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
        MOBILE RESPONSIVE
     ============================================ */
     .mobile-menu-toggle {
@@ -2927,6 +3286,18 @@
               <line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
             Import HTML
+          </a>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-section-title">Meta Ads</div>
+          <a class="nav-item" data-page="adGenerator">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 9l6 6"/>
+              <path d="M15 9l-6 6"/>
+            </svg>
+            Ad Generator
           </a>
         </div>
 
@@ -3542,6 +3913,262 @@
           </div>
         </div>
       </div>
+
+        <!-- Ad Generator Section (hidden by default) -->
+        <div id="adGeneratorSection" class="page-section" style="display: none;">
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">
+                <h2>Meta Ad Generator</h2>
+                <span class="badge badge-new">AI Powered</span>
+              </div>
+            </div>
+
+            <div class="ad-generator-layout">
+              <!-- Step 1: Client Selection -->
+              <div class="ad-gen-step" id="adGenStep1">
+                <h3 class="ad-gen-step-title">1. Select Client</h3>
+                <div class="form-group">
+                  <label for="adClientSelect">Client</label>
+                  <select id="adClientSelect" onchange="loadClientForAdGen()">
+                    <option value="">-- Select a client --</option>
+                  </select>
+                </div>
+                <div id="adClientInfo" style="display: none;">
+                  <div class="ad-client-info-card">
+                    <div class="ad-client-info-header">
+                      <span id="adClientName">Client Name</span>
+                      <span class="industry-badge" id="adClientIndustry">Industry</span>
+                    </div>
+                    <div class="ad-client-info-body">
+                      <div class="ad-client-stat">
+                        <span class="stat-label">Products:</span>
+                        <span id="adClientProducts">0</span>
+                      </div>
+                      <div class="ad-client-stat">
+                        <span class="stat-label">Verified Claims:</span>
+                        <span id="adClientClaims">0</span>
+                      </div>
+                      <div class="ad-client-stat">
+                        <span class="stat-label">Brand Guide:</span>
+                        <span id="adClientBrand">Not Set</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Generation Mode -->
+              <div class="ad-gen-step" id="adGenStep2" style="display: none;">
+                <h3 class="ad-gen-step-title">2. Choose Generation Mode</h3>
+                <div class="ad-gen-modes">
+                  <div class="ad-gen-mode-card" onclick="selectAdGenMode('copy')" data-mode="copy">
+                    <div class="ad-gen-mode-icon">✍️</div>
+                    <h4>Ad Copy</h4>
+                    <p>Generate Meta ad copy with hooks, headlines, and CTAs</p>
+                  </div>
+                  <div class="ad-gen-mode-card" onclick="selectAdGenMode('image')" data-mode="image">
+                    <div class="ad-gen-mode-icon">🖼️</div>
+                    <h4>Image Prompts</h4>
+                    <p>Generate Nano Banana 2 image prompts</p>
+                  </div>
+                  <div class="ad-gen-mode-card" onclick="selectAdGenMode('full')" data-mode="full">
+                    <div class="ad-gen-mode-icon">🎯</div>
+                    <h4>Full Campaign</h4>
+                    <p>Generate both copy and image prompts together</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3A: Copy Generation Options -->
+              <div class="ad-gen-step" id="adGenCopyOptions" style="display: none;">
+                <h3 class="ad-gen-step-title">3. Ad Copy Settings</h3>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="adCopyAdType">Ad Type</label>
+                    <select id="adCopyAdType">
+                      <option value="single_image">Single Image Ad</option>
+                      <option value="carousel">Carousel Ad</option>
+                      <option value="video">Video Ad</option>
+                      <option value="story">Story Ad</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="adCopyTone">Tone</label>
+                    <select id="adCopyTone">
+                      <option value="conversational">Conversational</option>
+                      <option value="urgent">Urgent</option>
+                      <option value="professional">Professional</option>
+                      <option value="playful">Playful</option>
+                      <option value="authoritative">Authoritative</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="adCopyHook">Hook Framework</label>
+                  <select id="adCopyHook">
+                    <option value="problem_agitate">Problem-Agitate-Solution</option>
+                    <option value="curiosity">Curiosity Gap</option>
+                    <option value="contrarian">Contrarian</option>
+                    <option value="social_proof">Social Proof</option>
+                    <option value="direct_benefit">Direct Benefit</option>
+                    <option value="story">Story Hook</option>
+                    <option value="question">Question Hook</option>
+                    <option value="statistic">Statistic Lead</option>
+                    <option value="before_after">Before/After</option>
+                    <option value="fear_of_missing">FOMO</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="adCopyAudience">Target Audience (Optional)</label>
+                  <textarea id="adCopyAudience" rows="2" placeholder="Describe your ideal customer..."></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="adCopyOffer">Offer Details (Optional)</label>
+                  <input type="text" id="adCopyOffer" placeholder="e.g., 20% off, Free shipping, etc.">
+                </div>
+
+                <div class="form-group">
+                  <label for="adCopyVariations">Number of Variations</label>
+                  <select id="adCopyVariations">
+                    <option value="3">3 variations</option>
+                    <option value="5" selected>5 variations</option>
+                    <option value="10">10 variations</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Step 3B: Image Prompt Options -->
+              <div class="ad-gen-step" id="adGenImageOptions" style="display: none;">
+                <h3 class="ad-gen-step-title">3. Image Prompt Settings</h3>
+
+                <div class="form-group">
+                  <label for="adImageAwareness">Awareness Level</label>
+                  <select id="adImageAwareness">
+                    <option value="unaware">Unaware - Pattern interrupt, curiosity</option>
+                    <option value="problem_aware" selected>Problem Aware - Pain visualization</option>
+                    <option value="solution_aware">Solution Aware - Differentiation</option>
+                    <option value="product_aware">Product Aware - Social proof</option>
+                    <option value="most_aware">Most Aware - Urgency, offer</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Cognitive Biases (Select 1-5)</label>
+                  <div class="bias-grid" id="biasGrid">
+                    <!-- Will be populated dynamically -->
+                  </div>
+                  <div class="power-stacks">
+                    <span class="power-stack-label">Or use a Power Stack:</span>
+                    <div class="power-stack-buttons">
+                      <button type="button" class="power-stack-btn" onclick="selectPowerStack('urgency')">Urgency</button>
+                      <button type="button" class="power-stack-btn" onclick="selectPowerStack('trust')">Trust</button>
+                      <button type="button" class="power-stack-btn" onclick="selectPowerStack('desire')">Desire</button>
+                      <button type="button" class="power-stack-btn" onclick="selectPowerStack('comparison')">Comparison</button>
+                      <button type="button" class="power-stack-btn" onclick="selectPowerStack('identity')">Identity</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Ad Styles (Select 1-5)</label>
+                  <div class="style-grid" id="styleGrid">
+                    <!-- Will be populated dynamically -->
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="adImageAspect">Aspect Ratio</label>
+                    <select id="adImageAspect">
+                      <option value="4:5" selected>4:5 Vertical (Best for Feed)</option>
+                      <option value="1:1">1:1 Square</option>
+                      <option value="9:16">9:16 Stories/Reels</option>
+                      <option value="16:9">16:9 Landscape</option>
+                      <option value="1.91:1">1.91:1 Link Preview</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="adImagePrompts">Number of Prompts</label>
+                    <select id="adImagePrompts">
+                      <option value="3">3 prompts</option>
+                      <option value="5" selected>5 prompts</option>
+                      <option value="10">10 prompts</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="adImageConcept">Custom Concept (Optional)</label>
+                  <textarea id="adImageConcept" rows="2" placeholder="Describe a specific ad image you want..."></textarea>
+                </div>
+              </div>
+
+              <!-- Generate Button -->
+              <div class="ad-gen-actions" id="adGenActions" style="display: none;">
+                <button type="button" class="btn btn-secondary" onclick="resetAdGenerator()">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 7a6 6 0 1 1 1 3.5"/>
+                    <path d="M1 11V7h4"/>
+                  </svg>
+                  Reset
+                </button>
+                <button type="button" class="btn btn-primary" onclick="generateAds()" id="generateAdsBtn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                  </svg>
+                  Generate
+                </button>
+              </div>
+
+              <!-- Results Section -->
+              <div class="ad-gen-results" id="adGenResults" style="display: none;">
+                <div class="ad-results-header">
+                  <h3>Generated Results</h3>
+                  <div class="ad-results-actions">
+                    <button class="btn btn-secondary btn-small" onclick="copyAllResults()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                      </svg>
+                      Copy All
+                    </button>
+                    <button class="btn btn-secondary btn-small" onclick="exportResults()">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                      </svg>
+                      Export
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Copy Results -->
+                <div id="adCopyResults" style="display: none;">
+                  <h4 class="results-section-title">Ad Copy Variations</h4>
+                  <div id="adCopyResultsList" class="ad-copy-results-list"></div>
+                </div>
+
+                <!-- Image Prompt Results -->
+                <div id="adImageResults" style="display: none;">
+                  <h4 class="results-section-title">Image Prompts for Nano Banana 2</h4>
+                  <div id="adImageResultsList" class="ad-image-results-list"></div>
+                </div>
+
+                <!-- Generation Stats -->
+                <div class="ad-gen-stats">
+                  <span id="adGenTokens">Tokens: 0</span>
+                  <span id="adGenCost">Est. Cost: $0.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </main>
   </div>
 
@@ -4237,7 +4864,8 @@
         pages: 'Landing Pages',
         clients: 'Clients',
         analytics: 'Analytics',
-        leads: 'Leads'
+        leads: 'Leads',
+        adGenerator: 'Meta Ad Generator'
       };
       document.querySelector('.page-title').textContent = titles[pageName] || 'Dashboard';
 
@@ -4246,12 +4874,14 @@
       const pagesSection = document.querySelector('.section-card:has(#pagesContainer)');
       const clientsSection = document.getElementById('clientsSection');
       const clientDetailSection = document.getElementById('clientDetailSection');
+      const adGeneratorSection = document.getElementById('adGeneratorSection');
 
       // Hide all sections first
       if (dashboardContent) dashboardContent.style.display = 'none';
       if (pagesSection) pagesSection.style.display = 'none';
       if (clientsSection) clientsSection.style.display = 'none';
       if (clientDetailSection) clientDetailSection.style.display = 'none';
+      if (adGeneratorSection) adGeneratorSection.style.display = 'none';
 
       // Show relevant sections based on page
       if (pageName === 'dashboard') {
@@ -4262,6 +4892,9 @@
       } else if (pageName === 'clients') {
         if (clientsSection) clientsSection.style.display = 'block';
         loadClientsPage();
+      } else if (pageName === 'adGenerator') {
+        if (adGeneratorSection) adGeneratorSection.style.display = 'block';
+        initAdGenerator();
       }
 
       closeSidebar();
@@ -5842,6 +6475,403 @@
         }
       });
     });
+
+    // ============================================
+    // AD GENERATOR
+    // ============================================
+    let adGenClientId = null;
+    let adGenClientData = null;
+    let adGenMode = null;
+    let adGenOptions = null;
+    let selectedBiases = [];
+    let selectedStyles = [];
+    let selectedPowerStack = null;
+
+    async function initAdGenerator() {
+      // Load clients into dropdown
+      try {
+        const res = await fetch('/api/clients');
+        const result = await res.json();
+
+        const select = document.getElementById('adClientSelect');
+        select.innerHTML = '<option value="">-- Select a client --</option>';
+
+        if (result.success && result.clients) {
+          result.clients.forEach(client => {
+            const option = document.createElement('option');
+            option.value = client.id;
+            option.textContent = client.name;
+            select.appendChild(option);
+          });
+        }
+
+        // Load bias and style options
+        await loadAdGenOptions();
+      } catch (error) {
+        console.error('Error initializing ad generator:', error);
+      }
+    }
+
+    async function loadAdGenOptions() {
+      try {
+        const res = await fetch('/api/ads/generate-image-prompt');
+        const result = await res.json();
+
+        if (result.success) {
+          adGenOptions = result;
+          populateBiasGrid(result.cognitive_biases);
+          populateStyleGrid(result.ad_styles);
+        }
+      } catch (error) {
+        console.error('Error loading ad gen options:', error);
+      }
+    }
+
+    function populateBiasGrid(biases) {
+      const grid = document.getElementById('biasGrid');
+      if (!grid) return;
+
+      grid.innerHTML = biases.map(bias => `
+        <div class="bias-item" data-key="${bias.key}" onclick="toggleBias('${bias.key}')">
+          <span>${bias.id}. ${bias.name}</span>
+        </div>
+      `).join('');
+    }
+
+    function populateStyleGrid(styles) {
+      const grid = document.getElementById('styleGrid');
+      if (!grid) return;
+
+      grid.innerHTML = styles.map(style => `
+        <div class="style-item" data-key="${style.key}" onclick="toggleStyle('${style.key}')">
+          <span>${style.id}. ${style.name}</span>
+        </div>
+      `).join('');
+    }
+
+    function toggleBias(key) {
+      selectedPowerStack = null;
+      document.querySelectorAll('.power-stack-btn').forEach(btn => btn.classList.remove('selected'));
+
+      const item = document.querySelector(`.bias-item[data-key="${key}"]`);
+      if (item.classList.contains('selected')) {
+        item.classList.remove('selected');
+        selectedBiases = selectedBiases.filter(b => b !== key);
+      } else if (selectedBiases.length < 5) {
+        item.classList.add('selected');
+        selectedBiases.push(key);
+      }
+    }
+
+    function toggleStyle(key) {
+      const item = document.querySelector(`.style-item[data-key="${key}"]`);
+      if (item.classList.contains('selected')) {
+        item.classList.remove('selected');
+        selectedStyles = selectedStyles.filter(s => s !== key);
+      } else if (selectedStyles.length < 5) {
+        item.classList.add('selected');
+        selectedStyles.push(key);
+      }
+    }
+
+    function selectPowerStack(stack) {
+      selectedBiases = [];
+      document.querySelectorAll('.bias-item').forEach(item => item.classList.remove('selected'));
+
+      document.querySelectorAll('.power-stack-btn').forEach(btn => {
+        btn.classList.toggle('selected', btn.textContent.toLowerCase() === stack);
+      });
+
+      selectedPowerStack = stack;
+    }
+
+    async function loadClientForAdGen() {
+      const clientId = document.getElementById('adClientSelect').value;
+      if (!clientId) {
+        document.getElementById('adClientInfo').style.display = 'none';
+        document.getElementById('adGenStep2').style.display = 'none';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/clients/${clientId}`);
+        const result = await res.json();
+
+        if (result.success) {
+          adGenClientId = clientId;
+          adGenClientData = result.client;
+
+          const research = result.client.business_research || {};
+
+          document.getElementById('adClientName').textContent = result.client.name;
+          document.getElementById('adClientIndustry').textContent = result.client.industry || 'Unknown';
+          document.getElementById('adClientProducts').textContent = research.products?.length || 0;
+          document.getElementById('adClientClaims').textContent = result.verified_claims?.length || 0;
+          document.getElementById('adClientBrand').textContent = result.brand_guide ? 'Complete' : 'Not Set';
+
+          document.getElementById('adClientInfo').style.display = 'block';
+          document.getElementById('adGenStep2').style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error loading client:', error);
+      }
+    }
+
+    function selectAdGenMode(mode) {
+      adGenMode = mode;
+
+      document.querySelectorAll('.ad-gen-mode-card').forEach(card => {
+        card.classList.toggle('selected', card.dataset.mode === mode);
+      });
+
+      // Show appropriate options
+      document.getElementById('adGenCopyOptions').style.display = (mode === 'copy' || mode === 'full') ? 'block' : 'none';
+      document.getElementById('adGenImageOptions').style.display = (mode === 'image' || mode === 'full') ? 'block' : 'none';
+      document.getElementById('adGenActions').style.display = 'flex';
+    }
+
+    function resetAdGenerator() {
+      adGenClientId = null;
+      adGenClientData = null;
+      adGenMode = null;
+      selectedBiases = [];
+      selectedStyles = [];
+      selectedPowerStack = null;
+
+      document.getElementById('adClientSelect').value = '';
+      document.getElementById('adClientInfo').style.display = 'none';
+      document.getElementById('adGenStep2').style.display = 'none';
+      document.getElementById('adGenCopyOptions').style.display = 'none';
+      document.getElementById('adGenImageOptions').style.display = 'none';
+      document.getElementById('adGenActions').style.display = 'none';
+      document.getElementById('adGenResults').style.display = 'none';
+
+      document.querySelectorAll('.ad-gen-mode-card').forEach(card => card.classList.remove('selected'));
+      document.querySelectorAll('.bias-item').forEach(item => item.classList.remove('selected'));
+      document.querySelectorAll('.style-item').forEach(item => item.classList.remove('selected'));
+      document.querySelectorAll('.power-stack-btn').forEach(btn => btn.classList.remove('selected'));
+    }
+
+    async function generateAds() {
+      if (!adGenClientId) {
+        alert('Please select a client');
+        return;
+      }
+
+      if (!adGenMode) {
+        alert('Please select a generation mode');
+        return;
+      }
+
+      const btn = document.getElementById('generateAdsBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span class="loading-spinner"></span> Generating...';
+      btn.disabled = true;
+
+      try {
+        let copyResults = null;
+        let imageResults = null;
+        let totalTokens = 0;
+
+        // Generate copy if needed
+        if (adGenMode === 'copy' || adGenMode === 'full') {
+          const copyRes = await fetch('/api/ads/generate-copy', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              client_id: adGenClientId,
+              ad_type: document.getElementById('adCopyAdType').value,
+              tone: document.getElementById('adCopyTone').value,
+              hook_framework: document.getElementById('adCopyHook').value,
+              target_audience: document.getElementById('adCopyAudience').value,
+              offer_details: document.getElementById('adCopyOffer').value,
+              num_variations: parseInt(document.getElementById('adCopyVariations').value)
+            })
+          });
+          copyResults = await copyRes.json();
+          if (copyResults.tokens_used) totalTokens += copyResults.tokens_used;
+        }
+
+        // Generate image prompts if needed
+        if (adGenMode === 'image' || adGenMode === 'full') {
+          const imageRes = await fetch('/api/ads/generate-image-prompt', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              client_id: adGenClientId,
+              awareness_level: document.getElementById('adImageAwareness').value,
+              biases: selectedBiases.length > 0 ? selectedBiases : undefined,
+              power_stack: selectedPowerStack,
+              styles: selectedStyles.length > 0 ? selectedStyles : ['ugc_raw', 'before_after'],
+              aspect_ratio: document.getElementById('adImageAspect').value,
+              num_prompts: parseInt(document.getElementById('adImagePrompts').value),
+              custom_concept: document.getElementById('adImageConcept').value,
+              ad_copy_id: copyResults?.ad_copies?.[0]?.id
+            })
+          });
+          imageResults = await imageRes.json();
+          if (imageResults.tokens_used) totalTokens += imageResults.tokens_used;
+        }
+
+        // Display results
+        displayAdResults(copyResults, imageResults, totalTokens);
+
+      } catch (error) {
+        console.error('Error generating ads:', error);
+        alert('Error generating ads: ' + error.message);
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    function displayAdResults(copyResults, imageResults, totalTokens) {
+      const resultsSection = document.getElementById('adGenResults');
+      const copySection = document.getElementById('adCopyResults');
+      const imageSection = document.getElementById('adImageResults');
+      const copyList = document.getElementById('adCopyResultsList');
+      const imageList = document.getElementById('adImageResultsList');
+
+      // Clear previous results
+      copyList.innerHTML = '';
+      imageList.innerHTML = '';
+
+      // Display copy results
+      if (copyResults?.success && copyResults.ad_copies) {
+        copySection.style.display = 'block';
+        copyList.innerHTML = copyResults.ad_copies.map((copy, i) => `
+          <div class="ad-result-card">
+            <div class="ad-result-card-header">
+              <h4>Variation ${i + 1} - ${copy.hook_angle || 'Hook'}</h4>
+              <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(copy.primary_text)}')">Copy</button>
+            </div>
+            <div class="ad-copy-content">
+              <div class="ad-copy-field">
+                <div class="ad-copy-field-label">Primary Text</div>
+                <div class="ad-copy-field-value">${escapeHtml(copy.primary_text)}</div>
+              </div>
+              <div class="ad-copy-field">
+                <div class="ad-copy-field-label">Headline</div>
+                <div class="ad-copy-field-value">${escapeHtml(copy.headline)}</div>
+              </div>
+              <div class="ad-copy-field">
+                <div class="ad-copy-field-label">Description</div>
+                <div class="ad-copy-field-value">${escapeHtml(copy.description || '')}</div>
+              </div>
+              <div class="ad-copy-field">
+                <div class="ad-copy-field-label">CTA</div>
+                <div class="ad-copy-field-value">${escapeHtml(copy.cta || 'Learn More')}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        copySection.style.display = 'none';
+      }
+
+      // Display image prompt results
+      if (imageResults?.success && imageResults.prompts) {
+        imageSection.style.display = 'block';
+        imageList.innerHTML = imageResults.prompts.map((prompt, i) => `
+          <div class="ad-result-card">
+            <div class="ad-result-card-header">
+              <h4>Prompt ${i + 1} - ${prompt.ad_style || 'Custom'}</h4>
+              <button class="copy-btn" onclick="copyToClipboard(\`${escapeHtml(prompt.prompt)}\`)">Copy</button>
+            </div>
+            <div class="ad-prompt-content">${escapeHtml(prompt.prompt)}</div>
+            ${prompt.negative_prompt ? `<div class="ad-prompt-content" style="margin-top: 0.5rem; opacity: 0.7;"><strong>Negative:</strong> ${escapeHtml(prompt.negative_prompt)}</div>` : ''}
+            ${prompt.strategic_notes ? `
+              <div class="ad-prompt-meta">
+                <span class="ad-prompt-tag">${prompt.strategic_notes.awareness_level || ''}</span>
+                ${(prompt.strategic_notes.biases_applied || []).map(b => `<span class="ad-prompt-tag">${b}</span>`).join('')}
+              </div>
+            ` : ''}
+          </div>
+        `).join('');
+      } else {
+        imageSection.style.display = 'none';
+      }
+
+      // Display stats
+      const estCost = (totalTokens / 1000) * 0.003; // Rough estimate
+      document.getElementById('adGenTokens').textContent = `Tokens: ${totalTokens.toLocaleString()}`;
+      document.getElementById('adGenCost').textContent = `Est. Cost: $${estCost.toFixed(4)}`;
+
+      resultsSection.style.display = 'block';
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+        .replace(/`/g, '&#96;');
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        // Could add a toast notification here
+      });
+    }
+
+    function copyAllResults() {
+      const copyList = document.getElementById('adCopyResultsList');
+      const imageList = document.getElementById('adImageResultsList');
+
+      let allText = '';
+
+      if (copyList.children.length > 0) {
+        allText += '=== AD COPY ===\n\n';
+        document.querySelectorAll('#adCopyResultsList .ad-copy-field-value').forEach((el, i) => {
+          allText += el.textContent + '\n\n';
+        });
+      }
+
+      if (imageList.children.length > 0) {
+        allText += '=== IMAGE PROMPTS ===\n\n';
+        document.querySelectorAll('#adImageResultsList .ad-prompt-content').forEach((el, i) => {
+          allText += el.textContent + '\n\n---\n\n';
+        });
+      }
+
+      navigator.clipboard.writeText(allText);
+    }
+
+    function exportResults() {
+      const copyResults = [];
+      document.querySelectorAll('#adCopyResultsList .ad-result-card').forEach(card => {
+        const fields = card.querySelectorAll('.ad-copy-field-value');
+        copyResults.push({
+          primary_text: fields[0]?.textContent || '',
+          headline: fields[1]?.textContent || '',
+          description: fields[2]?.textContent || '',
+          cta: fields[3]?.textContent || ''
+        });
+      });
+
+      const imagePrompts = [];
+      document.querySelectorAll('#adImageResultsList .ad-prompt-content').forEach(el => {
+        imagePrompts.push(el.textContent);
+      });
+
+      const data = {
+        client: adGenClientData?.name || 'Unknown',
+        generated_at: new Date().toISOString(),
+        ad_copies: copyResults,
+        image_prompts: imagePrompts
+      };
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ad-generator-${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
   </script>
 </body>
 </html>
